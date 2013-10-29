@@ -29,8 +29,6 @@
  *
  * @link http://us3.php.net/manual/en/security.magicquotes.disabling.php
  */
-//include('../../../../Mage.php');
- 
 if (get_magic_quotes_gpc()) {
     function mageUndoMagicQuotes($array, $topLevel=true) {
         $newArray = array();

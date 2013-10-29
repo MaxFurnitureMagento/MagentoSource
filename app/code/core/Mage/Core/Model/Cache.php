@@ -354,9 +354,6 @@ class Mage_Core_Model_Cache
      */
     public function load($id)
     {
-        Sohi_Debug::log('Mage_Core_Model_Cache::load');
-        Sohi_Debug::log(Sohi_Debug::backtrace(true, false));
-        Sohi_Debug::log($id);
         return $this->_frontend->load($this->_id($id));
     }
 
@@ -371,16 +368,6 @@ class Mage_Core_Model_Cache
      */
     public function save($data, $id, $tags=array(), $lifeTime=null)
     {
-        Sohi_Debug::log('Mage_Core_Model_Cache::save');
-        Sohi_Debug::log(Sohi_Debug::backtrace(true, false));
-        Sohi_Debug::log($id);
-        Sohi_Debug::log($tags);
-        Sohi_Debug::log($lifeTime);
-        if (is_array($data)) {
-            Sohi_Debug::log(array_keys($data));
-        } else if (is_string($data)) {
-            Sohi_Debug::log(substr($data, 0, 500));
-        }
         /**
          * Add global magento cache tag to all cached data exclude config cache
          */
@@ -401,10 +388,6 @@ class Mage_Core_Model_Cache
      */
     public function remove($id)
     {
-        Sohi_Debug::log('Mage_Core_Model_Cache::remove');
-        Sohi_Debug::log(Sohi_Debug::backtrace(true, false));
-        Sohi_Debug::log($id);
-
         return $this->_frontend->remove($this->_id($id));
     }
 
@@ -416,9 +399,6 @@ class Mage_Core_Model_Cache
      */
     public function clean($tags=array())
     {
-        Sohi_Debug::log('Mage_Core_Model_Cache::clean');
-        Sohi_Debug::log(Sohi_Debug::backtrace(true, false));
-        Sohi_Debug::log($tags);
         $mode = Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG;
         if (!empty($tags)) {
             if (!is_array($tags)) {
@@ -439,8 +419,6 @@ class Mage_Core_Model_Cache
      */
     public function flush()
     {
-        Sohi_Debug::log('Mage_Core_Model_Cache::flush');
-        Sohi_Debug::log(Sohi_Debug::backtrace(true, false));
         $res = $this->_frontend->clean();
         return $res;
     }
@@ -639,8 +617,6 @@ class Mage_Core_Model_Cache
      */
     public function invalidateType($typeCode)
     {
-        Sohi_Debug::log('Mage_Core_Model_Cache::invalidateType');
-        Sohi_Debug::log($typeCode);
         $types = $this->_getInvalidatedTypes();
         if (!is_array($typeCode)) {
             $typeCode = array($typeCode);
@@ -660,8 +636,6 @@ class Mage_Core_Model_Cache
      */
     public function cleanType($typeCode)
     {
-        Sohi_Debug::log('Mage_Core_Model_Cache::cleanType');
-        Sohi_Debug::log($typeCode);
         $tags = $this->getTagsByType($typeCode);
         $this->clean($tags);
 

@@ -29,10 +29,6 @@ class Mage_Payment_Model_Method_Checkmo extends Mage_Payment_Model_Method_Abstra
 {
 
     protected $_code  = 'checkmo';
-	//cofamedia added for checkmo payment method only in Magento backend
-	protected $_canUseCheckout = false;
-	protected $_canUseForMultishipping  = false; 
-	//end
     protected $_formBlockType = 'payment/form_checkmo';
     protected $_infoBlockType = 'payment/info_checkmo';
 

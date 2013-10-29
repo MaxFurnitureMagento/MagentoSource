@@ -887,14 +887,6 @@ abstract class Mage_Core_Block_Abstract extends Varien_Object
                 array('block' => $this, 'transport' => self::$_transportObject));
         $html = self::$_transportObject->getHtml();
 
-        if ($this->getShowTemplateHints()) {
-            $html = '
-<div style="position:relative; border:1px dotted green; margin:6px 2px; padding:18px 2px 2px 2px; zoom:1;">
-<div style="position:absolute; left:0; top:0; padding:2px 5px; background:green; color:white; font:normal 11px Arial;
-text-align:left !important; z-index:1998;" onmouseover="this.style.zIndex=\'1999\'"
-onmouseout="this.style.zIndex=\'1998\'" title="id:'.$this->getId().',name:'.$this->getNameInLayout().',alias:'.$this->getBlockAlias().'">id:'.$this->getId().',name:'.$this->getNameInLayout().',alias:'.$this->getBlockAlias().'</div>'.$html.'</div>';
-        }
-
         return $html;
     }
 

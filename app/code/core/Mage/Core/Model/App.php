@@ -274,7 +274,6 @@ class Mage_Core_Model_App
             $this->_initCurrentStore($code, $type);
             $this->_initRequest();
         }
-
         return $this;
     }
 
@@ -334,36 +333,26 @@ class Mage_Core_Model_App
      */
     public function run($params)
     {
-
         $options = isset($params['options']) ? $params['options'] : array();
         $this->baseInit($options);
         Mage::register('application_params', $params);
 
-
-
         if ($this->_cache->processRequest()) {
             $this->getResponse()->sendResponse();
         } else {
-
             $this->_initModules();
-
             $this->loadAreaPart(Mage_Core_Model_App_Area::AREA_GLOBAL, Mage_Core_Model_App_Area::PART_EVENTS);
 
             if ($this->_config->isLocalConfigLoaded()) {
                 $scopeCode = isset($params['scope_code']) ? $params['scope_code'] : '';
                 $scopeType = isset($params['scope_type']) ? $params['scope_type'] : 'store';
-
-//                 Mage::log('Mage_Core_Model_App::run->_initCurrentStore', null, 'sohi.exception.log');
                 $this->_initCurrentStore($scopeCode, $scopeType);
-
-//                 Mage::log('Mage_Core_Model_App::run->_initRequest', null, 'sohi.exception.log');
                 $this->_initRequest();
                 Mage_Core_Model_Resource_Setup::applyAllDataUpdates();
             }
 
             $this->getFrontController()->dispatch();
         }
-
         return $this;
     }
 
@@ -476,6 +465,7 @@ class Mage_Core_Model_App
         Varien_Profiler::start('mage::app::init::stores');
         $this->_initStores();
         Varien_Profiler::stop('mage::app::init::stores');
+
         if (empty($scopeCode) && !is_null($this->_website)) {
             $scopeCode = $this->_website->getCode();
             $scopeType = 'website';
@@ -494,17 +484,12 @@ class Mage_Core_Model_App
                 $this->throwStoreException();
         }
 
-
         if (!empty($this->_currentStore)) {
             $this->_checkCookieStore($scopeType);
             $this->_checkGetStore($scopeType);
         }
-
-        $store = $this->getStore();
-
-        $this->_useSessionInUrl = $store->getConfig(
-            Mage_Core_Model_Session_Abstract::XML_PATH_USE_FRONTEND_SID);//web/session/use_frontend_sid
-//         die('dada8');
+        $this->_useSessionInUrl = $this->getStore()->getConfig(
+            Mage_Core_Model_Session_Abstract::XML_PATH_USE_FRONTEND_SID);
         return $this;
     }
 
@@ -826,7 +811,6 @@ class Mage_Core_Model_App
      */
     public function getStore($id = null)
     {
-
         if (!Mage::isInstalled() || $this->getUpdateMode()) {
             return $this->_getDefaultStore();
         }
@@ -834,8 +818,6 @@ class Mage_Core_Model_App
         if ($id === true && $this->isSingleStoreMode()) {
             return $this->_store;
         }
-
-
 
         if (!isset($id) || ''===$id || $id === true) {
             $id = $this->_currentStore;
@@ -846,8 +828,6 @@ class Mage_Core_Model_App
         if (!isset($id)) {
             $this->throwStoreException();
         }
-
-
 
         if (empty($this->_stores[$id])) {
             $store = Mage::getModel('core/store');
@@ -864,8 +844,6 @@ class Mage_Core_Model_App
             $this->_stores[$store->getStoreId()] = $store;
             $this->_stores[$store->getCode()] = $store;
         }
-
-
         return $this->_stores[$id];
     }
 
@@ -1318,8 +1296,6 @@ class Mage_Core_Model_App
                 $event->setName($eventName);
                 $observer = new Varien_Event_Observer();
             }
-
-
 
             foreach ($events[$eventName]['observers'] as $obsName=>$obs) {
                 $observer->setData(array('event'=>$event));
