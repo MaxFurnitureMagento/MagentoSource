@@ -1,0 +1,13 @@
+<?php
+$_product = $this->getProduct();
+if($_product->getMaxFreeShipping()) $content = $this->getLayout()->createBlock('cms/block')->setBlockId('shipping-details-free-shipping')->toHtml();
+else
+  {
+    $primary = Mage::helper('core')->currency($_product->getMaxPrimaryShip());
+    $secondary = Mage::helper('core')->currency($_product->getMaxSecondaryShip());
+    $content = $this->getLayout()->createBlock('cms/block')->setBlockId('shipping-details-regular-shipping')->toHtml();
+    $content = str_replace('%1', $primary, $content);
+    $content = str_replace('%2', $secondary, $content);
+  }
+?>
+<div class="shipping-details"><?php echo $content ?></div>

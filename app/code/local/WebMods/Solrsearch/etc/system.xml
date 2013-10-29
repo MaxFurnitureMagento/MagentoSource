@@ -1,0 +1,490 @@
+<?xml version="1.0"?>
+<config>    
+    <tabs>
+		<webmods translate="label" module="solrsearch">
+			<label>Solr Bridge</label>
+			<sort_order>100</sort_order>
+		</webmods>
+	</tabs>
+	<sections>
+		<webmods_solrsearch translate="label" module="solrsearch">
+			<label>General settings</label>
+			<tab>webmods</tab>
+			<class>separator-top</class>
+			<frontend_type>text</frontend_type>
+			<sort_order>10</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<frontend_model>adminhtml/system_config_form</frontend_model>
+			<groups>
+				<!--BASIC SETTING -->
+				<settings translate="label" module="solrsearch">
+					<label>General Setting</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>1</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<frontend_model>adminhtml/system_config_form_fieldset</frontend_model>
+					<fields>
+						<solr_server_url translate="label comment" module="solrsearch">
+							<label>Solr Server ROOT URL</label>
+							<comment>Must be end with forward slash (/). Example: http://localhost:8080/solr/</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+						</solr_server_url>
+						<solr_server_url_auth translate="label comment" module="solrsearch">
+							<label>Solr Server Authentication(yes/no)</label>
+							<comment>If your solr server is protected by username/password, please set this to yes</comment>
+							<frontend_type>select</frontend_type>
+							<sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+						</solr_server_url_auth>
+						<solr_server_url_auth_username translate="label comment" module="solrsearch">
+							<label>Solr Server Authentication Username</label>
+							<comment>Leave this blank if your Solr server not protected</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+						</solr_server_url_auth_username>
+						<solr_server_url_auth_password translate="label comment" module="solrsearch">
+							<label>Solr Server Authentication Password</label>
+							<comment>Leave this blank if your Solr server not protected</comment>
+							<frontend_type>password</frontend_type>
+							<sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+						</solr_server_url_auth_password>
+						<solr_index>
+							<label>Solr index</label>
+							<comment>Select which Solr index the store will search in. (If you dont see any core, please goto to Default Config > Solr Bridge > Indexes Settings to map your stores into Solr cores)</comment>
+							<frontend_type>select</frontend_type>
+							<sort_order>5</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>solrsearch/adminhtml_system_source_config_cores</source_model>
+						</solr_index>						
+						<solr_quick_search_display_thumnail translate="label comment" module="solrsearch">
+							<label>Display thumnail for the instant search</label>							
+							<frontend_type>select</frontend_type>
+							<sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+						</solr_quick_search_display_thumnail>
+						<solr_quick_search_allow_filter translate="label comment" module="solrsearch">
+							<label>Allow filter for instant search</label>							
+							<frontend_type>select</frontend_type>
+							<sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+						</solr_quick_search_allow_filter>	
+						<solr_index_auto_when_product_save translate="label comment" module="solrsearch">
+							<label>Update index immediately after product save.</label>							
+							<frontend_type>select</frontend_type>
+							<sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+						</solr_index_auto_when_product_save>
+						<solr_search_in_category translate="label comment" module="solrsearch">
+							<label>Included category for search.</label>							
+							<frontend_type>select</frontend_type>
+							<sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+						</solr_search_in_category>
+						<use_category_as_facet translate="label comment" module="solrsearch">
+							<label>Used category as facet.</label>							
+							<frontend_type>select</frontend_type>
+							<sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+						</use_category_as_facet>
+						<display_category_as_hierachy translate="label comment" module="solrsearch">
+							<label>Display Category As Hierachy</label>							
+							<frontend_type>select</frontend_type>
+							<sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+						</display_category_as_hierachy>
+						<items_per_page translate="label comment" module="solrsearch">
+							<label>Items per page</label>
+							<comment>How many products display on search result page</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+						</items_per_page>
+						<!-- 
+						<use_ajax_result_page translate="label comment" module="solrsearch">
+							<label>Use ajax result page</label>
+							<comment>Use ajax behaviour for result page</comment>
+							<frontend_type>select</frontend_type>
+							<sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+						</use_ajax_result_page>
+						 -->
+						<items_per_commit translate="label comment" module="solrsearch">
+							<label>Items per commit(For indexing)</label>
+							<comment>Number of products per Solr commit</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>22</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+						</items_per_commit>
+						<check_instock translate="label comment" module="solrsearch">
+							<label>Check instock</label>
+							<comment>Allow only in stock products in search</comment>
+							<frontend_type>select</frontend_type>
+							<sort_order>23</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+						</check_instock>
+						<display_keyword_suggestion translate="label comment" module="solrsearch">
+							<label>Display keyword suggestion</label>
+							<comment>Display keyword suggestion on Autocomplete search</comment>
+							<frontend_type>select</frontend_type>
+							<sort_order>24</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+						</display_keyword_suggestion>
+						<currency_position translate="label comment" module="solrsearch">
+							<label>Currency symboy position</label>
+							<comment>Select Yes to display symboy before, select No to display symboy after</comment>
+							<frontend_type>select</frontend_type>
+							<sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+						</currency_position>
+						<allow_multiple_filter translate="label comment" module="solrsearch">
+							<label>Allow multiple filter</label>
+							<comment>Allow multiple filter on search result page</comment>
+							<frontend_type>select</frontend_type>
+							<sort_order>26</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+						</allow_multiple_filter>
+					</fields>
+				</settings>			
+			</groups>
+		</webmods_solrsearch>
+		<webmods_solrsearch_indexes translate="label" module="solrsearch">
+			<label>Indexes settings</label>
+			<tab>webmods</tab>
+			<class>separator-top</class>
+			<frontend_type>text</frontend_type>
+			<sort_order>11</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<frontend_model>adminhtml/system_config_form</frontend_model>
+			<groups>
+				<english translate="label" module="solrsearch">
+					<label>English (This index is for English store)</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>2</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<frontend_model>adminhtml/system_config_form_fieldset</frontend_model>
+					<fields>
+							<label>
+								<label>Label</label>
+								<comment>Please set a lable for this index.</comment>
+								<frontend_type>text</frontend_type>
+								<sort_order>1</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+							</label>
+							<stores>
+								<label>Stores mapping</label>
+								<comment>Please select stores to be mapped with this index.</comment>
+								<frontend_type>solrsearchgroupcheckboxes</frontend_type>
+								<sort_order>2</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+								<source_model>solrsearch/adminhtml_system_source_config_stores</source_model>
+							</stores>
+					</fields>
+				</english>
+				<french translate="label" module="solrsearch">
+					<label>French (This index is  for French store)</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>3</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<frontend_model>adminhtml/system_config_form_fieldset</frontend_model>
+					<fields>
+							<label>
+								<label>Label</label>
+								<comment>Please set a lable for this index.</comment>
+								<frontend_type>text</frontend_type>
+								<sort_order>1</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+							</label>
+							<stores>
+								<label>Stores mapping</label>
+								<comment>Please select stores to be mapped with this index.</comment>
+								<frontend_type>solrsearchgroupcheckboxes</frontend_type>
+								<sort_order>2</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+								<source_model>solrsearch/adminhtml_system_source_config_stores</source_model>
+							</stores>
+					</fields>
+				</french>	
+				<german translate="label" module="solrsearch">
+					<label>German (This index is for German store)</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>4</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<frontend_model>adminhtml/system_config_form_fieldset</frontend_model>
+					<fields>
+							<label>
+								<label>Label</label>
+								<comment>Please set a lable for this index.</comment>
+								<frontend_type>text</frontend_type>
+								<sort_order>1</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+							</label>
+							<stores>
+								<label>Stores mapping</label>
+								<comment>Please select stores to be mapped with this index.</comment>
+								<frontend_type>solrsearchgroupcheckboxes</frontend_type>
+								<sort_order>2</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+								<source_model>solrsearch/adminhtml_system_source_config_stores</source_model>
+							</stores>
+					</fields>
+				</german>
+				<polish translate="label" module="solrsearch">
+					<label>Polish (This index is for Polish store)</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>4</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<frontend_model>adminhtml/system_config_form_fieldset</frontend_model>
+					<fields>
+							<label>
+								<label>Label</label>
+								<comment>Please set a lable for this index.</comment>
+								<frontend_type>text</frontend_type>
+								<sort_order>1</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+							</label>
+							<stores>
+								<label>Stores mapping</label>
+								<comment>Please select stores to be mapped with this index.</comment>
+								<frontend_type>solrsearchgroupcheckboxes</frontend_type>
+								<sort_order>2</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+								<source_model>solrsearch/adminhtml_system_source_config_stores</source_model>
+							</stores>
+					</fields>
+				</polish>
+				<dutch translate="label" module="solrsearch">
+					<label>Dutch (This index is for dutch store.)</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>6</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<frontend_model>adminhtml/system_config_form_fieldset</frontend_model>
+					<fields>
+							<label>
+								<label>Label</label>
+								<comment>Please set a lable for this index.</comment>
+								<frontend_type>text</frontend_type>
+								<sort_order>1</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+							</label>
+							<stores>
+								<label>Stores mapping</label>
+								<comment>Please select stores to be mapped with this index.</comment>
+								<frontend_type>solrsearchgroupcheckboxes</frontend_type>
+								<sort_order>2</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+								<source_model>solrsearch/adminhtml_system_source_config_stores</source_model>
+							</stores>
+					</fields>
+				</dutch>
+				<spanish translate="label" module="solrsearch">
+					<label>Spanish (This index is for Spanish store.)</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>5</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<frontend_model>adminhtml/system_config_form_fieldset</frontend_model>
+					<fields>
+							<label>
+								<label>Label</label>
+								<comment>Please set a lable for this index.</comment>
+								<frontend_type>text</frontend_type>
+								<sort_order>1</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+							</label>
+							<stores>
+								<label>Stores mapping</label>
+								<comment>Please select stores to be mapped with this index.</comment>
+								<frontend_type>solrsearchgroupcheckboxes</frontend_type>
+								<sort_order>2</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+								<source_model>solrsearch/adminhtml_system_source_config_stores</source_model>
+							</stores>
+					</fields>
+				</spanish>
+				<portuguese translate="label" module="solrsearch">
+					<label>Portuguese (This index is for Portuguese store.)</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>7</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<frontend_model>adminhtml/system_config_form_fieldset</frontend_model>
+					<fields>
+							<label>
+								<label>Label</label>
+								<comment>Please set a lable for this index.</comment>
+								<frontend_type>text</frontend_type>
+								<sort_order>1</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+							</label>
+							<stores>
+								<label>Stores mapping</label>
+								<comment>Please select stores to be mapped with this index.</comment>
+								<frontend_type>solrsearchgroupcheckboxes</frontend_type>
+								<sort_order>2</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+								<source_model>solrsearch/adminhtml_system_source_config_stores</source_model>
+							</stores>
+					</fields>
+				</portuguese>
+				<hungarian translate="label" module="solrsearch">
+					<label>Hungarian (This index is for Hungarian store.)</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>7</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<frontend_model>adminhtml/system_config_form_fieldset</frontend_model>
+					<fields>
+							<label>
+								<label>Label</label>
+								<comment>Please set a lable for this index.</comment>
+								<frontend_type>text</frontend_type>
+								<sort_order>1</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+							</label>
+							<stores>
+								<label>Stores mapping</label>
+								<comment>Please select stores to be mapped with this index.</comment>
+								<frontend_type>solrsearchgroupcheckboxes</frontend_type>
+								<sort_order>2</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+								<source_model>solrsearch/adminhtml_system_source_config_stores</source_model>
+							</stores>
+					</fields>
+				</hungarian>
+				<italian translate="label" module="solrsearch">
+					<label>Italian (This index is for Italian store.)</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>12</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<frontend_model>adminhtml/system_config_form_fieldset</frontend_model>
+					<fields>
+							<label>
+								<label>Label</label>
+								<comment>Please set a lable for this index.</comment>
+								<frontend_type>text</frontend_type>
+								<sort_order>1</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+							</label>
+							<stores>
+								<label>Stores mapping</label>
+								<comment>Please select stores to be mapped with this index.</comment>
+								<frontend_type>solrsearchgroupcheckboxes</frontend_type>
+								<sort_order>2</sort_order>
+								<show_in_default>1</show_in_default>
+								<show_in_website>0</show_in_website>
+								<show_in_store>0</show_in_store>
+								<source_model>solrsearch/adminhtml_system_source_config_stores</source_model>
+							</stores>
+					</fields>
+				</italian>
+			</groups>
+		</webmods_solrsearch_indexes>
+	</sections>
+</config>

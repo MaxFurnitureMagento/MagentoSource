@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <cofa translate="label" module="splash">
+            <label>Cofa Media</label>
+            <sort_order>100</sort_order>
+        </cofa>
+    </tabs>
+    <sections>
+        <splash>
+            <label>Splash</label>
+            <tab>cofa</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>140</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <configuration translate="label">
+                    <label>Configuration</label>
+                    <frontend_type>text</frontend_type>
+	                  <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <interval translate="label">
+                            <label>Time Delay in Seconds</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </interval>
+                        <limit translate="label">
+                            <label>Number of Slides to Display (X)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </limit>
+												<!--
+                        <keywords translate="label">
+                            <label>Use Tab Keywords</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>22</sort_order>
+														<source_model>splash/keywords</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+														<comment>Prefer tabs with matchin keywords</comment>
+                        </keywords>
+												-->
+                        <order translate="label">
+                            <label>Slide Selection Method</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>25</sort_order>
+														<source_model>splash/order</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+														<comment>Used when number of slides limit is set</comment>
+                        </order>
+                        <trigger translate="label">
+                            <label>Slide Trigger Method</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>30</sort_order>
+														<source_model>splash/triggers</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </trigger>
+                        <animations translate="label">
+                            <label>Animations</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>40</sort_order>
+														<source_model>splash/animations</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+														<comment>If no animation is selected, 'Fade' will be used</comment>
+                        </animations>
+                        <animation_speed translate="label">
+                            <label>Animation Speed</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+														<comment>in milliseconds</comment>
+                        </animation_speed>
+                        <button_type translate="label">
+                            <label>Button Type</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>60</sort_order>
+														<source_model>splash/buttons</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </button_type>
+                        <button_description translate="label">
+                            <label>Use Description in Buttons</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>65</sort_order>
+														<source_model>splash/description</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </button_description>
+                        <default_button translate="label">
+                            <label>Default Button</label>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media" scope_info="1">cofa_media/splash</upload_dir>
+                            <base_url type="media" scope_info="1">cofa_media/splash</base_url>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </default_button>
+                        <show_controls translate="label">
+                            <label>Show Play Controls</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>80</sort_order>
+														<source_model>splash/showcontrols</source_model>
+														<comment>If enabled you must choose at lease one control below</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </show_controls>
+                        <controls translate="label">
+                            <label>Play Controls</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>90</sort_order>
+														<source_model>splash/controls</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </controls>
+                    </fields>
+                </configuration>
+            </groups>
+        </splash>
+    </sections>
+</config>

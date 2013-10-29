@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Mxp 
+ * Menuadmin
+ * 
+ * @category    Mxp
+ * @package     Mxp_Menuadmin
+ * @copyright   Copyright (c) 2011 Mxp (http://www.magentoxp.com)
+ * @author      Magentoxp (Mxp)Magentoxp Team <support@magentoxp.com>
+ */
+ -->
+ 
+<layout version="0.1.0">
+    <menuadmin_adminhtml_menuadmin_index>
+        <reference name="content">
+            <block type="menuadmin/adminhtml_menuadmin" name="menuadmin" />
+        </reference>
+    </menuadmin_adminhtml_menuadmin_index>
+</layout>

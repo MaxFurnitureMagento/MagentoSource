@@ -1,0 +1,90 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+/* @var $this Enterprise_TargetRule_Block_Catalog_Product_List_Upsell */
+?>
+<?php if ($this->hasItems()): ?>
+<?php $image_size = 235; 
+      $_helper = $this->helper('catalog/output');
+      $_coreHelper = $this->helper('core');
+      ?>
+<div class="box-collateral box-up-sell">
+    <div class="box-title">
+        <h2><?php echo $this->__('Coordinating Products') ?></h2>
+    </div>
+    <?php $i=0; foreach ($this->getItemCollection() as $_item): ?>
+        <?php if ($i++ % $this->getColumnCount() == 0): ?>
+            <ul class="products-grid">
+        <?php endif ?>
+                <?php $_product = $_item; ?>
+                <li class="item<?php if (($i - 1) % $this->getColumnCount() == 0):?> first<?php elseif ($i % $this->getColumnCount() == 0):?> last<?php endif;?>">
+                    <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><?php
+										$sticker = $this->helper('stickers')->getThumbnail($_product);
+										$label = $this->helper('stickers')->getLabel($_product);
+										$sticker_ok = ($sticker || $label) ? true : false;
+										$class = $this->helper('stickers')->getPositionClass();
+										if($sticker)
+											{
+												$style = "background-image:url('$sticker');";
+												$size = getimagesize($sticker);
+												$width = $size[0];
+												$height = $size[1];
+												$style.= "width:{$width}px;";
+												$style.= "height:{$height}px;";
+												
+												$style = " style=\"$style\"";
+												$class.= " image";
+											}
+                    ?>
+                    
+                <?php if($sticker_ok): ?><span class="cm-product-sticker product-sticker sticker<?php echo $class ?>"<?php if($sticker) echo $style ?>><span><?php echo $label ?></span></span><?php endif; ?><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->backgroundColor(86,79,75)->resize($image_size); ?>" width="<?php echo $image_size ?>" height="<?php echo $image_size ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+                    <h2 class="product-name"><a href="<?php echo $this->getProductUrl($_item) ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a></h2>
+                    <<div class="product-list-container">
+                  <div class="product-header">
+                    <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
+                    
+                    <?php if($_product->getSpecialToDate() && date('Y-m-d H:i:s')<=$_product->getSpecialToDate()) : ?>
+                      <div class="sale-ends">&nbsp;- <?php echo $this->__('Sale&nbsp;Ends') ?>&nbsp;<?php echo date('n/j',strtotime($_product->getSpecialToDate())) ?></div>
+                    <?php endif ?>
+                    
+                    <div class="product-model"><?php echo $this->__('Model: ').$_product->getSku() ?></div>
+                    <?php if($_product->getRatingSummary()): ?>
+                    <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+                    <?php endif; ?>
+                  </div>
+                  
+                  <div class="price-custom">
+                    <div class="list-price"><?php echo $this->__('Regular: ') ?><s><?php echo $_coreHelper->currency($_product->getmax_suggested_retail_price(),true,true); ?></s></div>
+                    <?php echo $this->getPriceHtml($_product, true, '--upsell') ?>
+                  </div>
+                 </div>
+                </li>
+        <?php if ($i % $this->getColumnCount() == 0 || $i == $this->getItemsCount()): ?>
+            </ul>
+        <?php endif ?>
+    <?php endforeach; ?>
+    <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+</div>
+<?php endif ?>

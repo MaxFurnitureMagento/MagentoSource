@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:typens="urn:{{var wsdl.name}}" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             name="{{var wsdl.name}}" targetNamespace="urn:{{var wsdl.name}}">
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:Magento">
+            <import namespace="http://schemas.xmlsoap.org/soap/encoding/"
+                    schemaLocation="http://schemas.xmlsoap.org/soap/encoding/"/>
+            <complexType name="productName">
+                <all>
+                    <element name="product_name" type="xsd:string"/>
+                </all>
+            </complexType>
+	   <complexType name="MultiArray">
+		<complexContent>
+			<restriction base="soapenc:Array">
+			<attribute ref="soapenc:arrayType" wsdl:arrayType="typens:associativeArray[]"/>
+		</restriction>
+		</complexContent>
+		</complexType>
+	 <complexType name="MultiMultiArray">
+                <complexContent>
+                        <restriction base="soapenc:Array">
+                        <attribute ref="soapenc:arrayType" wsdl:arrayType="typens:MultiArray[]"/>
+                </restriction>
+                </complexContent>
+                </complexType>
+        </schema>
+    </types>
+    <message name="productBundleCreateLinkRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="pitems" type="typens:MultiArray"/>
+        <part name="pselectionRawData" type="typens:MultiMultiArray"/>
+        <part name="pproductSku" type="xsd:string"/>
+        <part name="storeid" type="xsd:int"/>
+     </message>
+     <message name="productBundleCreateLinkResponse">
+        <part name="product_name" type="xsd:productName"/>
+     </message>
+
+     <message name="productBundleDeleteBundleOptionsRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="sku" type="xsd:string"/>
+     </message>
+     <message name="productBundleDeleteBundleOptionsResponse">
+        <part name="result" type="xsd:boolean"/>
+     </message>
+
+    <portType name="{{var wsdl.handler}}PortType">
+        <operation name="productBundleCreateLink">
+            <documentation>Bundle Products</documentation>
+            <input message="typens:productBundleCreateLinkRequest"/>
+            <output message="typens:productBundleCreateLinkResponse"/>
+        </operation>
+        <operation name="productBundleDeleteBundleOptions">
+            <documentation>Delete Bundle Options for a Bundled Product</documentation>
+            <input message="typens:productBundleDeleteBundleOptionsRequest"/>
+            <output message="typens:productBundleDeleteBundleOptionsResponse"/>
+        </operation>
+   </portType>
+   <binding name="{{var wsdl.handler}}Binding" type="typens:{{var wsdl.handler}}PortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="productBundleCreateLink">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action"/>
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded"
+                           encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded"
+                           encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+        <operation name="productBundleDeleteBundleOptions">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action"/>
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded"
+                           encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded"
+                           encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+
+   </binding>
+   <service name="{{var wsdl.name}}Service">
+        <port name="{{var wsdl.handler}}Port" binding="typens:{{var wsdl.handler}}Binding">
+            <soap:address location="{{var wsdl.url}}"/>
+        </port>
+    </service>
+ </definitions>

@@ -1,0 +1,9 @@
+<?php 
+$_items = $this->getCheckoutItems();
+?>
+<dl class="sp-methods">
+<?php foreach($_items as $_item): ?>
+  <dt><?php echo $_item['title'] ?></dt>
+  <dd><?php echo $this->helper('checkout')->formatPrice($_item['price']) ?></dd>
+<?php endforeach; ?>
+</dl>

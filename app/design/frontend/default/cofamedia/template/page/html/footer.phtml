@@ -1,0 +1,46 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="footer-container">
+    <div class="footer">
+        <?php echo $this->getChildHtml()?>
+    </div>
+    <div class="footer-end"></div>
+     <div class="logos-box">
+     	<a href="/shipping_canada/" class="track-box"></a>
+     	<span class="inc-box"></span>
+     	<span class="retailer-box"></span>
+     	<!-- <a href="http://pinterest.com/maxfurniture" class="review-box"><img src="/media/icons/pinterest.jpg" alt="MaxFurniture on Pinterest"></a>-->
+     	<span class="visa-box"></span>
+     	<span class="hot-box"></span>
+     	<div class="follow-box">
+        <a href="<?php echo Mage::getModel('core/variable')->loadByCode('facebook')->getValue('plain'); ?>" target="_blank" class="follow-facebook-box"></a>
+        <a href="<?php echo Mage::getModel('core/variable')->loadByCode('twitter')->getValue('plain'); ?>" target="_blank" class="follow-twitter-box"></a>
+        <a href="<?php echo Mage::getModel('core/variable')->loadByCode('rss')->getValue('plain'); ?>" target="_blank" class="follow-rss-box"></a>
+      </div>
+     </div>
+     <address><?php echo $this->getCopyright() ?></address>
+</div>

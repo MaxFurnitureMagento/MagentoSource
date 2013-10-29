@@ -1,0 +1,14 @@
+.ambanners {
+	clear: both;
+}
+.ambanners ul.products li {
+	list-style: none;
+	float: left;
+	width: 144px;
+	padding: 10px;
+	height: 260px;
+	margin: 3px;
+}
+.ambanners ul.products li p.product-name {
+	min-height: 60px;
+}

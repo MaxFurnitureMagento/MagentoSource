@@ -1,0 +1,34 @@
+<?php
+/**
+ * Mxp 
+ * Menuadmin
+ * 
+ * @category    Mxp
+ * @package     Mxp_Menuadmin
+ * @copyright   Copyright (c) 2011 Mxp (http://www.magentoxp.com)
+ * @author      Magentoxp (Mxp)Magentoxp Team <support@magentoxp.com>
+ */
+ ?>
+<div class="block block-menuadmin-left">
+
+	<?php if($this->hasTitle()){ ?>
+	<div class="block-title">
+    	<strong><span><?php echo $this->__($this->getTitle()) ?></span></strong>
+	</div>
+	<?php } ?>
+
+	<div class="block-content">
+	    <ul id="menuadmin-left" class="menuadmin-left">
+	    <?php if($this->hasHome()){ ?>
+		<li class="level0 nav-home-ico home">
+			<a href="<?php echo $this->getUrl();?>"><?php echo __('Home');?></a>
+		</li>
+	    <?php } ?>
+
+		<?php
+		$aux = Mage::app()->getStore(true)->getId();
+		echo $this->drawItem($aux,'left');
+		?>
+	    </ul>
+    </div>
+</div>

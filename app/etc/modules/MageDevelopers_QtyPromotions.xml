@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<MageDevelopers_QtyPromotions>
+			<active>true</active>
+			<codePool>community</codePool>
+		</MageDevelopers_QtyPromotions>
+	</modules>
+</config>

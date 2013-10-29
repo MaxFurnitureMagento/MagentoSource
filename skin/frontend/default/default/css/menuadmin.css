@@ -1,0 +1,172 @@
+/**
+ * Mxp 
+ * Menuadmin
+ * 
+ * @category    Mxp
+ * @package     Mxp_Menuadmin
+ * @copyright   Copyright (c) 2011 Mxp (http://www.magentoxp.com)
+ * @author      Magentoxp (Mxp)Magentoxp Team <support@magentoxp.com>
+ */
+ 
+/********** Top menuadmin ****************************************************************************/
+#menuadmin-top:after {display:block; content:"."; clear:both; font-size:0; line-height:0; height:0; overflow:hidden;}
+.menuadmin-top-container { background:#0a263d url(../images/bkg_nav0.jpg) 50% 0 repeat-y; }
+#menuadmin-top { width:918px; margin:0 auto; padding:0 16px; font-size:13px; }
+
+/* All Levels */ /* Style consistent throughout all nav levels */
+#menuadmin-top li { position:relative; text-align:left; }
+#menuadmin-top li.over { z-index:998; }
+#menuadmin-top a,
+#menuadmin-top a:hover { display:block; line-height:1.3em; text-decoration:none; }
+#menuadmin-top span { display:block; cursor:pointer; white-space:nowrap; }
+#menuadmin-top li ul span {white-space:normal; }
+#menuadmin-top ul li.parent a { background:url(../images/bkg_nav2.gif) 100% 100% no-repeat; }
+#menuadmin-top ul li.parent li a { background-image:none; }
+
+/* 0 Level */
+#menuadmin-top li { float:left; }
+#menuadmin-top li.active a { color:#d96708; }
+#menuadmin-top a { float:left; padding:5px 12px 6px 8px; color:#a7c6dd; font-weight:bold; }
+#menuadmin-top li.over a,
+#menuadmin-top a:hover { color:#d96708; }
+
+/* 1st Level */
+#menuadmin-top ul li,
+#menuadmin-top ul li.active { float:none; margin:0; padding-bottom:1px; background:#ecf3f6 url(../images/bkg_nav1.gif) 0 100% repeat-x; }
+#menuadmin-top ul li.last { background:#ecf3f6; padding-bottom:0; }
+
+#menuadmin-top ul a,
+#menuadmin-top ul a:hover { float:none; padding:0; background:none; }
+#menuadmin-top ul li a { font-weight:normal !important; }
+
+/* 2nd Level */
+#menuadmin-top ul,
+#menuadmin-top div { position:absolute; width:15em; top:27px; left:-10000px; border:1px solid #899ba5; }
+#menuadmin-top div ul { position:static; width:auto; border:none; }
+
+/* 3rd+ Level */
+#menuadmin-top ul ul,
+#menuadmin-top ul div { top:5px; }
+
+#menuadmin-top ul li a { background:#ecf3f6; } 
+#menuadmin-top ul li a:hover { background:#d5e4eb; }
+#menuadmin-top ul li a,
+#menuadmin-top ul li a:hover { color:#2f2f2f !important; }
+#menuadmin-top ul span,
+#menuadmin-top ul li.last li span { padding:3px 15px 4px 15px; }
+
+/* Show menu */
+#menuadmin-top li ul.shown-sub,
+#menuadmin-top li div.shown-sub { left:0; z-index:999; }
+#menuadmin-top li .shown-sub ul.shown-sub,
+#menuadmin-top li .shown-sub li div.shown-sub { left:100px; }
+/**/
+
+
+/********** Top menuadmin END ************************************************************************/
+
+/********** Left menuadmin ****************************************************************************/
+.block-menuadmin-left { border:0px; margin-top:-10px; margin-left:-10px;}
+#menuadmin-left:after { display:block; content:"."; clear:both; font-size:0; line-height:0; height:0; overflow:hidden; }
+#menuadmin-left { /*margin:0 auto; font-size:13px;*/ }
+
+/* All Levels */ /* Style consistent throughout all nav levels */
+#menuadmin-left li { position:relative; text-align:left; }
+#menuadmin-left li.over { z-index:998; }
+#menuadmin-left a
+ { display:block; line-height:18px; text-decoration:underline; color:#0055CC;  font-size:12px;}
+#menuadmin-left a:hover { display:block; line-height:18px; text-decoration:none; }
+#menuadmin-left span { display:block; cursor:pointer; white-space:nowrap; }
+#menuadmin-left li ul span {white-space:normal; }
+#menuadmin-left ul li.parent a { background:url(../images/bkg_nav2.gif) 100% 100% no-repeat; }
+#menuadmin-left ul li.parent li a { background-image:none; }
+
+/* 0 Level */
+#menuadmin-left li.active a { /*color:#000000;*/ } 
+#menuadmin-left a { /*padding:5px 12px 6px 8px; color:#a7c6dd; font-weight:bold;*/ }
+#menuadmin-left li.over a,
+#menuadmin-left a:hover { /*color:#d96708;*/ }
+
+/* 1st Level */
+#menuadmin-left ul {}
+#menuadmin-left ul li,
+#menuadmin-left ul li.active { /*float:none; margin:0; padding-bottom:1px; background:#ecf3f6 url(../images/bkg_nav1.gif) 0 100% repeat-x; */ }
+#menuadmin-left ul li.last { /*background:#ecf3f6; padding-bottom:0;*/ }
+
+#menuadmin-left ul a,
+#menuadmin-left ul a:hover { float:none; padding:0; background:none; }
+#menuadmin-left ul li a { font-weight:normal !important; }
+
+/* 2nd Level */
+#menuadmin-left ul,  
+#menuadmin-left div { /*position:absolute; width:15em; top:0px; left:-10000px; border:1px solid #899ba5;*/ padding-bottom: 10px;
+    padding-top: 10px; }
+#menuadmin-left div ul { position:static; width:auto; border:none; }
+
+/* 3rd+ Level */
+#menuadmin-left ul ul,
+#menuadmin-left ul div { top:5px; }
+
+#menuadmin-left ul li a { /*background:#ecf3f6;*/ }
+#menuadmin-left ul li a:hover { /* background:#d5e4eb;*/ }
+#menuadmin-left ul li a,
+#menuadmin-left ul li a:hover { /*color:#2f2f2f !important;*/ }
+#menuadmin-left ul span,
+#menuadmin-left ul li.last li span { padding:1px 15px 1px 15px; }
+
+/* Show menu */
+#menuadmin-left li ul.shown-sub,
+#menuadmin-left li .shown-sub ul.shown-sub, #menuadmin-left li .shown-sub li div.shown-sub { left:190px; }
+/********** Left menuadmin END ************************************************************************/
+
+/********** Right menuadmin ****************************************************************************/
+.block-menuadmin-left {}
+#menuadmin-right:after { display:block; content:"."; clear:both; font-size:0; line-height:0; height:0; overflow:hidden; }
+#menuadmin-right { margin:0 auto; font-size:13px; }
+
+/* All Levels */ /* Style consistent throughout all nav levels */
+#menuadmin-right li { position:relative; text-align:left; }
+#menuadmin-right li.over { z-index:998; }
+#menuadmin-right a,
+#menuadmin-right a:hover { display:block; line-height:1.3em; text-decoration:none; }
+#menuadmin-right span { display:block; cursor:pointer; white-space:nowrap; }
+#menuadmin-right li ul span {white-space:normal; }
+#menuadmin-right ul li.parent a { background:url(../images/bkg_nav2.gif) 100% 100% no-repeat; }
+#menuadmin-right ul li.parent li a { background-image:none; }
+
+/* 0 Level */
+#menuadmin-right li.active a { color:#d96708; }
+#menuadmin-right a { padding:5px 12px 6px 8px; color:#a7c6dd; font-weight:bold; }
+#menuadmin-right li.over a,
+#menuadmin-right a:hover { color:#d96708; }
+
+/* 1st Level */
+#menuadmin-right ul {}
+#menuadmin-right ul li,
+#menuadmin-right ul li.active { float:none; margin:0; padding-bottom:1px; background:#ecf3f6 url(../images/bkg_nav1.gif) 0 100% repeat-x; }
+#menuadmin-right ul li.last { background:#ecf3f6; padding-bottom:0; }
+
+#menuadmin-right ul a,
+#menuadmin-right ul a:hover { float:none; padding:0; background:none; }
+#menuadmin-right ul li a { font-weight:normal !important; }
+
+/* 2nd Level */
+#menuadmin-right ul,
+#menuadmin-right div { position:absolute; width:15em; top:0px; left:-10000px; border:1px solid #899ba5; }
+#menuadmin-right div ul { position:static; width:auto; border:none; }
+
+/* 3rd+ Level */
+#menuadmin-right ul ul,
+#menuadmin-right ul div { top:5px; }
+
+#menuadmin-right ul li a { background:#ecf3f6; }
+#menuadmin-right ul li a:hover { background:#d5e4eb; }
+#menuadmin-right ul li a,
+#menuadmin-right ul li a:hover { color:#2f2f2f !important; }
+#menuadmin-right ul span,
+#menuadmin-right ul li.last li span { padding:3px 15px 4px 15px; }
+
+/* Show menu */
+#menuadmin-right li ul.shown-sub,
+#menuadmin-right li .shown-sub ul.shown-sub, #menuadmin-right li .shown-sub li div.shown-sub { left:-190px; }
+/********** Right menuadmin END ************************************************************************/

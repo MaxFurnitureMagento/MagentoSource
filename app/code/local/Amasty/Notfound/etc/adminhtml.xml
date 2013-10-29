@@ -1,0 +1,91 @@
+<?xml version="1.0"?> 
+<!--
+    Copyright (c) 2010 Amasty (http://www.amasty.com) 
+-->
+<config>
+        <menu>
+		    <report>
+                <children>
+                    <amnotfound translate="title" module="amnotfound">
+                        <title>Errors Detector</title>
+                        <sort_order>900</sort_order>
+                        <children>
+                            <log translate="title" module="amnotfound">
+                                <title>Not Found Pages</title>
+                                <action>amnotfound/adminhtml_log</action>
+                                <sort_order>10</sort_order>
+                            </log> 
+                            <error translate="title" module="amnotfound">
+                                <title>System Errors</title>
+                                <action>amnotfound/adminhtml_error</action>
+                                <sort_order>20</sort_order>
+                            </error> 
+                            <attempt translate="title" module="amnotfound">
+                                <title>Failed Login Attempts</title>
+                                <action>amnotfound/adminhtml_attempt</action>
+                                <sort_order>30</sort_order>
+                            </attempt> 
+                            <settings translate="title" module="amnotfound">
+                                <title>Settings</title>
+                                <action>adminhtml/system_config/edit/section/amnotfound</action>
+                                <sort_order>40</sort_order>
+                            </settings> 
+                        </children>
+                    </amnotfound>
+                </children>
+            </report>
+		</menu>     
+   
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+                <admin>
+                    <children>
+            		    <report>
+                            <children>
+                                <amnotfound translate="title" module="amnotfound">
+                                    <title>Errors Detector</title>
+                                    <children>
+                                        <log translate="title" module="amnotfound">
+                                            <title>Not Found Pages</title>
+                                        </log> 
+                                        <error translate="title" module="amnotfound">
+                                            <title>System Errors</title>
+                                        </error> 
+                                        <attempt translate="title" module="amnotfound">
+                                            <title>Failed Login Attempts</title>
+                                        </attempt> 
+                                        <settings translate="title" module="amnotfound">
+                                            <title>Settings</title>
+                                        </settings> 
+                                    </children>
+                                </amnotfound>
+                            </children>
+                        </report>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <amnotfound translate="title" module="amnotfound">
+                                            <title>Errors Detector</title>
+                                        </amnotfound>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>            
+                     </children>
+                </admin> 
+			</resources>
+		</acl>
+        <translate>
+            <modules>
+                <Amasty_Notfound>
+                    <files>
+                        <default>Amasty_Notfound.csv</default>
+                    </files>
+                </Amasty_Notfound>
+            </modules>
+        </translate> 
+</config> 

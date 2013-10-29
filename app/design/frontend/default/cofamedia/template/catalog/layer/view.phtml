@@ -1,0 +1,47 @@
+<?php
+/**
+ * Category layered navigation
+ *
+ * @see Mage_Catalog_Block_Layer_View
+ */
+?>
+<?php if($this->canShowBlock()): ?>
+<div class="block block-layered-nav block-lay-filters">
+    <div class="block-title">
+        <strong><span><?php echo $this->__('Refine') ?></span></strong>
+    </div>
+    <?php echo $this->getStateHtml() ?>
+    <?php if($this->canShowOptions()): ?>
+      <div class="block-content">
+        <?php $_filters = $this->getFilters() ?>
+        <?php foreach ($_filters as $_filter): ?>
+        <?php if($_filter->getItemsCount()): ?>
+          <dl>
+            <dt><?php echo $this->__('Shop by ' . strtolower($_filter->getName())) ?></dt>
+            <dd><?php echo $_filter->getHtml() ?></dd>
+          </dl>
+        <?php endif; ?>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
+</div>
+<?php endif; ?>
+
+<script type="text/javascript">
+//<![CDATA[
+jQuery.noConflict();
+jQuery(document).ready(function() {
+  jQuery('select.layer-filter').change(function() { 
+    var selected = jQuery(this).val();
+    if(selected) {
+      jQuery('body').css('cursor', 'progress');
+      location.href = selected;
+    }
+  });
+  
+  jQuery('a').click(function() {
+    jQuery('body').css('cursor', 'progress');
+  });
+});
+//]]>
+</script>

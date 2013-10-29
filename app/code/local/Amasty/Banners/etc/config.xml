@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @copyright   Copyright (c) 2009-2012 Amasty (http://www.amasty.com)
+ */
+-->
+<config>
+    <modules>
+        <Amasty_Banners>
+            <version>1.0.5</version>
+        </Amasty_Banners>
+    </modules>
+
+    <global>
+        <models>
+            <ambanners>
+                <class>Amasty_Banners_Model</class>
+                <resourceModel>ambanners_mysql4</resourceModel>
+            </ambanners>
+            <ambanners_mysql4>
+                <class>Amasty_Banners_Model_Mysql4</class>
+                <entities>
+                    <rule>
+                        <table>am_banner_rule</table>
+                    </rule> 
+                    <attribute>
+                        <table>am_banner_attribute</table>
+                    </attribute>  
+                    <rule_products>
+                        <table>am_banner_rule_products</table>
+                    </rule_products>  
+                </entities>
+            </ambanners_mysql4>   
+        </models>     
+        <resources>
+            <ambanners_setup>
+                <setup>
+                    <module>Amasty_Banners</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </ambanners_setup>
+            
+            <ambanners_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </ambanners_write>
+            
+            <ambanners_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </ambanners_read>
+        </resources>
+
+        <blocks>
+            <ambanners>
+                <class>Amasty_Banners_Block</class>
+            </ambanners>
+        </blocks>
+        
+        <helpers>
+            <ambanners>
+                <class>Amasty_Banners_Helper</class>
+            </ambanners>
+        </helpers>      
+
+        <events> 
+            <sales_quote_config_get_product_attributes>
+                <observers>
+                    <ambanners>
+                        <class>ambanners/observer</class>
+                        <method>addProductAttributes</method>
+                    </ambanners>
+                </observers>
+            </sales_quote_config_get_product_attributes> 
+         </events> 
+   
+    </global>
+	
+    <frontend>  
+	    <layout>
+              <updates>
+                  <ambanners module="ambanners">
+                      <file>ambanners.xml</file>
+                  </ambanners>
+              </updates>
+        </layout>
+    </frontend>  
+	
+    <admin>
+        <routers>
+			<ambanners>
+				<use>admin</use>
+				<args>
+					<module>Amasty_Banners</module>
+					<frontName>ambanners</frontName>
+				</args>
+			</ambanners>
+        </routers>
+    </admin> 
+    
+    <adminhtml>
+        <menu>
+            <promo>
+                <children>
+                    <ambanners translate="title" module="ambanners">
+                        <title>Banners</title>
+                        <sort_order>750</sort_order>
+                        <action>ambanners/adminhtml_rule</action>
+                    </ambanners>
+                </children>
+            </promo>
+        </menu>      
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+                <admin>
+                    <children>
+                        <promo>
+                            <children>
+                                <ambanners>
+                                    <title>Banners</title>
+                                </ambanners>
+                            </children>
+                        </promo>
+                     </children>
+                </admin> 
+			</resources>
+		</acl>
+        <translate>
+            <modules>
+                <Amasty_Banners>
+                    <files>
+                        <default>Amasty_Banners.csv</default>
+                    </files>
+                </Amasty_Banners>
+            </modules>
+        </translate> 
+
+    </adminhtml>
+</config>

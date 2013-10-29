@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+		<default>
+				<reference name="head">
+						<action method="addItem"><type>skin_css</type><name>css/facebooklogin.css</name><params/></action>
+				</reference>
+				<reference name="header">
+						<block type="facebooklogin/login" name="mdfb_login" as="mdfb_login" template="facebook/login/login.phtml"/>
+				</reference>
+		</default>
+</layout>

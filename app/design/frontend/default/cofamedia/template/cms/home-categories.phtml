@@ -1,0 +1,33 @@
+<?php
+$root_id = Mage::app()->getStore()->getRootCategoryId();
+$root = Mage::getModel('catalog/category')->load($root_id);
+$children = $root->getChildrenCategories();
+$i = 0;
+foreach($children as $c)
+	{
+		$c = $c->load($c->getId());
+		$cat = array();
+		$cat['thumbnail'] = $c->getThumbnail() ? Mage::getBaseUrl('media').'catalog/category/'.$c->getThumbnail() : '';
+		$cat['name'] = $c->getName();
+		$cat['title'] = $c->getMetaTitle();
+		$cat['url'] = $c->getUrlPath();
+		$cat['description'] = $c->getDescription();
+		$categories[] = $cat;
+		if(++$i > 3) break;
+	}
+$i = 0;
+?>
+<ul class="categories">
+	<?php foreach($categories as $cat): ?>
+		<li class="<?php if($i == 0) { echo 'first'; $i++; } ?>" onclick="location.href='<?php echo $cat['url'] ?>'">
+			<div class="image" style="background-image:url('<?php echo $cat['thumbnail'] ?>')">
+			</div>
+			<div class="description">
+				<?php echo $cat['description']; ?>
+			</div>
+			<div class="link">
+				<a href="<?php echo $cat['url'] ?>">Shop <?php echo $cat['title'] ?></a>
+			</div>
+		</li>
+	<?php endforeach; ?>
+</ul>

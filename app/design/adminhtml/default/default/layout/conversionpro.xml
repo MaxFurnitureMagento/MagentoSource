@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<layout>
+    <conversionpro_adminhtml_mapping_index>
+        <update handle="conversionpro_mapping_index"/>
+        <reference name="content">
+            <block type="conversionpro/adminhtml_mapping" name="mapping" template="conversionpro/mapping.phtml"/>
+        </reference>
+    </conversionpro_adminhtml_mapping_index>
+</layout>

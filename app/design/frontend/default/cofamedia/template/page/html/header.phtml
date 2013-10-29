@@ -1,0 +1,79 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+?>
+<div class="header-container">
+    <div class="header">
+        <?php if ($this->getIsHomePage()):?>
+        <h1 class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></h1>
+        <?php else:?>
+        <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+        <?php endif?>
+        <div class="quick-access">
+            <div class="information">
+            	<?php /*<p class="call-help">&nbsp;</p>*/ ?>
+            	<p class="phone">
+                    <span class="telephone"><span>800&shy;.477.3703</span></span>
+                    <a href="<?php echo $this->getUrl('contacts') ?>"><span class="emailUs">Email us</span></a>
+                </p>
+            	<p class="social-network">
+            		<a href="<?php echo Mage::getModel('core/variable')->loadByCode('facebook')->getValue('plain'); ?>" class="facebook">&nbsp;</a>
+            		<a href="<?php echo Mage::getModel('core/variable')->loadByCode('twitter')->getValue('plain'); ?>" class="twitter">&nbsp;</a>
+            		<a href="<?php echo Mage::getModel('core/variable')->loadByCode('rss')->getValue('plain'); ?>" class="rss">&nbsp;</a>
+            	</p>
+            </div>
+            <div class="link-bar">
+	            <p class="welcome-msg"><?php echo $this->getWelcome()?></p>
+              <?php echo $this->getChildHtml('topLinks', false) ?>
+              <?php echo $this->getChildHtml('topSearch') ?>
+	        	<ul class="links-info">
+                <?php echo $this->getChildHtml('mdfb_login') ?>
+                <li><a title="Testimonials" href="/testimonials">Testimonials</a></li>
+                <li><a title="FAQ's" href="/faq">FAQ's</a></li>
+                <li><a title="Learning Center" href="/learning-center">Learning Center</a></li>
+                <li><a title="Customer Service" href="/customer-service">Customer Service</a></li>
+                <li><a title="About Us" href="/about-us">About Us</a></li>
+                <li class="first"><a title="Contact Us" href="/contacts/">Contact Us</a></li>
+          </ul>
+	            <?php //echo $this->getChildHtml('store_language') ?>
+	        </div>   
+        </div>
+        <?php echo $this->getChildHtml('topContainer'); ?>
+    </div>
+</div>
+<div id="top-navigation" onmouseover="focusOff();">
+<?php echo $this->getChildHtml('topMenu') ?>
+</div>
+<script type="text/javascript">
+	function focusOff(){
+		var fields = document.getElementsByTagName('input');
+    for (var i=0;i<fields.length;i++){
+      if(fields[i].id) document.getElementById(fields[i].id).blur();
+		}
+	}
+</script>

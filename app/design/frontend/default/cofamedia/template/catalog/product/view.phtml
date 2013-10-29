@@ -1,0 +1,302 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ */
+	
+	$_product = $this->getProduct();
+	$_id = $_product->getId();
+  // Get the Special Price
+    $specialprice = Mage::getModel('catalog/product')->load($_id)->getSpecialPrice();
+    // Get the Special Price FROM date
+    $specialPriceFromDate = Mage::getModel('catalog/product')->load($_id)->getSpecialFromDate();
+    // Get the Special Price TO date
+    $specialPriceToDate = Mage::getModel('catalog/product')->load($_id)->getSpecialToDate();
+    // Get Current date
+    $today =  time();
+	
+	$is_special = false;
+    if ($specialprice)
+        if($today >= strtotime( $specialPriceFromDate) && $today <= strtotime($specialPriceToDate) || $today >= strtotime( $specialPriceFromDate) && is_null($specialPriceToDate))
+			$is_special = true;
+ 
+?>
+<?php $_helper = $this->helper('catalog/output'); $_coreHelper = $this->helper('core');?>
+ <script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'js/colorbox/jquery.colorbox.js'?>"></script> 
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div class="product-view">
+    <div class="product-essential">
+
+        <div class="product-name">
+			<div class="price-container" style="display:none" <?php echo $_product->getmax_free_shipping()?'':'style="margin-right: 10px;"'; ?>>
+				<div class="list-price"><?php echo $this->__('Regular: ') ?><s><?php echo $_coreHelper->currency($_product->getmax_suggested_retail_price(),true,true); ?></s></div>
+				<?php if($is_special):?>
+					<div class="price-sale" style="text-align:right;"> 
+						<?php echo $this->__('Our price: ') ?><?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol().number_format($_product->getPrice(),2) ?>
+					</div>
+				<?php endif; ?>
+				<?php if($is_special):?>
+				<div class="our-price" style="font-size: 20px;color:red">
+					 <?php echo $this->__('Sale: ') ?>
+				</div>
+				<?php else: ?>
+				<div class="our-price" style="font-size: 20px;">
+					 <?php echo $this->__('Our price: ') ?> 
+				</div>
+				<?php endif;?>
+				<?php echo $this->getPriceHtml($_product) ?>
+
+				<?php if($_product->getmax_free_shipping()): ?>
+					<img class="free-shipping-top" src="<?php echo $this->getSkinUrl('images/free-shipping-image.png'); ?>" />
+				<?php endif; ?>
+			</div>
+<?php /*
+            <h1 class="<?php echo $_product->getmax_free_shipping()?'free-shipping':''; ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+*/ ?>       
+	   </div>
+<!--        <div class="clickToZoom">-->
+<!--            <p>Click Here Or On Image Below To Zoom</p>-->
+            <script type="text/javascript">
+			//<![CDATA[
+                var $j = jQuery.noConflict();
+                $j(window).load(function(){
+                    $j(".button.btn-cart").removeAttr("disabled");
+//                    $j(".clickToZoom").on("click",function(){
+//                        $j('#axZm-product-image a').click();
+//                    });
+				$j(".price-container").appendTo(".breadcrumbs");
+				$j('.price-container').show();
+				
+				<?php if($is_special):?>
+					$j(".breadcrumbs").css('padding','20px 10px');
+				<?php endif; ?>
+                });
+				
+			//]]>
+            </script>
+<!--        </div>-->
+        <div class="product-shop">
+
+            <p><span class="label"><?php echo $this->__('Items(s) Included:') ?></span> <?php echo $_product->getmax_item_included() ?></p>
+            <a href="#order-form"><?php echo $this->__('Additional Items Below') ?></a>
+<?php print_r ($this->getFormatedTierPrice()) ?>
+            <p><span class="label"><?php echo $this->__('Model:') ?></span> <?php echo $_product->getSku(); ?></p>
+            <?php echo $this->getChildHtml('alert_urls') ?>
+            <?php echo $this->getChildHtml('product_type_data') ?>
+            <?php echo $this->getTierPriceHtml() ?>
+            <?php echo $this->getChildHtml('extrahint') ?>
+
+			<?php echo $this->getReviewsSummaryHtml($_product, false, true)?>
+			
+			
+			
+            <?php /*$detail_info_gorup = $this->getChildGroup('detailed_info', 'getChildHtml'); */?>
+            <?php /*echo $detail_info_gorup['additional'];*/ ?>
+			<?php echo $this->getChildHtml('info_tabs'); ?>
+
+ 
+            <?php echo $this->getChildHtml('other');?>
+
+            <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+                <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+            <?php endif;?>
+
+        </div>
+
+        <div class="product-img-box">
+            <?php echo $this->getChildHtml('media') ?>
+        </div>
+
+		
+		
+		<?php /* rewiews */ ?>
+		<div style='display:none'>
+			<div id="show_reviews_popup" style='padding:10px; background:#fff;'>
+				<div class="reviews-popup">
+					<?php echo $this->getChildHtml('view_reviews') ?>
+				</div>
+			</div>
+		</div>
+		
+		<div style='display:none'>
+			<div id="add_review_popup" style='padding:10px; background:#fff;'>
+				<div class="reviews-popup" style="height:500px;margin:0 0 0 -10px;padding: 5px 10px;">
+					<?php echo $this->getLayout()->createBlock("review/form")->toHtml(); ?>
+				</div>
+			</div>
+		</div>
+		
+		<div style='display:none'>
+			<div id="email_us_popup" style='padding:10px; background:#fff;'>
+				<div class="reviews-popup">
+					<?php echo $this->getChildHtml('email_us') ?>
+				</div>
+			</div>
+		</div>
+		
+	
+		<?php /* rewiews */ ?>
+		
+        <?php echo $this->getChildHtml('option_images') ?>
+
+        <div class="clearer"></div>
+
+
+        
+        <form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+            <script type="text/javascript">
+                //<![CDATA[
+                var productAddToCartForm = new VarienForm('product_addtocart_form');
+                productAddToCartForm.submit = function(button, url) {
+                    if (this.validator.validate()) {
+                        var form = this.form;
+                        var oldUrl = form.action;
+
+                        if (url) {
+                            form.action = url;
+                        }
+                        var e = null;
+                        try {
+                            this.form.submit();
+                        } catch (e) {
+                        }
+                        this.form.action = oldUrl;
+                        if (e) {
+                            throw e;
+                        }
+
+                        if (button && button != 'undefined') {
+                            button.disabled = true;
+                        }
+                    }
+                }.bind(productAddToCartForm);
+
+                productAddToCartForm.submitLight = function(button, url){
+                    if(this.validator) {
+                        var nv = Validation.methods;
+                        delete Validation.methods['required-entry'];
+                        delete Validation.methods['validate-one-required'];
+                        delete Validation.methods['validate-one-required-by-name'];
+                        if (this.validator.validate()) {
+                            if (url) {
+                                this.form.action = url;
+                            }
+                            this.form.submit();
+                        }
+                        Object.extend(Validation.methods, nv);
+                    }
+                }.bind(productAddToCartForm);
+                //]]>
+            </script>
+            <div class="no-display">
+                <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+                <input type="hidden" name="related_product" id="related-products-field" value="" />
+            </div>
+            <div class="order-form-container">
+                <a name="order-form"></a>
+<?php /*				
+                <h3 class="<?php echo $_product->getmax_free_shipping()?'free-shipping2':''; ?>">Customize Order -- Select from the options below and click "Add to Cart".</h3>
+*/ ?>
+                <div class="order-form">
+                    <div class="product-image">
+                        <?php
+                        $_img = '<img src="'.$this->helper('catalog/image')->init($_product, 'image')->resize(150, 115).'" alt="'.$this->htmlEscape($this->getImageLabel()).'" title="'.$this->htmlEscape($this->getImageLabel()).'" />';
+                        echo $_helper->productAttribute($_product, $_img, 'image');
+                        ?>
+                    </div>
+
+                    <div class="product-details">
+                        <p class="product-name"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></p>
+                        <p><span class="label"><?php echo $this->__('Items(s) Included:') ?></span> <?php echo $_product->getmax_item_included() ?></p>
+                        <p><span class="label"><?php echo $this->__('Model:') ?></span> <?php echo $_product->getSku(); ?></p>
+                        <div class="list-price"><?php echo $this->__('Retail: ') ?><s><?php echo $_coreHelper->currency($_product->getmax_suggested_retail_price(),true,true); ?></s></div>
+                        <?php //echo $this->getPriceHtml($_product, false, 'details') ?>
+                        <?php echo $this->getPriceHtml($_product, false, $_product->getId() ) ?>
+                    </div>
+
+                    <div class="form-elements">
+                        <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+                            <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+                        <?php endif;?>
+
+                        <?php if (!$this->hasOptions()):?>
+                            <div class="add-to-box">
+                                <?php if($_product->isSaleable()): ?>
+                                    <?php echo $this->getChildHtml('addtocart') ?>
+                                <?php endif; ?>
+                            </div>
+                            <?php echo $this->getChildHtml('extra_buttons') ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <?php echo $this->getChildHtml('relatedProducts') ?>
+
+                <button onclick="productAddToCartForm.submit(this)" class="button btn-cart" title="Add to Cart" type="button"><span><span>Add to Cart</span></span></button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <?php echo $this->getChildHtml('upsell_products') ?>
+    <?php echo $this->getChildHtml('product_additional_data') ?>
+</div>
+<script type="text/javascript">//<![CDATA[
+    jQuery(document).ready(function() {
+		jQuery("#show_reviews, #add_review, #email_to_us").colorbox({inline:true, innerWidth:640});
+        jQuery('#qty').change(function() {
+            var qty = jQuery(this).val();
+            if(qty > 0) {
+                jQuery('#product-options-wrapper .cofa-required-entry').each(function () {
+                    jQuery(this).removeClass('cofa-required-entry');
+                    jQuery(this).addClass('required-entry');
+                });
+            }
+            else {
+                jQuery('#product-options-wrapper .required-entry').each(function () {
+                    jQuery(this).removeClass('required-entry');
+                    jQuery(this).addClass('cofa-required-entry');
+                });
+            }
+        });
+    });
+    //]]></script>
+<script type="text/javascript">//<![CDATA[
+    var sidecar = sidecar || {};
+    sidecar.product_info = {
+        // Use sku instead of product id
+        product_id: "<?php echo $_product->getSku()?>"
+    };
+	
+//]]></script>

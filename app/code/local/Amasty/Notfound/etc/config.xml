@@ -1,0 +1,232 @@
+<?xml version="1.0"?>
+<!--
+    Copyright (c) 2010 Amasty (http://www.amasty.com) 
+-->
+<config>
+    <modules>
+        <Amasty_Notfound>
+            <version>2.0.1</version>
+        </Amasty_Notfound>
+    </modules>
+    
+    <global>
+        <models>
+            <amnotfound>
+                <class>Amasty_Notfound_Model</class>
+                <resourceModel>amnotfound_mysql4</resourceModel>
+            </amnotfound>
+            <amnotfound_mysql4>
+                <class>Amasty_Notfound_Model_Mysql4</class>
+                <entities>
+                    <log>
+                        <table>am_notfound_log</table>
+                    </log> 
+                    <attempt>
+                        <table>am_notfound_attempt</table>
+                    </attempt> 
+                    <error>
+                        <table>am_notfound_error</table>
+                    </error> 
+                </entities>
+            </amnotfound_mysql4>
+            <admin>
+                <rewrite>
+                    <session>Amasty_Notfound_Model_Admin_Session</session>
+                </rewrite>
+            </admin>
+        </models>
+        
+        <resources>
+            <amnotfound_setup>
+                <setup>
+                    <module>Amasty_Notfound</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </amnotfound_setup>
+            <amnotfound_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </amnotfound_write>
+            <amnotfound_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </amnotfound_read>
+        </resources>
+
+        <blocks>
+            <amnotfound>
+                <class>Amasty_Notfound_Block</class>
+            </amnotfound>
+        </blocks>
+         
+        <helpers>
+            <amnotfound>
+                <class>Amasty_Notfound_Helper</class>
+            </amnotfound>
+        </helpers>
+        
+        <events>
+            <cms_page_render>
+                <observers>
+                    <amasty_amnotfound_model_observer>
+                        <type>singleton</type>
+                        <class>amnotfound/observer</class>
+                        <method>process404</method>
+                    </amasty_amnotfound_model_observer>
+                </observers>
+          </cms_page_render>
+            <admin_session_user_login_failed>
+                <observers>
+                    <amasty_amnotfound_model_observer>
+                        <type>singleton</type>
+                        <class>amnotfound/observer</class>
+                        <method>processLogin</method>
+                    </amasty_amnotfound_model_observer>
+                </observers>
+          </admin_session_user_login_failed>          
+        </events>
+    </global>
+    
+    <crontab>
+        <jobs>
+            <amnotfound_send>
+                <!-- each hour 0:07, 1:07, 2:07, ... -->
+                <schedule><cron_expr>7 * * * *</cron_expr></schedule>
+                <run><model>amnotfound/observer::checkForErrors</model></run>
+            </amnotfound_send>
+        </jobs> 
+    </crontab> 
+        
+    <admin>
+        <routers>
+			<amnotfound>
+				<use>admin</use>
+				<args>
+					<module>Amasty_Notfound</module>
+					<frontName>amnotfound</frontName>
+				</args>
+			</amnotfound>
+        </routers>
+    </admin> 
+        
+   <adminhtml>
+        <menu>
+		    <report>
+                <children>
+                    <amnotfound translate="title" module="amnotfound">
+                        <title>Errors Detector</title>
+                        <sort_order>900</sort_order>
+                        <children>
+                            <log translate="title" module="amnotfound">
+                                <title>Not Found Pages</title>
+                                <action>amnotfound/adminhtml_log</action>
+                                <sort_order>10</sort_order>
+                            </log> 
+                            <error translate="title" module="amnotfound">
+                                <title>System Errors</title>
+                                <action>amnotfound/adminhtml_error</action>
+                                <sort_order>20</sort_order>
+                            </error> 
+                            <attempt translate="title" module="amnotfound">
+                                <title>Failed Login Attempts</title>
+                                <action>amnotfound/adminhtml_attempt</action>
+                                <sort_order>30</sort_order>
+                            </attempt> 
+                            <settings translate="title" module="amnotfound">
+                                <title>Settings</title>
+                                <action>adminhtml/system_config/edit/section/amnotfound</action>
+                                <sort_order>40</sort_order>
+                            </settings> 
+                        </children>
+                    </amnotfound>
+                </children>
+            </report>
+		</menu>     
+   
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+                <admin>
+                    <children>
+            		    <report>
+                            <children>
+                                <amnotfound translate="title" module="amnotfound">
+                                    <title>Errors Detector</title>
+                                    <children>
+                                        <log translate="title" module="amnotfound">
+                                            <title>Not Found Pages</title>
+                                        </log> 
+                                        <error translate="title" module="amnotfound">
+                                            <title>System Errors</title>
+                                        </error> 
+                                        <attempt translate="title" module="amnotfound">
+                                            <title>Failed Login Attempts</title>
+                                        </attempt> 
+                                        <settings translate="title" module="amnotfound">
+                                            <title>Settings</title>
+                                        </settings> 
+                                    </children>
+                                </amnotfound>
+                            </children>
+                        </report>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <amnotfound translate="title" module="amnotfound">
+                                            <title>Errors Detector</title>
+                                        </amnotfound>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>            
+                     </children>
+                </admin> 
+			</resources>
+		</acl>
+        <translate>
+            <modules>
+                <Amasty_Notfound>
+                    <files>
+                        <default>Amasty_Notfound.csv</default>
+                    </files>
+                </Amasty_Notfound>
+            </modules>
+        </translate> 
+    </adminhtml> 
+    
+    <default>
+        <amnotfound>
+           <log>
+                <skip_ip></skip_ip>
+                <skip_referrer></skip_referrer>
+                <skip_pattern></skip_pattern>
+            </log>        
+           <attempts>
+                <max>4</max>
+                <limit_frame>120</limit_frame>
+                <limit_ip>1</limit_ip>
+                <add_to_blacklist>1</add_to_blacklist>
+                <black></black>
+                <white></white>
+            </attempts>
+            <error>
+                <skip_pattern></skip_pattern>
+            </error>
+            <notification>
+                <freq>4</freq>
+                <email></email>
+                <from>noreply@example.com</from>
+                <about_log>1</about_log>
+                <about_error>1</about_error>
+                <about_attempt>1</about_attempt>
+            </notification>
+        </amnotfound>
+    </default> 
+</config>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Cofamedia_Stickers>
+			<active>true</active>
+			<codePool>community</codePool>
+		</Cofamedia_Stickers>
+	</modules>
+</config>

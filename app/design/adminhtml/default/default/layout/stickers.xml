@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <stickers_adminhtml_stickers_index>
+        <reference name="content">
+            <block type="stickers/adminhtml_stickers" name="stickers" />
+        </reference>
+    </stickers_adminhtml_stickers_index>
+
+    <stickers_adminhtml_stickers_stickers>
+        <reference name="content">
+            <block type="stickers/adminhtml_stickers" name="stickers" />
+        </reference>
+    </stickers_adminhtml_stickers_stickers>
+
+    <stickers_adminhtml_stickers_edit>
+        <update handle="editor"/>
+        <reference name="content">
+            <block type="stickers/adminhtml_stickers_edit" name="stickers_edit"></block>
+        </reference>
+        <reference name="left">
+            <block type="stickers/adminhtml_stickers_edit_tabs" name="stickers_edit_tabs">
+                <block type="stickers/adminhtml_stickers_edit_tab_main" name="stickers_edit_tab_main" />
+                <block type="stickers/adminhtml_stickers_edit_tab_display" name="stickers_edit_tab_display" />
+                <action method="addTab"><name>main_section</name><block>stickers_edit_tab_main</block></action>
+            </block>
+        </reference>
+    </stickers_adminhtml_stickers_edit>
+    
+    <stickers_cms_wysiwyg_images_index>
+        <remove name="footer" />
+        <remove name="head" />
+        <reference name="left">
+            <block name="wysiwyg_images.js" type="adminhtml/cms_wysiwyg_images_content" template="cms/browser/js.phtml" />
+            <block name="wysiwyg_images.tree" type="adminhtml/cms_wysiwyg_images_tree" template="cms/browser/tree.phtml" />
+        </reference>
+        <reference name="content">
+            <block name="wysiwyg_images.content"  type="adminhtml/cms_wysiwyg_images_content" template="cms/browser/content.phtml">
+                <block name="wysiwyg_images.uploader" type="adminhtml/cms_wysiwyg_images_content_uploader" template="cms/browser/content/uploader.phtml" />
+                <block name="wysiwyg_images.newfolder" type="adminhtml/cms_wysiwyg_images_content_newfolder" template="cms/browser/content/newfolder.phtml" />
+            </block>
+        </reference>
+    </stickers_cms_wysiwyg_images_index>
+</layout>

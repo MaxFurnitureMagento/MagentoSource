@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <splash_adminhtml_splash_index>
+        <reference name="content">
+            <block type="splash/adminhtml_splash" name="splash" />
+        </reference>
+    </splash_adminhtml_splash_index>
+
+    <splash_adminhtml_splash_splash>
+        <reference name="content">
+            <block type="splash/adminhtml_splash" name="splash" />
+        </reference>
+    </splash_adminhtml_splash_splash>
+
+    <splash_adminhtml_splash_edit>
+        <update handle="editor"/>
+        <reference name="content">
+            <block type="splash/adminhtml_splash_edit" name="splash_edit"></block>
+        </reference>
+        <reference name="left">
+            <block type="splash/adminhtml_splash_edit_tabs" name="splash_edit_tabs">
+                <block type="splash/adminhtml_splash_edit_tab_main" name="splash_edit_tab_main" />
+                <block type="splash/adminhtml_splash_edit_tab_display" name="splash_edit_tab_display" />
+                <action method="addTab"><name>main_section</name><block>splash_edit_tab_main</block></action>
+                <action method="addTab"><name>display_section</name><block>splash_edit_tab_display</block></action>
+            </block>
+        </reference>
+    </splash_adminhtml_splash_edit>
+    
+    <splash_cms_wysiwyg_images_index>
+        <remove name="footer" />
+        <remove name="head" />
+        <reference name="left">
+            <block name="wysiwyg_images.js" type="adminhtml/cms_wysiwyg_images_content" template="cms/browser/js.phtml" />
+            <block name="wysiwyg_images.tree" type="adminhtml/cms_wysiwyg_images_tree" template="cms/browser/tree.phtml" />
+        </reference>
+        <reference name="content">
+            <block name="wysiwyg_images.content"  type="adminhtml/cms_wysiwyg_images_content" template="cms/browser/content.phtml">
+                <block name="wysiwyg_images.uploader" type="adminhtml/cms_wysiwyg_images_content_uploader" template="cms/browser/content/uploader.phtml" />
+                <block name="wysiwyg_images.newfolder" type="adminhtml/cms_wysiwyg_images_content_newfolder" template="cms/browser/content/newfolder.phtml" />
+            </block>
+        </reference>
+    </splash_cms_wysiwyg_images_index>
+</layout>

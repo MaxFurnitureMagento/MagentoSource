@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <solrsearch_index_index>
+        <remove name="left.newsletter"/>
+        <remove name="left.permanent.callout"/>
+        <reference name="content">
+            <block type="solrsearch/result" name="searchresult" >
+            	<block type="solrsearch/result_title" name="solrsearch_result_title" as="solrsearch_result_title" />
+            </block>
+        </reference>
+        <reference name="left">
+            <block type="solrsearch/faces" name="searchfaces" as="searchFaces" before="-" >
+            	<block type="solrsearch/faces_price" name="solr_price_facets" as="solr_price_facets" />
+            </block>
+        </reference>
+    </solrsearch_index_index>
+    <default>
+    	<reference name="header">
+            <block type="core/template" name="top.search" as="topSearch" template="solrsearch/searchbox.phtml"/>
+        </reference>
+        <reference name="head">
+			<action method="addJs"><script>solrsearch/jsonp.js</script></action>
+			<action method="addJs"><script>solrsearch/core/Core.js</script></action>
+			<action method="addJs"><script>solrsearch/core/AbstractManager.js</script></action>
+			<action method="addJs"><script>solrsearch/core/AbstractWidget.js</script></action>
+			<action method="addJs"><script>solrsearch/core/Parameter.js</script></action>
+			<action method="addJs"><script>solrsearch/core/ParameterStore.js</script></action>
+			<action method="addJs"><script>solrsearch/managers/Manager.prototype.js</script></action>
+			<action method="addJs"><script>solrsearch/autocomplete.js</script></action>
+			<action method="addJs"><script>solrsearch/autocompleteWidget.js</script></action>
+			<action method="addItem"><type>js_css</type><name>solrsearch/autocomplete.css</name></action>
+			<action method="addItem"><type>skin_css</type><name>solrsearch/css/style.css</name><params/></action>
+			<action method="addItem"><type>skin_css</type><name>solrsearch/css/alphacube.css</name><params/></action>
+        </reference>
+    </default>
+</layout> 

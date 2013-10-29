@@ -1,0 +1,15 @@
+======================
+10/16/2013 Build 1.0.0
+======================
+
+Knows Issues:
+1. In the scenario where a category is set to not act as an anchor, but has a layout that contains a left
+	sidebar, the sidebar will contain a list of categories that do not derive from Salesperson's servers,
+	even if the navigation to search feature is enabled.
+	
+	To make sure navigation to search displays the category page correctly, 
+	take note of the following category configurations:
+	I. Under 'General Information', 'Is Active' is set to 'Yes'.
+	II. Under 'Display Settings', 'Display Mode' is either 'Products only' or 'Static blocks and products'.
+	III. Under 'Display Settings', 'Is Anchor' is set to 'Yes'. 
+	IV. Under 'Custom Settings', 'Page Layout' is set to '2 columns with left bar'.

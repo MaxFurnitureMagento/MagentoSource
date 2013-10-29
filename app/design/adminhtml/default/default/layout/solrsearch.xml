@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default></default>
+	<solrsearch_adminhtml_solrsearch_index>
+        <reference name="content">
+            <block type="solrsearch/adminhtml_solrsearch" name="adminhtml_solrsearch" />
+        </reference>
+    </solrsearch_adminhtml_solrsearch_index>
+</layout>

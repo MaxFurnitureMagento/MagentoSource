@@ -1,0 +1,18 @@
+<?php
+$base_url = Mage::getBaseUrl();
+$base_url = preg_replace('/lightspeed\.php\/$/', '', $base_url);
+$base_url = preg_replace('/index\.php\/$/', '', $base_url);
+$sample_file = $base_url.'custom/add_products/xls/sample.xlsx';
+?>
+<br/>
+<h2>Instructions</h2>
+<p>Import process has three steps.<p>
+<ol style="list-style-type:decimal;padding-left:20px">
+  <li>Upload XLS file with new products</li>
+  <li>Uplad product images</li>
+  <li>Start the import process</li>
+</ol>
+<br/>
+<p><b>Uploading XLS file</b> - You can use form above to uplad XLS file. Click on browse button and load the file from your computer. Than click on 'upload' button. You can use both XLS and XSLX files. Sample file can be downloaded from <a href="<?php echo $sample_file ?>">here</a>.</p>
+<p><b>Uploading Images</b> - Images should be upladed to <b><?php echo Mage::getBaseDir().'/custom/add_products/images/' ?></b> on server.<i> - FTP account should be created to point difectly to that folder. Then this instructions should be updated.</i></p>
+<p><b>Starting the import</b> - When new XLS file is upladed, '<b>Start Import</b>' button at the top right part of the page will be enabled. Clik on it will start the import. Import can take a logn time depending on number of products and images.</p>

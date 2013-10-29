@@ -1,0 +1,19 @@
+<?php
+$sticker = $this->getSticker();
+$label = $this->getLabel();
+if(!$sticker && !$label) return;
+$class = $this->helper('stickers')->getPositionClass();
+if($sticker)
+	{
+		$style = "background-image:url('$sticker');";
+		$size = getimagesize($sticker);
+		$width = $size[0];
+		$height = $size[1];
+		$style.= "width:{$width}px;";
+		$style.= "height:{$height}px;";
+		
+		$style = " style=\"$style\"";
+		$class.= " image";
+	}
+?>
+<div class="cm-product-sticker product-sticker sticker<?php echo $class ?>"<?php if($sticker) echo $style ?>><span><?php echo $label ?></span></div>

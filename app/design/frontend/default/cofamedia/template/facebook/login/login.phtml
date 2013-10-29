@@ -1,0 +1,7 @@
+<?php
+if(!$this->helper('facebooklogin')->isEnabled()) return;
+if(Mage::getSingleton('customer/session')->isLoggedIn()) return;
+?>
+<li class="facebooklogin">
+	<a class="fb-login" href="<?php echo $this->getLoginUrl() ?>"><span><?php echo $this->helper('facebooklogin')->__('Login with Facebook') ?></span></a>
+</li>

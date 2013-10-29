@@ -1,0 +1,21 @@
+<div class="first-box">
+	<h4>Recommended Categories</h4>
+	<ul>
+            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('footer_links_one')->toHtml() ?>
+	</ul>	
+</div>
+<div class="sec-box">
+	<h4>Need Assistance?</h4>
+	<ul>
+            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('footer_links_two')->toHtml() ?>
+            <li><a href="<?php echo Mage::getModel('core/variable')->loadByCode('linkedin')->getValue('plain'); ?>" target="_blank">Max Furniture LinkedIn</a></li>
+	</ul>	
+</div>
+<div  class="third-box">
+	<h4>My Account</h4>
+	<ul>
+            <li><a href="/checkout/cart/">View Cart</a></li>
+            <li><a href="<?php echo Mage::helper('checkout/url')->getCheckoutUrl() ?>" >Checkout</a></li>
+            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('footer_links_three')->toHtml() ?>
+	</ul>	
+</div>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <adminhtml_sales_order_view>
+        <reference name="order_info">
+						<block type="adminlog/list" name="adminlog" template="adminlog/list.phtml"></block>
+        </reference>
+    </adminhtml_sales_order_view>
+    <adminhtml_sales_order_create_index>
+        <reference name="totals">
+						<block type="adminlog/chooser" name="adminlog_chooser" template="adminlog/chooser.phtml"/>
+        </reference>
+    </adminhtml_sales_order_create_index>
+		<adminhtml_sales_order_create_load_block_data>
+        <reference name="totals">
+						<block type="adminlog/chooser" name="adminlog_chooser" template="adminlog/chooser.phtml"/>
+        </reference>
+		</adminhtml_sales_order_create_load_block_data>
+		<adminhtml_sales_order_create_load_block_totals>
+        <reference name="totals">
+						<block type="adminlog/chooser" name="adminlog_chooser" template="adminlog/chooser.phtml"/>
+        </reference>
+		</adminhtml_sales_order_create_load_block_totals>
+</layout>

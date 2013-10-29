@@ -1,0 +1,44 @@
+<?php
+if(!$list = $this->getList()) return;
+$config = Mage::getSingleton('sales/order_config');
+$i = 0;
+?>
+<tr>
+	<td class="label">Last Modified By<?php if(count($list) > 1): ?><br/><a id="adminlog-show-more" href="#adminlif">[show more]</a><?php endif; ?></td>
+	<td class="value"><?php echo $this->getLastUser() ?><script type="text/javascript">
+Event.observe(window, 'load', cm_adminlog_init);
+function cm_adminlog_init()
+{
+	$('adminlog-show-more').observe('click', cm_adminlog_toggle);
+}
+function cm_adminlog_toggle(event)
+{
+	var a = Event.element(event);
+	var link = a.innerHTML;
+	
+	if(link == '[show more]')
+		{
+			a.update('[show less]');
+			$$('.adminlog-tr-more').each(function(elmt) { elmt.show() });
+		}
+	else
+		{
+			a.update('[show more]');
+			$$('.adminlog-tr-more').each(function(elmt) { elmt.hide() });
+		}
+}
+</script></td>
+</tr>
+<?php if(count($list) > 1): ?>
+	<?php foreach($list as $data): ?>
+		<tr class="adminlog-tr-more" style="display:none">
+			<td class="label">
+				<?php echo "<b>".$data['order_state'].'</b> - '.$config->getStatusLabel($data['order_status']) ?>
+			</td>
+			<td class="value">
+				<b><?php echo $data['user_firstname'].' '.$data['user_lastname'] ?></b>
+				<br/><?php echo $data['user_email'] ?>
+			</td>
+		</tr>
+	<?php endforeach; ?>
+<?php endif; ?>

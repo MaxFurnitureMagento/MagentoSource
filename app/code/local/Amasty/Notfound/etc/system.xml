@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <amnotfound translate="label" module="amnotfound">
+            <label>Errors Detector</label>
+            <tab>amasty</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>777</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <log translate="label">
+                    <label>Not Found Pages</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <skip_ip translate="label">
+                            <label>Skip if IP is one of</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Comma-separated list, e.g.: 123.23.7.8, 220.1.1.27, ...]]></comment>
+                        </skip_ip>                   
+                        <skip_referrer translate="label">
+                            <label>Skip if Referrer Contains</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Comma-separated list, e.g.: site.com, example.com/example/, ...]]></comment>
+                        </skip_referrer>                    
+                        <skip_pattern translate="label">
+                            <label>Skip if URL Contains</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Comma-separated list, e.g.: /images/, /some-old-link.html, .swf, ...]]></comment>
+                        </skip_pattern> 
+                    </fields>
+                </log>
+                <error translate="label">
+                    <label>System Errors</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <skip_pattern translate="label">
+                            <label>Skip if Message Contains</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Comma-separated list, e.g.: headers, memory limit]]></comment>
+                        </skip_pattern> 
+                    </fields>
+                </error>                                
+                <attempts translate="label">
+                    <label>Login Attempts</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <max translate="label">
+                            <label>Maximum of Allowed Login Attempts within Timeframe</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[A report will be generated and IP will be added to the blacklist (optionally) if the limit is exceeded]]></comment>                                                        
+                        </max> 
+                        <limit_frame translate="label">
+                            <label>Timeframe (seconds)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </limit_frame> 
+                        <limit_ip translate="label">
+                            <label>Count Attempts per IP</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </limit_ip>   
+                        <add_to_blacklist translate="label">
+                            <label>Add to Black List</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </add_to_blacklist>                         
+                        <black translate="label">
+                            <label>IP Blacklist</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Comma-separated list, e.g.: 123.23.7.8, 220.1.1.27, ...]]></comment>                            
+                        </black> 
+                        <white translate="label">
+                            <label>IP Whitetist</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Comma-separated list, e.g.: 127.0.0.0, 220.66.52.27, ...]]></comment>                            
+                        </white>
+                    </fields>
+                </attempts>                 
+                <notification translate="label">
+                    <label>Notifications</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>4</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <freq translate="label">
+                            <label>Send Errors Summary Each (hours)</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </freq> 
+                        <email translate="label">
+                            <label>E-mail to Send</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </email> 
+                        <about_log translate="label">
+                            <label>Notify about Not Found Pages</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </about_log> 
+                        <about_error translate="label">
+                            <label>Notify about System Errors</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </about_error>
+                        <about_attempt translate="label">
+                            <label>Notify about Violations of Failed Login Attempts Limit</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </about_attempt>                                                                         
+                    </fields>
+                </notification>                 
+            </groups>
+        </amnotfound>
+    </sections>
+</config>

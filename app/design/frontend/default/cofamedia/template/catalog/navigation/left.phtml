@@ -1,0 +1,52 @@
+<?php
+/**
+ * Category left navigation
+ *
+ * @see Mage_Catalog_Block_Navigation
+ */
+?>
+<?php if (!Mage::registry('current_category')) return ?>
+<?php $_categories = $this->getCurrentChildCategories();
+      $_look_at_parent = false;
+      $_count = is_array($_categories)?count($_categories):$_categories->count();
+      if(!$_count){
+        $_look_at_parent = true;
+        $_categories = $this->getCurrentCategory()->getParentCategory()->getChildrenCategories();
+      }
+?>
+<div class="block block-layered-nav block-lay-cats">
+<!--    <div class="block-title">
+        <strong><span><?php echo $this->__('Browse By') ?></span></strong>
+    </div>-->
+    <div class="block-content">
+        <dl id="narrow-by-list2">
+            <dt><?php echo $this->__('Categories') ?></dt>
+            <dd>
+                <ol>
+                <?php $i=0 ?>
+                <?php foreach ($_categories as $_category): ?>
+                    <?php if($_category->getIsActive()): ?>
+                      <?php if($i>=3) : $i=0; ?>
+                        <li class="separator"></li>
+                      <?php endif ?>
+                      <li>
+                          <a href="<?php echo $this->getCategoryUrl($_category) ?>"<?php if ($this->isCategoryActive($_category)): ?> class="current"<?php endif; ?>><?php echo $this->htmlEscape($_category->getName()) ?></a><?php /* (<?php echo $_category->getProductCount() ?>)*/?>
+                      </li>
+                      <?php $i++ ?>
+                    <?php endif; ?>
+                <?php endforeach ?>
+                
+                  <?php $_category = $_look_at_parent?$this->getCurrentCategory()->getParentCategory():$this->getCurrentCategory() ?>
+                  <?php if($i>=3) : $i=0; ?>
+                    <li class="separator"></li>
+                  <?php endif ?>
+                  <li>
+                      <a href="<?php echo $this->getCategoryUrl($_category) ?>?viewall=1"><?php echo $this->__('View All') ?></a>
+                  </li>
+
+                </ol>
+            </dd>
+        </dl>
+        <script type="text/javascript">decorateDataList('narrow-by-list2')</script>
+    </div>
+</div>

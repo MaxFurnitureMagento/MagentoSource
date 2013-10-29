@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<layout version="1.0">
+    <default>		 
+		<reference name="head">
+			<action method="addItem">
+				<type>skin_css</type> 
+			  	<name>css/ambanners/ambanners.css</name> 
+			</action>			
+		</reference>		
+    </default>
+   	<default>
+        <reference name="right">
+            <block after="-" type="ambanners/container" name="ambanners.right" template="ambanners/container.phtml">
+				<action method="setPosition"><position>1</position></action>
+            </block>
+        </reference>
+	    <reference name="left">
+            <block type="ambanners/container" name="ambanners.left" template="ambanners/container.phtml">
+				<action method="setPosition"><position>2</position></action>
+            </block>
+        </reference>
+    </default>
+
+	<checkout_cart_index>
+        <reference name="checkout.cart">
+           <block type="ambanners/container" name="ambanners.cart" template="ambanners/container.phtml">
+				<action method="setPosition"><position>1</position></action>
+		   </block>
+        </reference>
+	</checkout_cart_index>
+	
+	<catalog_product_view>
+	    <reference name="breadcrumbs.container">
+           <block before="breadcrumbs" type="ambanners/container" name="ambanners.products" template="ambanners/container.phtml">
+				<action method="setPosition"><position>3</position></action>
+		   </block>
+        </reference>
+	</catalog_product_view>
+	
+	<catalog_category_default>
+	   <reference name="content">
+           <block before="col-wrapper" type="ambanners/container" name="ambanners.category" template="ambanners/container.phtml">
+				<action method="setPosition"><position>4</position></action>
+		   </block>
+        </reference>
+	</catalog_category_default>
+	<catalog_category_layered>
+	   <reference name="content">
+           <block before="col-wrapper" type="ambanners/container" name="ambanners.category" template="ambanners/container.phtml">
+				<action method="setPosition"><position>4</position></action>
+		   </block>
+        </reference>
+	</catalog_category_layered>
+</layout>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <cms_index_index>
+        <reference name="content">
+            <block type="onsale/onsale" name="onsale" after="home_categories" template="onsale/onsale.phtml"/>
+        </reference>
+        <reference name="head">
+          <action method="addItem"><type>skin_css</type><name>css/onsale/style.css</name><params/></action>
+					<action method="addItem"><type>skin_js</type><name>js/jquery-1.4.4.min.js</name><params/></action>
+          <action method="addItem"><type>skin_js</type><name>js/onsale.js</name><params/></action>
+        </reference>
+    </cms_index_index>
+</layout>

@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   Mage
+ * @package    Mage_Core
+ * @copyright  Copyright (c) 2008 Irubin Consulting Inc. DBA Varien (http://www.varien.com)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+-->
+<config>
+    <global>
+        <install>
+            <date><![CDATA[Tue, 07 Jun 2011 08:33:37 +0000]]></date>
+        </install>
+        <crypt>
+            <key><![CDATA[a71203a5ff2147afc1ff468dddc34f0b]]></key>
+        </crypt>
+        <disable_local_modules>false</disable_local_modules>
+        <resources>
+            <db>
+                <table_prefix><![CDATA[]]></table_prefix>
+            </db>
+            <default_setup>
+                <connection>
+                    <host><![CDATA[72.32.28.80]]></host>
+                    <username><![CDATA[production]]></username>
+                    <password><![CDATA[Lz2HmB3R2R3R1ir2Uj6422w313g7EI]]></password>
+                    <dbname><![CDATA[production]]></dbname>
+                    <active>1</active>
+                </connection>
+            </default_setup>
+        </resources>
+        <session_save><![CDATA[db]]></session_save>
+		<!-- session_save_path><![CDATA[tcp://64.49.225.234:11211?persistent=1&weight=2&timeout=10&retry_interval=10]]></session_save_path -->
+        <cache>
+            <backend></backend>
+            <slow_backend></slow_backend>
+            <slow_backend_store_data></slow_backend_store_data>
+            <auto_refresh_fast_cache></auto_refresh_fast_cache>
+            <memcached>
+                <servers>
+                    <lb03>
+                        <host><![CDATA[64.49.225.234]]></host>
+                        <port><![CDATA[11211]]></port>
+                        <persistent><![CDATA[1]]></persistent>
+                        <weight><![CDATA[2]]></weight>
+                        <timeout><![CDATA[10]]></timeout>
+                        <retry_interval><![CDATA[10]]></retry_interval>
+                        <status><![CDATA[1]]></status>
+                    </lb03>
+                </servers>
+                <compression><![CDATA[0]]></compression>
+                <cache_dir><![CDATA[]]></cache_dir>
+                <hashed_directory_level><![CDATA[]]></hashed_directory_level>
+                <hashed_directory_umask><![CDATA[]]></hashed_directory_umask>
+                <file_name_prefix><![CDATA[]]></file_name_prefix>
+            </memcached>
+		</cache>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <frontName><![CDATA[admin]]></frontName>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <lightspeed>
+		<global>
+			<connection>
+				<host><![CDATA[72.32.28.80]]></host>
+				<username><![CDATA[production]]></username>
+				<password><![CDATA[Lz2HmB3R2R3R1ir2Uj6422w313g7EI]]></password>
+				<dbname><![CDATA[production]]></dbname>
+			</connection>
+			<multi_currency>0</multi_currency>
+			<request_path><![CDATA[]]></request_path>
+			<params></params>
+		</global>
+		<session>
+			<type>db</type>
+			<path></path>
+			<connection>
+				<host><![CDATA[72.32.28.80]]></host>
+				<username><![CDATA[production]]></username>
+				<password><![CDATA[Lz2HmB3R2R3R1ir2Uj6422w313g7EI]]></password>
+				<dbname><![CDATA[production]]></dbname>
+			</connection>
+		</session>
+		<cache>
+			<type>memcached</type>
+			<path></path>
+			<servers>
+				<lb03>
+					<host><![CDATA[64.49.225.234]]></host>
+					<port><![CDATA[11211]]></port>
+					<persistent><![CDATA[1]]></persistent>
+				</lb03>
+			</servers>
+		</cache>
+	</lightspeed>
+<lightspeed><global><connection><host><![CDATA[72.32.28.80]]></host><username><![CDATA[production]]></username><password><![CDATA[Lz2HmB3R2R3R1ir2Uj6422w313g7EI]]></password><dbname><![CDATA[production]]></dbname></connection><multi_currency>0</multi_currency><request_path><![CDATA[]]></request_path></global><session><type/><path/><servers><localhost><host><![CDATA[127.0.0.1]]></host><port><![CDATA[11211]]></port><persistent><![CDATA[1]]></persistent></localhost></servers><connection><host>72.32.28.80</host><username>production</username><password>Lz2HmB3R2R3R1ir2Uj6422w313g7EI</password><dbname>production</dbname></connection></session><cache><type/><path/><servers><localhost><host><![CDATA[127.0.0.1]]></host><port><![CDATA[11211]]></port><persistent><![CDATA[1]]></persistent></localhost></servers></cache></lightspeed></config>

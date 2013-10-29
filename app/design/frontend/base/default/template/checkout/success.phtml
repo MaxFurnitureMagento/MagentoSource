@@ -1,0 +1,259 @@
+  <?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('Your order has been received.') ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<h2 class="sub-title"><?php echo $this->__('Thank you for your purchase!') ?></h2>
+
+<?php if ($this->getOrderId()):?>
+<?php if ($this->getCanViewOrder()) :?>
+    <p><?php echo $this->__('Your order # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getViewOrderUrl()), $this->escapeHtml($this->getOrderId()))) ?></p>
+<?php  else :?>
+    <p><?php echo $this->__('Your order # is: %s.', $this->escapeHtml($this->getOrderId())) ?></p>
+<?php endif;?>
+    <p><?php echo $this->__('You will receive an order confirmation email with details of your order and a link to track its progress.') ?></p>
+<?php if ($this->getCanViewOrder() && $this->getCanPrintOrder()) :?>
+    <p>
+        <?php echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getPrintUrl()) ?>
+        <?php echo $this->getChildHtml() ?>
+    </p>
+<?php endif;?>
+<?php endif;?>
+
+<?php if ($this->getAgreementRefId()): ?>
+    <p><?php echo $this->__('Your billing agreement # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getAgreementUrl()), $this->escapeHtml($this->getAgreementRefId())))?></p>
+<?php endif;?>
+
+<?php if ($profiles = $this->getRecurringProfiles()):?>
+<p><?php echo $this->__('Your recurring payment profiles:'); ?></p>
+<ul class="disc">
+<?php foreach($profiles as $profile):?>
+<?php $profileIdHtml = ($this->getCanViewProfiles() ? sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getProfileUrl($profile)), $this->escapeHtml($this->getObjectData($profile, 'reference_id'))) : $this->escapeHtml($this->getObjectData($profile, 'reference_id')));?>
+    <li><?php echo $this->__('Payment profile # %s: "%s".', $profileIdHtml, $this->escapeHtml($this->getObjectData($profile, 'schedule_description')))?></li>
+<?php endforeach;?>
+</ul>
+<?php endif;?>
+
+<div class="buttons-set">
+    <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+</div>
+<!-- TRACKING CODES -->
+<?php
+    //get last order information
+    $order = Mage::getModel('sales/order')->loadByIncrementId(Mage::getSingleton('checkout/session')->getLastRealOrderId());
+ 
+    $subtotal = $order->getSubtotal();
+    $subtotal_format = number_format($subtotal, 2, '.', '');
+    $orderId = $order->getRealOrderId();
+    
+    $shipping_amount = $order->getShippingAmount();
+    $shipping_amount_format = number_format($shipping_amount, 2, '.', '');
+    
+    $tax_amount = $order->getTaxAmount();
+    $tax_amount_format = number_format($tax_amount, 2, '.', '');
+    
+    $discount_amount = $order->getDiscountAmount();
+    $discount_amount_format = number_format($discount_amount, 2, '.', '');
+    
+    $order_zip = $order->getShippingAddress()->getPostcode();
+    
+    $grand_total = $order->getBaseGrandTotal();
+    $grand_total_format = number_format($grand_total, 2, '.', '');
+    
+    $transactionId = $order->getIncrementId();
+   
+    $orderValue = number_format ($order->getGrandTotal(), 2, '.' , $thousands_sep = '');
+    
+    $orderQty = number_format($order->getTotalQtyOrdered(), 0, '', '');
+    // get order item collection
+    $orderItems = $order->getItemsCollection();
+    
+    //check customer new or old
+    $customerDateTime = Mage::getSingleton('customer/session')->getCustomer()->getCreatedAt();
+    $customerDate = mb_substr($customerDateTime, 0, -9); 
+    $todayDate = date("Y-m-d");
+    
+    if($customerDate == $todayDate){
+        $customerStatus = 1;
+    }else{
+        $customerStatus = 0;
+    }
+    
+    //FOR NEXTAG TRACKER
+    $qty=array(); 
+    $name=array();
+    $cat=array();
+    $get_string_qty = "";
+    $get_string_name = "";
+    $get_string_cat = "";
+    
+    foreach ($orderItems as $item){
+
+        $product_id = $item->getProductId();
+
+        $sidecar_product_id = $item->getSku();
+
+        $product_name = $item->getName();
+        
+        $productPrice = $item->getPrice();
+        $productPriceFormat = number_format($productPrice, 2, '.', '');
+        
+        $appliedRules = $item->getAppliedRuleIds();
+        $coupunRuleName = $item->getCouponRuleName();
+        
+        $productDiscountAmount = $item->getDiscountAmount();
+        $productAmountFormat = number_format($productDiscountAmount, 2, '.', '');
+        
+//        $productDiscountName = $item->getDiscountAmount();
+//        $productNameFormat = number_format($productDiscountAmount, 2, '.', '');
+        
+        $product_qty = $item->getQtyOrdered();
+        $product_qty_format = number_format($product_qty, 0, '.', '');
+        
+        $itemsArray[] = "{"."product_id: '".$sidecar_product_id."',"."unit_price: ".$productPriceFormat.","."quantity: ".$product_qty_format."}";
+		if(empty($appliedRules)){
+			$discountsArray[] = "{"."name: 'No Discount'".$appliedRules.","."amount: ".$productAmountFormat."}";
+		}else{
+			$discountsArray[] = "{"."name: '".$coupunRuleName."',"."amount: ".$productAmountFormat."}";
+		}
+        
+        //get category
+            $product = Mage::getModel('catalog/product')->load($product_id);
+            $categoryIds = $product->getCategoryIds();
+            $categoryName = '';
+            if (isset($categoryIds[0])){
+                $category = Mage::getModel('catalog/category')->setStoreId(Mage::app()->getStore()->getId())->load($categoryIds[0]);
+                $categoryName = $category->getName();
+            }
+            
+        if(!$item->getParentItemId()){
+            $name[]= $product_name;
+            $qty[]= $product_qty_format;
+            $cat[]= $categoryName;
+        }else{
+            continue;
+        }
+         
+    }
+    $get_string_name = implode("|", $name);
+    $get_string_qty = implode("|", $qty);
+    $get_string_cat = implode("|", $cat);
+
+
+ ?>
+
+<!-- Shopzilla ROI Tracker -->
+<script language="javascript">
+<!--
+	/* Performance Tracking Data */
+	var mid            = '184663';
+	var cust_type      = '<?php echo $customerStatus; ?>';
+	var order_value    = '<?php echo $subtotal_format; ?>';
+	var order_id       = '<?php echo $transactionId; ?>';
+	var units_ordered  = '<?php echo $orderQty; ?>';
+//-->
+</script>
+<script language="javascript" src="https://www.shopzilla.com/css/roi_tracker.js"></script>
+<!-- END Shopzilla ROI Tracker -->
+
+<!-- Tracker Code Below -->
+<img style="display: none;" src="https://www.pricegrabber.com/conversion.php?retid=17725<?php $i = 0; foreach ($orderItems as $item){
+        $product_id = $item->getProductId();
+        $product_sku = $item->getSku();
+        
+        $product_price = $item->getlPrice();
+        $product_price_format = number_format($product_price, 2, '.', '');
+        
+        $product_qty = $item->getQtyOrdered();
+        $product_qty_format = number_format($product_qty, 0, '.', '');
+        if(!$item->getParentItemId()){
+            $i++;
+            $get_item = array("&item".$i, $product_sku, $product_price_format, $product_qty_format);
+            echo $get_item_format = implode("|", $get_item);
+        }else{
+            continue;
+        }
+    } ?>">
+<!-- END Tracker Code Below -->
+
+<!-- Nextag ROI Tracker -->
+<script type="text/javascript">
+<!--
+    /* NexTag ROI Optimizer Data */
+    var id = '3932769';
+    var rev = '<?php echo $subtotal_format; ?>';
+    var order = '<?php echo $transactionId; ?>';
+    var cats = '<?php echo $get_string_cat; ?>';
+    var prods = '<?php echo $get_string_name; ?>';
+    var units = '<?php echo $get_string_qty; ?>';
+//-->
+</script>
+<script type="text/javascript" src="https://imgsrv.nextag.com/imagefiles/includes/roitrack.js"></script> 
+<!-- END Nextag ROI Tracker -->
+
+<!-- Google Tracking -->
+<!-- Google Code for Complete checkout Conversion Page -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1070292358;
+var google_conversion_language = "en";
+var google_conversion_format = "1";
+var google_conversion_color = "666666";
+var google_conversion_label = "u9OTCMSMPhCGu63-Aw";
+var google_conversion_value = <?php echo $subtotal_format; ?>;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1070292358/?value=<?php echo $subtotal_format; ?>&amp;label=u9OTCMSMPhCGu63-Aw&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<!-- Google Tracking -->
+<script type="text/javascript">
+    var sidecar = sidecar || {};
+    sidecar.transactions = {
+        add: true,
+        data: {
+            order_id: '<?php echo $orderId;?>',
+            subtotal: '<?php echo $subtotal_format;?>',
+            tax: '<?php echo $tax_amount_format;?>',
+            shipping: '<?php echo $shipping_amount_format;?>',
+            discounts: '<?php echo $discount_amount_format;?>',
+            total: '<?php echo $grand_total_format;?>',
+            zipcode: '<?php echo $order_zip;?>'
+        },
+        items: [
+             <?php echo implode(",", $itemsArray);?>
+        ],
+        discounts: [
+          <?php echo implode(",", $discountsArray);?>
+        ]
+    };
+</script>  

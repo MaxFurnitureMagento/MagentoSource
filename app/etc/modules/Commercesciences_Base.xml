@@ -1,0 +1,8 @@
+<config>
+    <modules>
+        <Commercesciences_Base>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Commercesciences_Base>
+    </modules>
+</config>

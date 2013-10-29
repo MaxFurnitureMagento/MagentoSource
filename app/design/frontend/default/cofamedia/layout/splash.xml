@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <cms_index_index>
+        <reference name="content">
+            <block type="splash/splash" name="splash" before="default_home_page" template="splash/splash.phtml"/>
+        </reference>
+        <reference name="head">
+          <action method="addItem"><type>skin_css</type><name>css/splash/style.css</name><params/></action>
+					<action method="addItem"><type>skin_js</type><name>js/jquery-1.4.4.min.js</name><params/></action>
+          <action method="addItem"><type>skin_js</type><name>js/splash.js</name><params/></action>
+        </reference>
+    </cms_index_index>
+</layout>

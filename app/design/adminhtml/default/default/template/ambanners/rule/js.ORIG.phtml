@@ -1,0 +1,147 @@
+<?php
+/**
+* @author Amasty Team
+* @copyright Amasty
+* @package Amasty_Banners
+*/
+?>
+<script type="text/javascript">
+
+var landingConditionTmpl = '';
+
+if ($('attributes')) { 
+	landingConditionTmpl = $('attributestmp').down('div').down('table').down('tbody').innerHTML; 
+	$('attributes').down('div').down('table').down('tbody').insert({after: '<tfoot><tr><td><button title=\"Save\" type=\"button\" class=\"scalable add\" onclick=\"landingNewField();return false;\"><span><span><span>Add New</span></span></span></button></td></tr></tfoot>'});
+
+	showHideContainer('attributestmp', false);
+	showHideContainer('attributes', false);
+}
+
+function landingNewField() 
+{ 
+	if ($('attributes')) { 
+		var tr = $('attributes').down('div').down('table').down('tbody').down('tr:last-child');
+		
+		/* Is New */ 
+		if (!tr) {
+			$('attributes').down('div').down('table').down('tbody').update(landingConditionTmpl);
+		} else {
+			tr.insert({'after': landingConditionTmpl});
+		}
+	} 
+}
+
+function landingRemove(element) 
+{ 
+	if ($(element)) { 
+		$(element).up().up().next('tr').remove(); $(element).up().up().remove();
+	} 
+}
+
+/*
+ * Listen for chaning banner type field 
+ */
+function changeBannerType()
+{
+	var value = $('banner_type').value;
+	var list = ['cms', 'html', 'image', 'products'];
+	
+	list.each(function(item) {
+		if (item == value) {
+			showHideContainer(item, true);
+		} else {
+			showHideContainer(item, false);
+		}
+	});
+}
+
+function changePosition()
+{
+	var value = $('banner_position').value;
+	var list = ['cats', 'show_on_products'];
+
+	list.each(function(item) {
+		showHideField(item, false);		
+	});
+
+	if (value != 0 && value != 4) {
+		showHideField('show_on_products', true);
+		showHideContainer('attributes', true);
+	} else {
+		showHideContainer('attributes', false);
+	}
+	
+	if (value != 0) {
+		showHideField('cats', true);
+	}
+}
+
+function showHideField(id, show)
+{
+    if ($(id)) {
+        var field = $(id);
+        var td = $(field).parentNode;
+        var tr = $(td.parentNode);
+
+        if (show) {
+            tr.show();
+        } else {
+        	tr.hide();
+        }
+    }
+}
+
+/*
+ * Show Or Hide Field with Its container
+ */
+function showHideContainer(id, show)
+{
+    if ($(id)) {
+        var container = $(id);
+        var header = container.previous(0);
+
+        if (show) {
+            container.show();
+            header.show();
+        } else {
+        	container.hide();
+        	header.hide();
+        }
+    }
+}
+
+/*
+ * Show Or Hide Field with Its container
+ */
+function showHideProductsContainer()
+{
+	var a = $('ruleTabs_products');
+	var b = $(a).parentNode;
+
+	var show = false;
+	if ($('show_products').value == 1) {
+		show = true;
+	}
+	
+	if (show) {
+		b.show();
+	} else {
+		b.hide();
+	}
+}
+
+if($('banner_type')){
+    Event.observe($('banner_type'), 'change', changeBannerType);
+    changeBannerType();
+}
+
+if($('banner_position')){
+    Event.observe($('banner_position'), 'change', changePosition);
+    changePosition();
+}
+
+if($('show_products')){
+    Event.observe($('show_products'), 'change', showHideProductsContainer);
+    showHideProductsContainer();
+}
+</script>

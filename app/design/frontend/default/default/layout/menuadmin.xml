@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Mxp 
+ * Menuadmin
+ * 
+ * @category    Mxp
+ * @package     Mxp_Menuadmin
+ * @copyright   Copyright (c) 2011 Mxp (http://www.magentoxp.com)
+ * @author      Magentoxp (Mxp)Magentoxp Team <support@magentoxp.com>
+ */
+ -->
+<layout version="0.1.0">
+<!--
+Default layout, loads most of the pages
+-->
+<!-- ifconfig="lightbox/general/enabled"-->
+
+    <default>
+    	<!--<remove name="catalog.topnav"/>-->
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/menuadmin.css</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/menuadmin.js</name></action>
+        </reference>
+        <reference name="top.menu">
+            <block type="menuadmin/top" name="menuadmin.top" template="menuadmin/top.phtml"/>
+        </reference>
+        <reference name="left">
+            <block type="menuadmin/left" name="menuadmin.left" template="menuadmin/left.phtml" before=""/>
+        </reference>
+        <reference name="right">
+            <block type="menuadmin/right" name="menuadmin.right" template="menuadmin/right.phtml" before=""/>
+        </reference>
+        <reference name="footer">
+            <block type="menuadmin/bottom" name="menuadmin.bottom" template="menuadmin/bottom.phtml" before=""/>
+        </reference>
+    </default>
+</layout>

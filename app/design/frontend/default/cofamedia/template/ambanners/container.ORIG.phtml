@@ -1,0 +1,53 @@
+<?php $banners = $this->getBanners(); ?>
+<?php if ($banners):?>
+        <div class="ambanners ambanner-<?php echo $this->getPosition()?>" style="overflow: visible;">
+	    <?php foreach ($banners as $b): ?>
+	    	<?php if (Amasty_Banners_Model_Rule::TYPE_HTML == $b->getBannerType()):?>
+	    		<?php echo $b->getHtmlText();?>
+	    	<?php endif; ?>
+	    	
+	    	<?php if (Amasty_Banners_Model_Rule::TYPE_CMS == $b->getBannerType()):?>
+	    		<?php echo $b->getBlockHtml();?>
+	    	<?php endif; ?>
+	    	
+	    	<?php if (Amasty_Banners_Model_Rule::TYPE_IMAGE == $b->getBannerType()):?>
+	    		<a href="<?php echo $b->getBannerLink()?>" > 
+	            	<img src="<?php echo $b->getBannerImg() ?>" alt="<?php echo $this->htmlEscape($this->__($b->getBannerTitle())) ?>" />
+	            </a>
+	    	<?php endif; ?>
+	    	
+	    	<?php if (Amasty_Banners_Model_Rule::SHOW_PRODUCTS_YES == $b->getShowProducts()):?>
+	    		<?php
+		    		$bannerProducts = Mage::registry('ambanners_banner_products');
+		    		$products = null;
+		    		if (isset($bannerProducts[$b->getRuleId()])) { 
+		    			$products = $bannerProducts[$b->getRuleId()];
+		    		}
+		    		if ($products):?>
+		    		<div class="block">
+			    		<div class="block-content">
+			    			<ul class="products">
+				    			<?php foreach ($products as $p):?>
+			                    <li class="item">
+									<div class="product">
+					                    <a href="<?php echo $p->getProductUrl() ?>" title="<?php echo $this->htmlEscape($p->getName()) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($p, 'thumbnail')->resize(130) ?>" width="130" alt="<?php echo $this->htmlEscape($p->getName()) ?>" /></a>
+					                    <div class="product-details">
+					                        <p class="product-name"><a href="<?php echo $p->getProductUrl() ?>"><?php echo $this->htmlEscape($p->getName()) ?></a></p>                        
+					                        <div class="price-box">
+					                            <?php echo $this->getPriceHtml($p, true); ?>
+					                        </div>
+					                        <?php if($p->isSaleable()): ?>
+					                            <a href="<?php echo $this->getAddToCartUrl($p); ?>" class="link-wishlist"><?php echo $this->__('Add to Cart'); ?></a>
+					                        <?php endif; ?>
+					                    </div>
+				                	</div>
+			           			 </li>
+			           			<?php endforeach; ?>   
+			           		</ul>
+		           		</div>
+	           		</div>
+	    		<?php endif;?>
+	    	<?php endif; ?>
+    <?php endforeach; ?>
+    </div>
+<?php endif; ?>

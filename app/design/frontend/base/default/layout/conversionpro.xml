@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<default>
+		<reference name="head">
+			<action method="addCss"><stylesheet>css/conversionpro/AutoComplete.css</stylesheet></action>
+		</reference>
+		<reference name="before_body_end">
+			<block type="core/template"  name="conversionpro.autocomplete" as="conversionpro_autocomplete" after="-">
+				<action method="setTemplate" ifconfig="conversionpro/autocomplete_settings/autocomplete_enabled">
+					<template>conversionpro/autocomplete/view.phtml</template>
+				</action>
+			</block>
+			<block type="core/template" name="livesight.footer" as="livesight_footer" after="-">
+				<action method="setTemplate" ifconfig="conversionpro/livesight_settings/livesight_enabled">
+					<template>conversionpro/livesight/tracking.footer.phtml</template>
+				</action>
+			</block>
+		</reference>		
+    </default>
+	<checkout_onepage_success>		
+		<reference name="before_body_end">		
+			<block type="core/template" name="livesight.thankyoupage" as="livesight_thankyoupage" after="-">
+				<action method="setTemplate" ifconfig="conversionpro/livesight_settings/livesight_enabled">
+					<template>conversionpro/livesight/tracking.thank.you.page.phtml</template>
+				</action>
+			</block>
+		</reference>
+	</checkout_onepage_success>
+	<catalog_product_view>
+		<reference name="before_body_end">
+			<block type="conversionpro/analytics_view" name="celebros.analytics.product.click" as="celebros_analytics_product_click" after="-">
+				<action method="setTemplate">
+					<template>conversionpro/analytics/tracking.product.click.phtml</template> 
+				</action>
+			</block>		
+		</reference>
+	</catalog_product_view>
+    <catalogsearch_result_index>
+        <reference name="head">
+			<action method="addJs"><script>conversionpro/layers.js</script></action>
+        	<action method="addCss"><stylesheet>css/conversionpro/styles.css</stylesheet></action>
+			<action method="addCss"><stylesheet>css/conversionpro/jquery-ui-1.8.16.custom.css</stylesheet></action>
+			<action method="addJs"><script>conversionpro/jquery-1.8.2.min.js</script></action>
+			<action method="addJs"><script>conversionpro/jquery-ui-1.9.1.custom.min.js</script></action>
+			<action method="addJs"><script>conversionpro/jquery-noconflict.js</script></action>
+			<!--<action method="addItem" ifconfig="sales/msrp/enabled"><type>skin_js</type><name>js/msrp.js</name></action>-->
+        </reference>
+    </catalogsearch_result_index>
+	<catalogsearch_advanced_result>
+		<reference name="head">
+			<action method="addJs"><script>conversionpro/layers.js</script></action>
+        	<action method="addCss"><stylesheet>css/conversionpro/styles.css</stylesheet></action>
+			<action method="addCss"><stylesheet>css/conversionpro/jquery-ui-1.8.16.custom.css</stylesheet></action>
+			<action method="addJs"><script>conversionpro/jquery-1.8.2.min.js</script></action>
+			<action method="addJs"><script>conversionpro/jquery-ui-1.9.1.custom.min.js</script></action>
+			<action method="addJs"><script>conversionpro/jquery-noconflict.js</script></action>
+			<!--<action method="addItem" ifconfig="sales/msrp/enabled"><type>skin_js</type><name>js/msrp.js</name></action>-->
+        </reference>
+	</catalogsearch_advanced_result>
+	<catalog_category_view>
+		<reference name="head">
+			<action method="addJs"><script>conversionpro/layers.js</script></action>
+        	<action method="addCss"><stylesheet>css/conversionpro/styles.css</stylesheet></action>
+			<action method="addCss"><stylesheet>css/conversionpro/jquery-ui-1.8.16.custom.css</stylesheet></action>
+			<action method="addJs"><script>conversionpro/jquery-1.8.2.min.js</script></action>
+			<action method="addJs"><script>conversionpro/jquery-ui-1.9.1.custom.min.js</script></action>
+			<action method="addJs"><script>conversionpro/jquery-noconflict.js</script></action>
+			<!--<action method="addItem" ifconfig="sales/msrp/enabled"><type>skin_js</type><name>js/msrp.js</name></action>-->
+        </reference>
+	</catalog_category_view>
+</layout>

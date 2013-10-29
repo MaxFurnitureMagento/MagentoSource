@@ -1,0 +1,25 @@
+
+******************************************************
+* Celebros Conversion Pro Plugin Folders/Files Location *
+******************************************************
+
+
+app/code/community/Celebros/Conversionpro
+
+js/conversionpro
+
+skin/frontend/base/default/css/conversionpro
+
+skin/frontend/base/default/images/conversionpro
+
+app/design/frontend/base/default/layout/conversionpro.xml
+
+app/design/frontend/base/default/template/conversionpro
+
+app/design/adminhtml/default/default/layout/conversionpro.xml
+
+app/design/adminhtml/default/default/template/conversionpro
+
+app/etc/modules/Celebros_Conversionpro.xml
+
+var/connect/Celebros_Conversionpro.xml

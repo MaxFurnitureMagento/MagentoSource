@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<MageDevelopers_MaxShipping>
+			<version>0.1.0</version>
+		</MageDevelopers_MaxShipping>
+	</modules>
+  <frontend>
+    <routers>
+        <maxshipping>
+            <use>standard</use>
+            <args>
+                <module>MageDevelopers_MaxShipping</module>
+                <frontName>maxshipping</frontName>
+            </args>
+        </maxshipping>
+    </routers>
+  </frontend>
+	<global>
+		<models>
+			<maxshipping>
+				<class>MageDevelopers_MaxShipping_Model</class>
+			</maxshipping>
+      <sales>
+        <rewrite>
+          <quote_address_total_shipping>MageDevelopers_MaxShipping_Model_Rewrite_QuoteAddressTotalShipping</quote_address_total_shipping>
+        </rewrite>
+      </sales>
+		</models>
+		<resources>
+			<maxshipping_setup>
+				<setup>
+					<module>MageDevelopers_MaxShipping</module>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</maxshipping_setup>
+		</resources>
+		<helpers>
+				<maxshipping>
+						<class>MageDevelopers_MaxShipping_Helper</class>
+				</maxshipping>
+		</helpers>
+	</global>
+	<default>
+		<carriers>
+            <maxshipping>
+                    <active>1</active>
+                    <sallowspecific>0</sallowspecific>
+                    <name>Max Shipping</name>
+                    <title>Max Shipping</title>
+                    <specificerrmsg>This shipping method is currently unavailable.
+											If you would like to ship using this shipping method, please contact us.</specificerrmsg>
+										<model>maxshipping/carrier_maxshipping</model>
+                    <handling_type>F</handling_type>
+            </maxshipping>
+        </carriers>
+	</default>
+</config>
+
+
+

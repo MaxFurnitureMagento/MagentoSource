@@ -1,0 +1,71 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+?>
+<?php /* @var $this Mage_Catalog_Block_Product_View_Abstract */?>
+<?php $_product = $this->getProduct();
+      $_coreHelper = $this->helper('core');
+      $date = $_product->getMaxBackInStock();
+      $_product->load($_product->getId());
+      if($_product->getTypeId() == 'simple')
+				$qty = $_product->getStockItem()->getQty() >= 1 ? true : false;
+			else
+				{
+					$qty = false;
+					$children = Mage::getModel('catalog/product_type_configurable')
+														->getUsedProducts(null,$_product);
+					foreach($children as $child)
+						{
+							if($child->getStockItem()->getQty() >= 1) $qty = true;
+						}
+				}
+?>
+
+<?php if ($_product->getMaxInventoriable()): ?>
+	<?php if($qty): ?>
+    <p class="availability in-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('In stock') ?></span></p>
+  <?php else: ?>
+    <p class="availability out-of-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('Wait List') ?></span><?php if($date && ($date >= date('Y-m-d 00:00:00'))): ?><span> - Estimated Ship Date </span><span class="back-in-stock"><?php echo $this->formatDate($_product->getMaxBackInStock(), 'long', false); ?></span><?php endif; ?></p>
+  <?php endif; ?>
+<?php elseif ($date): ?>
+    <p class="availability out-of-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('Wait List') ?></span><?php if($date >= date('Y-m-d 00:00:00')): ?><span> - Estimated Ship Date </span><span class="back-in-stock"><?php echo $this->formatDate($_product->getMaxBackInStock(), 'long', false); ?></span><?php endif; ?></p>
+<?php else: ?>
+    <p class="availability in-stock drop-ship"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('Usually In Stock') ?></span></p>
+<?php endif; ?>
+<?php echo $this->getChildHtml('product_type_data_extra') ?>
+
+<div class="customer-service">
+	<a id="email_to_us" href="#email_us_popup" ><img src="<?php echo $this->getSkinUrl('images/email-us.jpg'); ?> " /></a>
+    <img src="<?php echo $this->getSkinUrl('images/no-taxes.jpg'); ?> " alt="No Sales Tax *Except TX" />
+    <a href="javascript:void(0)"><img src="<?php echo $this->getSkinUrl('images/best-price.jpg'); ?> " alt="Best price" height="70px" /></a>
+    <a href="http://www.stellaservice.com/profile/472" target="_blank" class="last"><img border="0" title="MaxFurniture.com is top rated for customer service" src="http://seal.stellaservice.com/seals/stellaservice_excellent.png?c=472" alt="StellaService" /></a>
+    <script type="text/javascript">
+        function cm_activate_email_tab() {
+            $$('#product_tabs_email_us a').each(function(el) {
+                el.click();
+            });
+        }
+	</script>
+</div>

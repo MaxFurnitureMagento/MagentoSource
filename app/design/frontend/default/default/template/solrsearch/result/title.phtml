@@ -1,0 +1,20 @@
+<?php 
+$_solrDataArray = $this->getSolrData();
+
+$q = "";
+$params = $this->getRequest()->getParams();
+if (!empty($params['q'])){
+	$q = $params['q'];
+}
+?>
+<div class="page-title">
+	<?php if(strtolower($q) == $_solrDataArray['responseHeader']['params']['q']):?>
+	<h1>
+		<?php echo $this->__("Search results for <em id=\"text_keyword\">'%s'</em>", $q);?>
+	</h1>
+	<?php else: ?>
+	<h1>
+		<?php echo $this->__("Search results for <em id=\"text_keyword\">'%s'</em> instead", $_solrDataArray['responseHeader']['params']['q']); ?>
+	</h1>
+	<?php endif;?>
+</div>

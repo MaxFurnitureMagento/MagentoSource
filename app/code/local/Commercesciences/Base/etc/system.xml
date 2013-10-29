@@ -1,0 +1,76 @@
+<config>
+    <tabs>
+        <commercesciences>
+            <label>Personal Bar</label>
+            <sort_order>800</sort_order>
+        </commercesciences>
+    </tabs>
+    <sections>
+        <commercesciences>
+            <class>separator-top</class>
+            <label><![CDATA[<span class="stadmin-csconfig_menu">Personal Bar Configuration</span>]]></label>
+            <tab>commercesciences</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <required_param>
+                    <label>Personal Bar</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <email>
+                            <label></label>
+                            <comment></comment>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>commercesciences_base/adminhtml_config_form_renderer_campaignid</frontend_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </email>
+                        <is_active>
+                            <label>Is Active?</label>
+                            <comment>[Activate/Deactivate CommerceSciences bar]</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <frontend_model>commercesciences_base/adminhtml_config_form_renderer_isactive</frontend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </is_active>
+                    </fields>
+                </required_param>
+                <about_the_bar>
+                    <label>About the Personal Bar</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <frontend_model>commercesciences_base/adminhtml_config_form_renderer_group_about</frontend_model>
+                    <fields>
+                        <email>
+                            <label></label>
+                            <comment></comment>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>commercesciences_base/adminhtml_config_form_renderer_about</frontend_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </email>
+                    </fields>
+                </about_the_bar>
+            </groups>
+        </commercesciences>
+    </sections>
+</config>

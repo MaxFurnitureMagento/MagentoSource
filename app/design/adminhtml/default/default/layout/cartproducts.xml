@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <cartproducts_adminhtml_cp_index>
+        <reference name="content">
+            <block type="cartproducts/adminhtml_grid" name="cartproducts" />
+        </reference>
+    </cartproducts_adminhtml_cp_index>
+</layout>

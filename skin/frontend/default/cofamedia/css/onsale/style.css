@@ -1,0 +1,35 @@
+div.onsale { float:left; clear:left; width:680px; height:427px; background:#e4e4e4; border:none; }
+div.onsale .block-title { background:url('../../images/onsale-title.jpg') no-repeat; height:45px; border:none; padding:0; }
+div.onsale .block-title span { display:none; }
+div.onsale .block-content { background:url('../../images/onsale-background.png') repeat-x top; padding:15px 20px; }
+div.onsale .container { position:relative; width:640px; height:287px; overflow:hidden; }
+div.onsale .container .products-grid { border:0; margin:0; width:auto; position:absolute; }
+div.onsale .container .products-grid td.item { padding:0 20px 0 0; width:200px; }
+div.onsale .container .products-grid td.item div.container { position:relative; width:200px; }
+div.onsale .container .products-grid .product-image { width:200px; height:200px; margin:0; }
+div.onsale .container .products-grid .description { background:url('../../images/product-grid-background.png') repeat-x top #564f4b; color:white; font-size:11px; padding-top:8px; position:absolute; bottom:0; left:0; width:200px; }
+div.onsale .container .products-grid .description h2 > a { color:white; text-decoration:none; }
+div.onsale .container .products-grid .description h2,
+div.onsale .container .products-grid .description .sku,
+div.onsale .container .products-grid .description .end-date { font-weight:normal; padding:0 10px; margin:0; min-height:15px; line-height:15px; font-size:11px; }
+div.onsale .container .products-grid .description .sku { color:#9b9b9b; }
+div.onsale .container .products-grid .list-price { line-height:28px; position:static; padding-left:12px; margin-bottom:-6px; }
+div.onsale .container .products-grid .price-custom { line-height:28px; background:#473f3a; margin:6px 0 0 0; }
+div.onsale .container .products-grid .price-box { float:none; height:28px; margin:0; padding-right:6px; }
+div.onsale .container .products-grid .price-box p.old-price { float:left; padding-left:12px; }
+div.onsale .container .products-grid .price-box p.special-price { float:right; padding-right:12px; }
+div.onsale .container .products-grid .price-box p.special-price .price-label { display:none; }
+div.onsale .controls { background:url('../../images/onsale-controls-background.png') no-repeat top center; height:65px; padding:16px 27px 0 27px; position:relative; }
+div.onsale .controls button { border:0; padding:0; margin:0; width:34px; height:34px; background-image:url('../../images/onsale-controls.png'); background-repeat:no-repeat; background-color:transparent; cursor:pointer; }
+div.onsale .controls button > span { display:none; }
+div.onsale .controls button#onsale-left { background-position:top left; float:left; }
+div.onsale .controls button#onsale-left:hover { background-position:bottom left; }
+div.onsale .controls button#onsale-right { background-position:top right; float:right; }
+div.onsale .controls button#onsale-right:hover { background-position:bottom right; }
+div.onsale .controls .progress { empty-cells:show; border-collapse:separate; position:absolute; top:25px; left:65px; width:550px; }
+div.onsale .controls .progress td { height:14px; }
+div.onsale .controls .progress td.dots { cursor:pointer; width:20px; background:url('../../images/onsale-controls-dots.png') no-repeat top center; }
+div.onsale .controls .progress td.dots:hover { background-position:bottom center; }
+div.onsale .controls .progress td.dots.active { background-position:bottom center; }
+div.onsale .controls .progress td.line-left { background:url('../../images/onsale-controls-left.png') no-repeat right center; font-size:4px; }
+div.onsale .controls .progress td.line-right { background:url('../../images/onsale-controls-right.png') no-repeat left center; font-size:4px; }

@@ -1,0 +1,142 @@
+<?php
+$q = "*";
+if($this->getRequest()->getParams('q') != ""){
+	$params = $this->getRequest()->getParams();
+	if(isset($params['q'])){
+		$q = $params['q'];
+	}
+}
+$fq = "";
+if($this->getRequest()->getParams('fq') != ""){
+	$params = $this->getRequest()->getParams();
+	if(isset($params['fq'])){
+		$fq = $params['fq'];
+	}
+}
+$n = "";
+if($this->getRequest()->getParams('n') != ""){
+	$params = $this->getRequest()->getParams();
+	if(isset($params['n'])){
+		$n = $params['n'];
+	}
+}
+
+$selectedCats = "";
+if(!empty($fq)){
+	$selectedCats = array();
+	$filterElements = explode(" OR ",$fq);
+	foreach($filterElements as $item){
+		$catArr = explode(":",$item);
+		if($catArr[0] == "category"){
+			$selectedCats[] = $catArr[1];
+		}
+	}
+}
+$json_selected_cats  = "";
+if(is_array($selectedCats)){
+$json_selected_cats = implode(",",$selectedCats);
+}
+
+$solr_server_url = Mage::getStoreConfig('webmods_solrsearch/settings/solr_server_url', $this->getStoreId());
+$solr_server_url = trim(Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB),'/').'index.php/search/ajax/productinfo?q=';
+$currentUrl = Mage::helper('catalog/product_compare')->getCurrentUrl();
+$solr_index = Mage::getStoreConfig('webmods_solrsearch/settings/solr_index', $this->getStoreId());
+
+$queryFields = "";
+$solrsearchconfig = Mage::getStoreConfig('webmods_solrsearch_fields/settings/enabled_fields', $this->getStoreId());
+    	
+$fieldConfigArray = explode(",",$solrsearchconfig);
+
+$sortableFields = Mage::getStoreConfig('webmods_solrsearch_fields/settings/sorts_fields', $this->getStoreId());
+$sortableFieldsArray = explode(",",$sortableFields);
+
+$facetableFields = Mage::getStoreConfig('webmods_solrsearch_fields/settings/facet_fields', $this->getStoreId());
+$facetableFieldsArray = explode(",",$facetableFields);
+    	
+$entityType = Mage::getModel('eav/config')->getEntityType('catalog_product');
+$catalogProductEntityTypeId = $entityType->getEntityTypeId();
+		
+    	
+$attributesInfo = Mage::getResourceModel('eav/entity_attribute_collection')
+->setEntityTypeFilter($catalogProductEntityTypeId)
+->setCodeFilter($fieldConfigArray)
+->addSetInfo()
+->getData();
+		    	
+foreach($attributesInfo as $att){
+   $queryFields .= $att['attribute_code']."_".$att['backend_type'];
+   if(isset($att['solr_search_field_weight']) && !empty($att['solr_search_field_weight']) && $att['solr_search_field_weight'] > 0){
+    	$queryFields .= "^".$att['solr_search_field_weight'];
+   }	
+  $queryFields .= " ";	
+}
+
+$sortFieldsInfo = Mage::getResourceModel('eav/entity_attribute_collection')
+->setEntityTypeFilter($catalogProductEntityTypeId)
+->setCodeFilter($sortableFieldsArray)
+->addSetInfo()
+->getData();
+
+$facetFieldsInfo = Mage::getResourceModel('eav/entity_attribute_collection')
+->setEntityTypeFilter($catalogProductEntityTypeId)
+//->addFieldToFilter('main_table.attribute_id',array('in'=>$facetableFieldsArray))
+->setCodeFilter($facetableFieldsArray)
+->addSetInfo()
+->getData();
+
+$facetFields = '';
+		$facetFieldsLabels = '';
+		
+		foreach($facetFieldsInfo as $att){
+		$facetFields .= $att['attribute_code'].'_facets,'	;
+		$facetFieldsLabels .= $att['attribute_code'].'_facets:"'.$att['frontend_label'].'",';
+		}
+		$facetFieldsLabels = trim($facetFieldsLabels,",");
+?>
+
+
+<div class="block-layered-nav gomage-navigation-slider-type-cone gomage-navigation-icons-1F5070" id="solr_search_category_faces">
+</div>
+<script type="text/javascript">
+var FacetedManager;
+		
+		FacetedManager.addWidget(new AjaxSolr.FacetedWidget({
+			selectedCategories:[<?php echo $json_selected_cats;?>],
+			<?php if(!empty($facetFieldsLabels)):?>
+			labels: {<?php echo $facetFieldsLabels ;?>}
+			<?php endif;?>
+		}));
+		
+		FacetedManager.init();
+		<?php if(!empty($q)):?>
+		FacetedManager.store.addByValue('q', '<?php echo $q;?>');
+		<?php else:?>
+		FacetedManager.store.addByValue('q', '*:*');
+		<?php endif;?>
+
+		FacetedManager.store.addByValue('json.nl', 'map');
+
+		FacetedManager.store.addByValue('facet', 'true');
+		
+		
+		FacetedManager.store.addByValue('facet.field', '<?php echo $facetFields; ?>category');
+		//FacetedManager.store.addByValue('facet.field', 'manufacturers_name');
+		<?php if(!empty($q)):?>
+		FacetedManager.store.addByValue('defType', 'dismax');
+		<?php endif;?>
+
+		//ResultPageManager.store.addByValue('facet.limit', '10');
+		FacetedManager.store.addByValue('timestamp', new Date().getTime());
+		
+		<?php if(!empty($q)):?>
+			<?php if(isset($queryFields) && !empty($queryFields)):?>
+			FacetedManager.store.addByValue('qf', '<?php echo $queryFields;?>');
+			<?php else:?>
+			FacetedManager.store.addByValue('qf', 'name_varchar description_text');
+			<?php endif;?>
+		<?php endif;?>
+		
+		
+
+		//FacetedManager.doRequest();
+</script>

@@ -1,0 +1,12 @@
+body.catalog-product-view .product-view .product-image { position:relative; display:block }
+.cm-product-sticker { position:absolute; z-index:300; }
+.cm-product-sticker > span { font-weight:bold; font-size:16px; color:#E26703; }
+.cm-product-sticker.image > span { display:none; }
+.cm-product-sticker.top { top:0; }
+.cm-product-sticker.left { left:0; }
+.cm-product-sticker.bottom { bottom:0; }
+.cm-product-sticker.right { right:0; }
+
+body.catalog-category-view .products-grid .product-image { position:relative; }
+
+div.onsale .product-image { position:relative; }

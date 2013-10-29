@@ -1,0 +1,20 @@
+<?php
+/**
+ * Template for filter items block
+ *
+ * @see Mage_Catalog_Block_Layer_Filter
+ */
+?>
+
+<select class="layer-filter">
+  <option value="">Choose <?php echo strtolower($this->getName()) ?></option>
+<?php foreach ($this->getItems() as $_item): ?>
+        <?php if ($_item->getCount() > 0): ?>
+          <option value="<?php echo $this->urlEscape($_item->getUrl()) ?>">
+            <?php echo $_item->getLabel() ?>
+          </option>
+        <?php // else: echo $_item->getLabel() ?>
+        <?php endif; ?>
+<!--         (<?php //echo $_item->getCount() ?>) -->
+<?php endforeach ?>
+</select>

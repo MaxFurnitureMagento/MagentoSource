@@ -1,0 +1,4 @@
+<?php
+class Cofamedia_CartProducts_Model_Product_Type_Cp extends Mage_Catalog_Model_Product_Type_Virtual
+{
+}

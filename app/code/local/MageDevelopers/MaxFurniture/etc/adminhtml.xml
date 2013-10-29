@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <menu>
+      <cofamedia>
+        <title>Cofa Media</title>
+        <sort_order>70</sort_order>
+<!--        <depends>
+            <module>MageDevelopers_CatalogUpdate</module>
+            <config>maxfurniture/configuration/enabled</config>
+        </depends>-->
+        <children>
+          <import module="maxfurniture">
+            <title>Import Products</title>
+            <sort_order>200</sort_order>
+            <action>maxfurniture/import</action>
+          </import>
+        </children>
+      </cofamedia>
+    </menu>
+    <acl>
+      <resources>
+        <admin>
+          <children>
+            <cofamedia module="maxfurniture">
+              <title>Cofamedia - Catalog Update</title>
+              <sort_order>85</sort_order>
+              <children>
+                <import translate="title" module="maxfurniture">
+                  <title>Update Manager</title>
+                </import>
+              </children>
+            </cofamedia>
+          </children>
+        </admin>
+      </resources>
+    </acl>
+</config>

@@ -1,0 +1,84 @@
+<?php if(
+Mage::getSingleton('cms/page')->getIdentifier() == 'home'  &&
+Mage::app()->getFrontController()->getRequest()->getRouteName() == 'cms' 
+):?>
+<style>
+.col-main {
+margin-top: -14px;
+}
+</style>
+	<div style="position: relative;top:-1px;">
+<?php echo Mage::getSingleton('core/layout')->createBlock('ambanners/container')->setPosition(20)->toHtml(); ?><?php endif; ?>
+</div>
+<?php
+$_items = $this->getItems();
+$count = count($_items);
+if($count == 0) return;
+$i = 0;
+?>
+<div class="cofamedia-splash-container">
+	<div class="items">
+		<?php foreach($_items as $splash): ?>
+			<?php $i++; ?>
+			<?php $url = $splash->getUrl(); ?>
+			<div id="splash-item-<?php echo $i ?>" class="item<?php if($url) echo ' url'?><?php if($i == 1) echo ' first' ?> item-<?php echo $i ?> id-<?php echo $splash->getSplashId() ?>" <?php if($url) echo "onclick=\"location.href='$url'\"" ?>>
+				<?php if($image = $splash->getPicture()): ?>
+          <?php $size = getimagesize(Mage::getBaseDir('media').'/'.$splash->getImage());?>
+					<img src="<?php echo $image ?>" alt="" <?php if($size) echo $size[3] ?>/>
+				<?php endif; ?>
+				<h2>
+				<?php echo ($url) ? "<a href=\"$url\">": "<span>" ?>
+				<?php echo $splash->getHeading() ?>
+				<?php echo ($url) ? "</a>": "</span>" ?>
+				</h2>
+				<div class="content"><?php echo $splash->getContent() ?></div>
+			</div>
+			<?php
+				$thumbs[$i]['image'] = $splash->getThumbnail();
+				$thumbs[$i]['id'] = $splash->getSplashId();
+				$thumbs[$i]['description'] = $splash->getDescription();
+			?>
+		<?php endforeach; ?>
+	</div>
+	
+	<?php if($count > 1): ?>
+	<div class="thumbnails">
+		<ul>
+		<?php foreach($thumbs as $i => $data): ?>
+			<li id="splash-thumbnail-<?php echo $i ?>" class="thumbnail thumb-<?php echo $i ?><?php if($i == 1) echo ' first' ?> id-<?php echo $data['id'] ?>">
+				<?php if($this->getButtonType() == 'letters'): ?>
+					<div id="splash-thumbspan-<?php echo $i ?>"><?php echo $this->getLetter($i) ?></div>
+				<?php elseif($this->getButtonType() == 'thumbnails'): ?>
+					<div id="splash-thumbimage-<?php echo $i ?>" class="button" style="background-image:url('<?php echo $data['image'] ?>')"></div>
+				<?php else: ?>
+					<div id="splash-thumbspan-<?php echo $i ?>"><?php echo $i ?></div>
+				<?php endif; ?>
+				<?php if($this->showDescription()): ?>
+					<div><?php echo $data['description']; ?></div>
+				<?php endif; ?>
+			</li>
+		<?php endforeach; ?>
+		</ul>
+	</div>
+	<?php endif; ?>
+	
+	<?php if(($count > 1) && $this->showControls()): ?>
+		<div class="controls">
+			<?php if($this->showProgress()): ?>
+				<div class="progress" id="cofamedia-splash-progressbar"><div class="bar"></div></div>
+			<?php endif; ?>
+			<?php if($this->showPause()): ?>
+				<div class="pause" id="cofamedia-splash-pause"/></div>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
+</div>
+
+<script type="text/javascript">//<![CDATA[
+	var cofamedia_splash_interval = <?php echo $this->getInterval() ?>;
+	var cofamedia_splash_trigger = "<?php echo $this->getTrigger() ?>";
+	var cofamedia_splash_animations = "<?php echo $this->getAnimations() ?>";
+	var cofamedia_splash_animation_speed = <?php echo $this->getAnimationSpeed() ?>;
+	var cofamedia_splash_show_progress = "<?php echo $this->showControls() && $this->showProgress() ?>";
+	var cofamedia_splash_show_pause = "<?php echo $this->showControls() && $this->showPause() ?>";
+//]]></script>

@@ -1,0 +1,8 @@
+<?php
+$banner_top = $this->getLayout()->createBlock('cms/block')->setBlockId('home-banner-top')->toHtml();
+$banner_bottom = $this->getLayout()->createBlock('cms/block')->setBlockId('home-banner-bottom')->toHtml();
+?>
+<div class="banners">
+	<div class="top"><?php echo $banner_top ?></div>
+	<div class="bottom"><?php echo $banner_bottom ?></div>
+</div>

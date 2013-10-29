@@ -1,0 +1,12 @@
+<?php if (Mage::helper('conversionpro')->getBannerImage()): ?>
+	<?php foreach(Mage::helper('conversionpro')->getBannerImage() as $image): ?>
+		<img style="width: 100%;" src="<?php echo $image; ?>"/>
+	<?php endforeach; ?>
+<?php endif; ?>
+<?php if (Mage::helper('conversionpro')->getBannerFlash()): ?>
+	<div id="newFlash">
+		<?php foreach(Mage::helper('conversionpro')->getBannerImage() as $flash): ?>
+			<object data="<?php echo $flash; ?>" type="application/x-shockwave-flash" id="flash_93785085" height="150" width="535"><param name="movie" value="<?php echo $flash; ?>"><param name="wmode" value="opaque"></object>
+		<?php endforeach; ?>
+	</div>
+<?php endif; ?>

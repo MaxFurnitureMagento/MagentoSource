@@ -1,0 +1,276 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<?php
+    $_productCollection=$this->getLoadedProductCollection();
+    $_helper = $this->helper('catalog/output');
+    $image_size = ($this->getImageSize()>0) ? $this->getImageSize() : 235;
+    $image_larger_size = 400;
+    $_coreHelper = $this->helper('core');
+?>
+<?php if(!$_productCollection->count()): ?>
+<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+<?php else: ?>
+<div class="category-products">
+    <?php echo $this->getToolbarHtml() ?>
+    <?php // List mode ?>
+    <?php if($this->getMode()!='grid'): ?>
+    <?php $_iterator = 0; ?>
+    <ol class="products-list" id="products-list">
+    <?php foreach ($_productCollection as $_product): ?>
+        <li class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>">
+            <?php // Product Image ?>
+            <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135); ?>" width="135" height="135" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+            <?php // Product description ?>
+            <div class="product-shop">
+                <div class="f-fix">
+                    <?php $_productNameStripped = $this->stripTags($_product->getName(), null, true); ?>
+                    <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped; ?>"><?php echo $_helper->productAttribute($_product, $_product->getName() , 'name'); ?></a></h2>
+                    <?php if($_product->getRatingSummary()): ?>
+                    <?php echo $this->getReviewsSummaryHtml($_product) ?>
+                    <?php endif; ?>
+                    <?php echo $this->getPriceHtml($_product, true) ?>
+                    <?php if($_product->isSaleable()): ?>
+                        <p><button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button></p>
+                    <?php else: ?>
+                        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php endif; ?>
+                    <div class="desc std">
+                        <?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                        <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped ?>" class="link-learn"><?php echo $this->__('Learn More') ?></a>
+                    </div>
+                    <ul class="add-to-links">
+                        <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                            <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
+                        <?php endif; ?>
+                        <?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
+                            <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    <?php endforeach; ?>
+    </ol>
+    <script type="text/javascript">decorateList('products-list', 'none-recursive')</script>
+
+    <?php else: ?>
+
+
+    <?php // Grid Mode ?>
+
+    <?php $_collectionSize = $_productCollection->count() ?>
+    <?php $_columnCount = $this->getColumnCount(); ?>
+    <?php $i=0; foreach ($_productCollection as $_product): ?>
+        <?php
+//           qq($_product->getTypeId());
+          $_options = array();
+          $_plural = false;
+          if($_product->getTypeId() == 'configurable')
+            {
+              $_attributes = $_product->getTypeInstance(true)
+                                     ->getConfigurableAttributesAsArray($_product);
+              
+              foreach($_attributes as $attribute)
+                {
+                  $_label = preg_replace('/^select\s/i', '', $attribute['frontend_label']);
+                  $_label = preg_replace('/\soption$/i', '', $_label);
+                  $_options[] = $_label;
+                }
+              if(count($_options) > 1) $_plural = true;
+              $_options = implode('/', $_options);
+            }
+          elseif($_product->getTypeId() == 'bundle')
+            {
+              $_attributes = $_product->getTypeInstance(true)
+                                     ->getOptions($_product);
+              foreach($_attributes as $attribute)
+                {
+                  $title = $attribute['default_title'];
+                  if(strtolower($title) == 'default') continue;
+                  $_label = preg_replace('/^select\s/i', '', $title);
+                  $_label = preg_replace('/\soption$/i', '', $_label);
+                  $_options[] = $_label;
+                }
+              if(count($_options) > 1) $_plural = true;
+              $_options = implode('/', $_options);
+            }
+        ?>
+        <?php if ($i++%$_columnCount==0): ?>
+        <ul class="products-grid">
+        <?php endif ?>
+            <?php $_productNameStripped = htmlspecialchars($this->stripTags($_product->getName(), null, true)); ?>
+            <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><?php
+										$sticker = $this->helper('stickers')->getThumbnail($_product);
+										$label = $this->helper('stickers')->getLabel($_product);
+										$sticker_ok = ($sticker || $label) ? true : false;
+										$class = $this->helper('stickers')->getPositionClass();
+										if($sticker)
+											{
+												$style = "background-image:url('$sticker');";
+												$size = getimagesize($sticker);
+												$width = $size[0];
+												$height = $size[1];
+												$style.= "width:{$width}px;";
+												$style.= "height:{$height}px;";
+												
+												$style = " style=\"$style\"";
+												$class.= " image";
+											}
+                    ?>
+                    
+                <?php if($sticker_ok): ?><span class="cm-product-sticker product-sticker sticker<?php echo $class ?>"<?php if($sticker) echo $style ?>><span><?php echo $label ?></span></span><?php endif; ?><img id="cofa_product_image_<?php echo $_product->getId() ?>" class="cofa-product-image" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->backgroundColor(86,79,75)->resize($image_size); ?>" width="<?php echo $image_size ?>" height="<?php echo $image_size ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+				
+				<?php /* today's sale*/?>
+				<?php
+					$_id = $_product->getId();
+					// Get the Special Price
+					$specialprice = Mage::getModel('catalog/product')->load($_id)->getSpecialPrice();
+					// Get the Special Price FROM date
+					$specialPriceFromDate = Mage::getModel('catalog/product')->load($_id)->getSpecialFromDate();
+					// Get the Special Price TO date
+					$specialPriceToDate = Mage::getModel('catalog/product')->load($_id)->getSpecialToDate();
+					// Get Current date
+					$today =  time();
+					
+					$is_special = false;
+					if ($specialprice)
+						if($today >= strtotime( $specialPriceFromDate) && $today <= strtotime($specialPriceToDate) || $today >= strtotime( $specialPriceFromDate) && is_null($specialPriceToDate))
+							$is_special = true;
+				?>
+				<?php if($is_special): ?>
+				<div class="toady-sale">
+					<?php echo $this->__('Today\'s Sale ').Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol().number_format($specialprice,2) ?>
+				</div>
+				<?php endif; ?>
+				<?php /* today's sale*/?>
+				
+				</a>
+				
+                <input type="hidden" name="cfi_<?php echo $_product->getId() ?>" id="cfi_<?php echo $_product->getId() ?>" value="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->backgroundColor(86,79,75)->resize($image_larger_size); ?>"/>
+                <input type="hidden" name="cfin_<?php echo $_product->getId() ?>" id="cfin_<?php echo $_product->getId() ?>" value="<?php echo $_productNameStripped ?>"/>
+                <div class="product-list-container">
+                  
+                  <?php if($_options): ?>
+                    <div class="product-options-label"><span><?php echo $_options ?> <?php echo $_plural ? 'Options' : 'Option' ?></span></div>
+                  <?php endif; ?>
+                  
+                  <div class="product-header">
+                    <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
+                    
+                    <?php if($_product->getSpecialToDate() && date('Y-m-d H:i:s')<=$_product->getSpecialToDate()) : ?>
+                      <div class="sale-ends">&nbsp;- <?php echo $this->__('Sale&nbsp;Ends') ?>&nbsp;<?php echo date('n/j',strtotime($_product->getSpecialToDate())) ?></div>
+                    <?php endif ?>
+                    
+                    <div class="product-model"><?php echo $this->__('Model: ').$_product->getSku() ?></div>
+                    <?php if($_product->getRatingSummary()): ?>
+                    <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+                    <?php endif; ?>
+                  </div>
+                  
+                  <div class="price-custom">
+                    <div class="list-price"><?php echo $this->__('Retail: ') ?><s><?php echo $_coreHelper->currency($_product->getmax_suggested_retail_price(),true,true); ?></s></div>
+                    <?php echo $this->getPriceHtml($_product, true) ?>
+                  </div>
+                 </div>
+                  
+            <?php /*
+                <div class="actions">
+                    <?php if($_product->isSaleable()): ?>
+                        <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+                    <?php else: ?>
+                        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php endif; ?>
+                    
+                    <ul class="add-to-links">
+                        <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                            <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
+                        <?php endif; ?>
+                        <?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
+                            <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li>
+                        <?php endif; ?>
+                    </ul>
+                    
+                </div>
+            */ ?>
+            </li>
+        <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+        </ul>
+        <?php endif ?>
+        <?php endforeach ?>
+        <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+<div id="cofa_product_list_popup"><h3></h3><img/></div>
+<script type="text/javascript">
+var cfpp_t, cfpp_object;
+jQuery(document).ready(function() {
+  jQuery('.cofa-product-image').hover(cf_product_image_in, cf_product_image_out);
+  jQuery('.cofa-product-image').mousemove(function(e) {
+    var offsetY = 30;
+    var offsetX = (jQuery(window).width() - 990) / 2;
+    var prop = 400 / 990;
+    offsetX = (e.pageX - offsetX) * prop;
+    jQuery('#cofa_product_list_popup').css('top', e.pageY + offsetY);
+    jQuery('#cofa_product_list_popup').css('left', e.pageX - offsetX);
+  });
+});
+function cf_product_image_in()
+{
+  cfpp_object = jQuery(this);
+  jQuery('#cofa_product_list_popup > img').attr('src', '');
+  cfpp_t = setTimeout(cf_product_image_show, 1000);
+}
+function cf_product_image_show()
+{
+  var offset = cfpp_object.offset();
+  
+  var id = cfpp_object.attr('id');
+  id = id.replace(/^cofa\_product\_image\_/, '');
+  var src = jQuery('#cfi_'+id).attr('value');
+  jQuery('#cofa_product_list_popup > img').attr('src', src);
+  jQuery('#cofa_product_list_popup > h3').html(jQuery('#cfin_'+id).attr('value'));
+  jQuery('#cofa_product_list_popup').show();
+}
+function cf_product_image_out()
+{
+  clearTimeout(cfpp_t);
+  jQuery('#cofa_product_list_popup').hide();
+}
+</script>
+    <?php endif; ?>
+
+    <div class="toolbar-bottom">
+        <?php echo $this->getToolbarHtml() ?>
+    </div>
+</div>
+<?php endif; ?>

@@ -1,0 +1,564 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php if($this->getItems()->getSize()): ?>
+<div class="block block-related">
+    <div class="block-title">
+		<div class="different-package">
+			<?php echo $this->__('Want different package? Configure below') ?>
+		</div>
+		<div class="grey-arrow"></div>
+        <strong><span><?php echo $this->__('Related Products') ?></span></strong>
+    </div>
+    <div class="block-content">
+<!--         <p class="block-subtitle"><?php //echo $this->__('Check items to add to the cart or') ?>&nbsp;<a href="#" onclick="selectAllRelated(this); return false;"><?php //echo $this->__('select all') ?></a></p> -->
+             <p class="block-subtitle"><?php echo $this->__('Select items to add to the cart') ?></p>        
+        <ul class="mini-products-list box-content" id="block-related">
+        <?php foreach($this->getItems() as $_item): ?>
+        	<?php $_product = $_item->load($_item->getId()); ?>
+            <li class="item">
+                <?php if(!$_item->isComposite() && $_item->isSaleable()): ?>
+                    <?php //if (!$_item->getRequiredOptions()): ?>
+<!--                         <input type="checkbox" class="checkbox related-checkbox" id="related-checkbox<?php //echo $_item->getId() ?>" name="related_products[]" value="<?php //echo $_item->getId() ?>" /> -->
+                    <?php //endif; ?>
+                <?php endif; ?>
+                <div class="product">
+                    <a href="<?php echo $_item->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_item->getName()) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(230, 188) ?>" width="230" height="188" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" /></a>
+                    <div class="product-details">
+                        <p class="product-name"><a href="<?php echo $_item->getProductUrl() ?>"><strong><?php echo $this->htmlEscape($_item->getName()) ?></strong></a></p>
+                        <?php if ( $_item->getMaxSuggestedRetailPrice() ): ?>
+                        <p class="msrp"><s>Regular: <?php echo Mage::helper('core')->currency($_item->getMaxSuggestedRetailPrice(), true, false); ?></s></p>
+                        <?php endif; ?>
+                        <?php //echo $this->getPriceHtml($_item, true, '-related') ?>
+                        <?php echo $this->getPriceHtml($_item, true, '') ?>
+                        <div class="items_included">
+                        <p><span><?php echo $this->__('Item(s) included:')?></span>
+                        <?php echo $_product->getMaxItemIncluded(); ?>
+                        </p>
+                        <p><span><?php echo $this->__('Model:')?></span>
+                        <?php echo $_product->getSku(); ?>
+                        </p>
+                        <?php echo $_product->getMaxDimensions(); ?>
+                        </div>
+                        <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                            <a href="<?php echo $this->getAddToWishlistUrl($_item) ?>" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a>
+                        <?php endif; ?>
+                        <?php if ($_product->getMaxFreeShipping()):?>
+                        <div class="free-shipping">
+                        	&nbsp;
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                    
+		            <div class="form-elements">
+		            <?php if(!$_product->isComposite() && $_product->isSaleable()): ?>
+		                <?php if (!$_product->getRequiredOptions()): ?>
+		                    <label for="related-qtybox<?php echo $_product->getId() ?>">Qty:</label>
+		                    <select class="input-text qty related-textbox" id="related-qtybox<?php echo $_product->getId() ?>" name="related_qty[<?php echo $_product->getId() ?>]">
+		                    	<option>0</option>
+		                    	<option>1</option>
+		                    	<option>2</option>
+		                    	<option>3</option>
+		                    	<option>4</option>
+		                    	<option>5</option>
+		                    	<option>6</option>
+		                    	<option>7</option>
+		                    	<option>8</option>
+		                    	<option>9</option>
+		                    </select>
+		                    	
+		                <?php endif; ?>
+		            <?php endif; ?>
+		            
+<!-- 		            Begin -->
+		            
+                    <?php 
+                    if ($_product->isConfigurable()) { ?>
+                        <script type="text/javascript">
+                          //<![CDATA[
+
+/**************************** CONFIGURABLE PRODUCT **************************/
+Product.Config<?php echo $_item->getId() ?> = Class.create();
+Product.Config<?php echo $_item->getId() ?>.prototype = {
+    initialize: function(config){
+        this.config     = config;
+        this.taxConfig  = this.config.taxConfig;
+        this.settings   = $$('.super-attribute-select<?php echo $_item->getId() ?>');
+        this.state      = new Hash();
+        this.priceTemplate = new Template(this.config.template);
+        this.prices     = config.prices;
+
+        this.settings.each(function(element){
+            Event.observe(element, 'change', this.configure.bind(this))
+        }.bind(this));
+
+        // fill state
+        this.settings.each(function(element){
+            var attributeId = element.id.replace(/^attribute\d+\-/, '');
+            if(attributeId && this.config.attributes[attributeId]) {
+                element.config = this.config.attributes[attributeId];
+                element.attributeId = attributeId;
+                this.state[attributeId] = false;
+            }
+        }.bind(this))
+
+        // Init settings dropdown
+        var childSettings = [];
+        for(var i=this.settings.length-1;i>=0;i--){
+            var prevSetting = this.settings[i-1] ? this.settings[i-1] : false;
+            var nextSetting = this.settings[i+1] ? this.settings[i+1] : false;
+            if(i==0){
+                this.fillSelect(this.settings[i])
+            }
+            else {
+                this.settings[i].disabled=true;
+            }
+            $(this.settings[i]).childSettings = childSettings.clone();
+            $(this.settings[i]).prevSetting   = prevSetting;
+            $(this.settings[i]).nextSetting   = nextSetting;
+            childSettings.push(this.settings[i]);
+        }
+
+        // Set default values - from config and overwrite them by url values
+        if (config.defaultValues) {
+            this.values = config.defaultValues;
+        }
+
+        var separatorIndex = window.location.href.indexOf('#');
+        if (separatorIndex != -1) {
+            var paramsStr = window.location.href.substr(separatorIndex+1);
+            var urlValues = paramsStr.toQueryParams();
+            if (!this.values) {
+                this.values = {};
+            }
+            for (var i in urlValues) {
+                this.values[i] = urlValues[i];
+            }
+        }
+
+        this.configureForValues();
+        document.observe("dom:loaded", this.configureForValues.bind(this));
+    },
+
+    configureForValues: function () {
+        if (this.values) {
+            this.settings.each(function(element){
+                var attributeId = element.attributeId;
+                element.value = (typeof(this.values[attributeId]) == 'undefined')? '' : this.values[attributeId];
+                this.configureElement(element);
+            }.bind(this));
+        }
+    },
+
+    configure: function(event){
+        var element = Event.element(event);
+        this.configureElement(element);
+    },
+
+    configureElement : function(element) {
+        this.reloadOptionLabels(element);
+        if(element.value){
+            this.state[element.config.id] = element.value;
+            if(element.nextSetting){
+                element.nextSetting.disabled = false;
+                this.fillSelect(element.nextSetting);
+                this.resetChildren(element.nextSetting);
+            }
+        }
+        else {
+            this.resetChildren(element);
+        }
+        this.reloadPrice();
+//      Calculator.updatePrice();
+    },
+
+    reloadOptionLabels: function(element){
+        var selectedPrice;
+        if(element.options[element.selectedIndex].config){
+            selectedPrice = parseFloat(element.options[element.selectedIndex].config.price)
+        }
+        else{
+            selectedPrice = 0;
+        }
+        for(var i=0;i<element.options.length;i++){
+            if(element.options[i].config){
+                element.options[i].text = this.getOptionLabel(element.options[i].config, element.options[i].config.price-selectedPrice);
+            }
+        }
+    },
+
+    resetChildren : function(element){
+        if(element.childSettings) {
+            for(var i=0;i<element.childSettings.length;i++){
+                element.childSettings[i].selectedIndex = 0;
+                element.childSettings[i].disabled = true;
+                if(element.config){
+                    this.state[element.config.id] = false;
+                }
+            }
+        }
+    },
+
+    fillSelect: function(element){
+        var attributeId = element.id.replace(/^attribute\d+\-/, '');
+        var options = this.getAttributeOptions(attributeId);
+        this.clearSelect(element);
+        element.options[0] = new Option(this.config.chooseText, '');
+
+        var prevConfig = false;
+        if(element.prevSetting){
+            prevConfig = element.prevSetting.options[element.prevSetting.selectedIndex];
+        }
+        if(options) {
+            var index = 1;
+            for(var i=0;i<options.length;i++){
+                var allowedProducts = [];
+                if(prevConfig) {
+                    for(var j=0;j<options[i].products.length;j++){
+                        if(prevConfig.config.allowedProducts
+                            && prevConfig.config.allowedProducts.indexOf(options[i].products[j])>-1){
+                            allowedProducts.push(options[i].products[j]);
+                        }
+                    }
+                } else {
+                    allowedProducts = options[i].products.clone();
+                }
+
+                if(allowedProducts.size()>0){
+                    options[i].allowedProducts = allowedProducts;
+                    element.options[index] = new Option(this.getOptionLabel(options[i], options[i].price), options[i].id);
+                    element.options[index].config = options[i];
+                    index++;
+                }
+            }
+        }
+    },
+
+    getOptionLabel: function(option, price){
+        var price = parseFloat(price);
+        if (this.taxConfig.includeTax) {
+            var tax = price / (100 + this.taxConfig.defaultTax) * this.taxConfig.defaultTax;
+            var excl = price - tax;
+            var incl = excl*(1+(this.taxConfig.currentTax/100));
+        } else {
+            var tax = price * (this.taxConfig.currentTax / 100);
+            var excl = price;
+            var incl = excl + tax;
+        }
+
+        if (this.taxConfig.showIncludeTax || this.taxConfig.showBothPrices) {
+            price = incl;
+        } else {
+            price = excl;
+        }
+
+        var str = option.label;
+        if(price){
+            if (this.taxConfig.showBothPrices) {
+                str+= ' ' + this.formatPrice(excl, true) + ' (' + this.formatPrice(price, true) + ' ' + this.taxConfig.inclTaxTitle + ')';
+            } else {
+                str+= ' ' + this.formatPrice(price, true);
+            }
+        }
+        return str;
+    },
+
+    formatPrice: function(price, showSign){
+        var str = '';
+        price = parseFloat(price);
+        if(showSign){
+            if(price<0){
+                str+= '-';
+                price = -price;
+            }
+            else{
+                str+= '+';
+            }
+        }
+
+        var roundedPrice = (Math.round(price*100)/100).toString();
+
+        if (this.prices && this.prices[roundedPrice]) {
+            str+= this.prices[roundedPrice];
+        }
+        else {
+            str+= this.priceTemplate.evaluate({price:price.toFixed(2)});
+        }
+        return str;
+    },
+
+    clearSelect: function(element){
+        for(var i=element.options.length-1;i>=0;i--){
+            element.remove(i);
+        }
+    },
+
+    getAttributeOptions: function(attributeId){
+        if(this.config.attributes[attributeId]){
+            return this.config.attributes[attributeId].options;
+        }
+    },
+
+    reloadPrice: function(){
+//        var price    = 0;
+//        var oldPrice = 0;
+//        for(var i=this.settings.length-1;i>=0;i--){
+//            var selected = this.settings[i].options[this.settings[i].selectedIndex];
+//            if(selected.config){
+//                price    += parseFloat(selected.config.price);
+//                oldPrice += parseFloat(selected.config.oldPrice);
+//            }
+//        }
+//
+//        optionsPrice.changePrice('config', {'price': price, 'oldPrice': oldPrice});
+//        optionsPrice.reload();
+//
+//        return price;
+//
+//        if($('product-price-'+this.config.productId)){
+//            $('product-price-'+this.config.productId).innerHTML = price;
+//        }
+//        this.reloadOldPrice();
+    },
+//
+    reloadOldPrice: function(){
+//        if ($('old-price-'+this.config.productId)) {
+//
+//            var price = parseFloat(this.config.oldPrice);
+//            for(var i=this.settings.length-1;i>=0;i--){
+//                var selected = this.settings[i].options[this.settings[i].selectedIndex];
+//                if(selected.config){
+//                    price+= parseFloat(selected.config.price);
+//                }
+//            }
+//            if (price < 0)
+//                price = 0;
+//            price = this.formatPrice(price);
+//
+//            if($('old-price-'+this.config.productId)){
+//                $('old-price-'+this.config.productId).innerHTML = price;
+//            }
+//
+        }
+//    }
+}
+//]]>
+    </script>
+                  <fieldset class="product-options">
+                    <dl class="configurable">
+                    <?php
+                        $configurable = $_product->getTypeInstance(true);
+                        $attributes = $configurable->getConfigurableAttributes($_product);
+                        Mage::getBlockSingleton('catalog/product_view_type_configurable')->unsetData();
+                        $_configurable = Mage::getBlockSingleton('catalog/product_view_type_configurable')->setData('product', $_product);
+                        //$_attributes = Mage::helper('core')->decorateArray($producttmp->getAllowAttributes());
+                        
+                           foreach($attributes as $_attribute): ?>
+                              <dt><label class="required"><em>*</em><?php echo $_attribute->getLabel() ?></label></dt>
+                              <dd<?php if ($_attribute->decoratedIsLast){?> class="last"<?php }?>>
+                                  <div class="input-box">
+                                    <select name="related_products[<?php echo $_product->getId() ?>][super_attribute][<?php echo $_attribute->getAttributeId() ?>]" id="attribute<?php echo $_product->getId() ?>-<?php echo $_attribute->getAttributeId() ?>" class="super-attribute-select<?php echo $_product->getId() ?>">
+                                      <option><?php echo $this->__('Choose an Option...') ?></option>
+                                    </select>
+                                  </div>
+                              </dd>
+                              <dd>
+                                <div class="add-to-cart">
+                                    <label>Qty:</label>
+                                    <select class="input-text qty related-qtybox" id="related-qtybox<?php echo $_product->getId() ?>" name="related_qty[<?php echo $_product->getId() ?>]">
+		                                <option>0</option>
+				                    	<option>1</option>
+				                    	<option>2</option>
+				                    	<option>3</option>
+				                    	<option>4</option>
+				                    	<option>5</option>
+				                    	<option>6</option>
+				                    	<option>7</option>
+				                    	<option>8</option>
+				                    	<option>9</option>
+				                    </select>
+                                  </div>
+                              </dd>
+                              <script type="text/javascript">
+                                  var spConfig<?php echo $_product->getId() ?> = new Product.Config<?php echo $_product->getId() ?>(<?php echo $_configurable->getJsonConfig() ?>);
+                              </script>
+
+                          <?php endforeach; ?>
+                            </dl>
+                  </fieldset>
+                    <?php } elseif($_product->getTypeId() == 'bundle') { ?>
+                        <?php
+                          $_bundle = Mage::getBlockSingleton('bundle/catalog_product_view_type_bundle');
+                          $_bundle_option = Mage::getBlockSingleton('bundle/catalog_product_view_type_bundle_option');
+                          $_bundle->unsetData();
+                          $_bundle->_options = null;
+                          $_bundle->setData('product', $_product);
+                          $_bundle->addRenderer('select', 'bundle/catalog_product_view_type_bundle_option_select');
+                          $_bundle->addRenderer('multi', 'bundle/catalog_product_view_type_bundle_option_multi');
+                          $_bundle->addRenderer('radio', 'bundle/catalog_product_view_type_bundle_option_radio');
+                          $_bundle->addRenderer('checkbox', 'bundle/catalog_product_view_type_bundle_option_checkbox');
+                          $_options = $_bundle->getOptions();
+                        ?>
+                            <fieldset class="product-options">
+                              <?php if (count($_options)): ?>
+                                  <dl class="bundle">
+                                    <?php foreach ($_options as $_option): ?>
+                                        <?php if (!$_option->getSelections()): ?>
+                                            <?php continue; ?>
+                                        <?php endif; ?>
+                                        <?php if((strtolower($_option->getDefaultTitle()) == 'default') && (count($_option->getSelections()) == 1) && $_option->getRequired()): ?>
+                                          <?php
+      //                                       qq($_option->debug());
+                                            $_selections = $_option->getSelections();
+                                            $_value = reset($_selections);
+                                            $value = $_value->getSelectionId();
+                                          ?>
+                                          <input type="hidden" name="related_products[<?php echo $_product->getId() ?>][bundle_option][<?php echo $_option->getOptionId() ?>]" value="<?php echo $value ?>"/>
+                                        <?php else: ?>
+                                    <dt>
+                                      <label<?php if ($_option->getRequired()) echo ' class="cofa-required"' ?>><?php echo $this->htmlEscape($_option->getTitle()) ?><?php if ($_option->getRequired()) echo '<em>*</em>' ?></label>
+                                    </dt>
+                                    <dd>
+                                      <div class="input-box">
+                                          <?php
+                                            $_option->setRequired(false);
+      //                                       qq($_option);
+                                          ?>
+                                          <select name="related_products[<?php echo $_product->getId() ?>][bundle_option][<?php echo $_option->getOptionId() ?>]">
+                                            <option><?php echo $this->__('Choose an Option...') ?></option>
+                                            <?php foreach($_option->getSelections() as $_selection): ?>
+                                              <?php
+                                                $_price = $_product->getPriceModel()->getSelectionPreFinalPrice($_product, $_selection);
+//                                                 $this->setFormatProduct($_selection);
+                                                $_option_title = $_selection->getSelectionQty()*1 .' x '.$_selection->getName().' &nbsp; '.$_bundle_option->formatPriceString($_price, false);
+                                              ?>
+                                              <option value="<?php echo $_selection->getSelectionId() ?>"><?php echo $_option_title ?></option>
+                                            <?php endforeach; ?>
+                                          </select>
+                                          <?php //echo $_bundle->getOptionHtml($_option) ?>
+                                      </div>
+                                    </dd>
+                                      <?php endif; ?>
+                                    <?php endforeach; ?>
+                                  </dl>
+                                  <div class="add-to-cart product-options-bottom">
+                                      <label for="related_qty[<?php echo $_product->getId() ?>]">Qty:</label>
+<!--                                       <input type="text" class="input-text qty qty-bundle related-qtybox" id="related-qtybox<?php //echo $_product->getId() ?>" name="related_qty[<?php //echo $_product->getId() ?>]" value="0" /> -->
+		                                    <select class="input-text qty qty-bundlerelated-qtybox" id="related-qtybox<?php echo $_product->getId() ?>" name="related_qty[<?php echo $_product->getId() ?>]">
+				                                <option>0</option>
+						                    	<option>1</option>
+						                    	<option>2</option>
+						                    	<option>3</option>
+						                    	<option>4</option>
+						                    	<option>5</option>
+						                    	<option>6</option>
+						                    	<option>7</option>
+						                    	<option>8</option>
+						                    	<option>9</option>
+						                    </select>
+                                  </div>
+                          <?php endif;?>
+                          </fieldset>
+                    <?php } ?>
+		            
+<!-- 		            End -->
+		            </div>
+                </div>
+            </li>
+        <?php endforeach ?>
+        </ul>
+<!--        <script type="text/javascript">decorateGeneric($$('.block-related .block-content ol.box-content'), ['odd','even','first','last'])</script> -->
+		<script type="text/javascript">decorateList('block-related', 'none-recursive')</script>
+    </div>
+<!-- <script type="text/javascript">
+    //<![CDATA[
+    $$('.related-checkbox').each(function(elem){
+        Event.observe(elem, 'click', addRelatedToProduct)
+    });
+
+    var relatedProductsCheckFlag = false;
+    function selectAllRelated(txt){
+        if (relatedProductsCheckFlag == false) {
+            $$('.related-checkbox').each(function(elem){
+                elem.checked = true;
+            });
+            relatedProductsCheckFlag = true;
+            txt.innerHTML="<?php // echo $this->__('unselect all') ?>";
+        } else {
+            $$('.related-checkbox').each(function(elem){
+                elem.checked = false;
+            });
+            relatedProductsCheckFlag = false;
+            txt.innerHTML="<?php // echo $this->__('select all') ?>";
+        }
+        addRelatedToProduct();
+    }
+
+    function addRelatedToProduct(){
+        var checkboxes = $$('.related-checkbox');
+        var values = [];
+        for(var i=0;i<checkboxes.length;i++){
+            if(checkboxes[i].checked) values.push(checkboxes[i].value);
+        }
+        if($('related-products-field')){
+            $('related-products-field').value = values.join(',');
+        }
+    }
+    //]]>
+    </script>  -->
+    
+    <script type="text/javascript">
+    //<![CDATA[
+
+    function makeConfigurableRequired(){
+      var siblings = this.siblings();
+      if(parseInt(this.value) > 0){
+        siblings.each(function(sibling){
+          if(sibling.attributeId){
+            sibling.addClassName('required-entry');
+          }
+        });
+      }else if(parseInt(this.value) === 0){
+        siblings.each(function(sibling){
+          if(sibling.attributeId){
+            sibling.removeClassName('required-entry');
+            sibling.removeClassName('validation-failed');
+          }
+          if(sibling.hasClassName('validation-advice')){
+            sibling.remove();
+          }
+        });
+      }
+    }
+
+    $$('.configurable .qty').each(function(el){
+      el.observe('blur', makeConfigurableRequired);
+    });
+
+    //]]>
+    </script>
+</div>
+<?php endif ?>

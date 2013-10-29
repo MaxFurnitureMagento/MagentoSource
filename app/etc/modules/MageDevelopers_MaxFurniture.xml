@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<MageDevelopers_MaxFurniture>
+			<active>true</active>
+			<codePool>local</codePool>
+		</MageDevelopers_MaxFurniture>
+	</modules>
+</config>

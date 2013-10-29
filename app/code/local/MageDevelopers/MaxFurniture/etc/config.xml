@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <modules>
+    <MageDevelopers_MaxFurniture>
+      <version>0.0.1</version>
+    </MageDevelopers_MaxFurniture>
+  </modules>
+  
+  <frontend>
+    <routers>
+      <maxfurniture>
+          <use>standard</use>
+          <args>
+              <module>MageDevelopers_MaxFurniture</module>
+              <frontName>maxfurniture</frontName>
+          </args>
+      </maxfurniture>
+      <checkout><!-- Name of core module to be overridden  -->
+        <args>
+          <modules>
+            <MageDevelopers_MaxFurniture before="Mage_Checkout">MageDevelopers_MaxFurniture</MageDevelopers_MaxFurniture><!-- Tell Magento to call our custom module before the Mage/Checkout module -->
+          </modules>
+        </args>
+      </checkout>
+    </routers>
+  </frontend>
+  
+  <admin>
+      <routers>
+          <maxfurniture>
+            <use>admin</use>
+            <args>
+              <module>MageDevelopers_MaxFurniture</module>
+              <frontName>maxfurniture</frontName>
+            </args>
+          </maxfurniture>
+      </routers>
+  </admin>
+  
+  <adminhtml>
+      <layout>
+          <updates>
+              <maxfurniture>
+                  <file>maxfurniture.xml</file>
+              </maxfurniture>
+          </updates>
+      </layout>
+  </adminhtml>
+  
+  <global>
+      <helpers>
+          <maxfurniture>
+              <class>MageDevelopers_MaxFurniture_Helper</class>
+          </maxfurniture>
+      </helpers>
+        <blocks>
+            <maxfurniture>
+                <class>MageDevelopers_MaxFurniture_Block</class>
+            </maxfurniture>
+        </blocks>
+  </global>
+      
+</config>

@@ -1,0 +1,10 @@
+<?php
+$testimonial_left = $this->getLayout()->createBlock('cms/block')->setBlockId('testimonial-left')->toHtml();
+$testimonial_right = $this->getLayout()->createBlock('cms/block')->setBlockId('testimonial-right')->toHtml();
+?>
+<div class="testimonials">
+	<div class="container">
+		<div class="testimonial-left"><?php echo $testimonial_left ?></div>
+		<div class="testimonial-right"><?php echo $testimonial_right ?></div>
+	</div>
+</div>

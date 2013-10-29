@@ -1,0 +1,81 @@
+<?php
+$_product = Mage::registry('current_product');
+$options = array();
+$collection = null;
+if($_product->getTypeId() == 'bundle')
+  {
+    $_product->load($_product->getId());
+ 
+    $collection = $_product->getTypeInstance(true)->getSelectionsCollection(
+        $_product->getTypeInstance(true)->getOptionsIds($_product), $_product
+    );
+  }
+elseif($_product->getTypeId() == 'configurable')
+  {
+    $collection = $_product->getTypeInstance(true)->getUsedProducts(
+        null, $_product
+    );
+  }
+if(!$collection || !count($collection)) return;
+foreach($collection as $option)
+  {
+    if($_product->sku == $option->sku.'-B') continue;
+    if(!$option->thumbnail || ($option->thumbnail == 'no_selection')) continue;
+    $options[] = array(
+                  'image' => (string) Mage::helper('catalog/image')->init($option, 'thumbnail')->resize(82),
+                  'label' => $this->htmlEscape($option->getName()),
+                  'large' => (string) Mage::helper('catalog/image')->init($option, 'thumbnail')->backgroundColor(86,79,75)->resize(400)
+                  );
+  }
+if(!$options) return;
+?>
+<div id="product-option-images">
+  <label>&nbsp;</label>
+  <ul>
+    <?php foreach($options as $key => $item): ?>
+      <li id="cfpi_<?php echo $key ?>" title="<?php echo $item['label']; ?>" class="cofa-product-image">
+        <img src="<?php echo $item['image']; ?>" alt="<?php echo $item['label']; ?>"/>
+        <input type="hidden" name="cfi_<?php echo $key ?>" id="cfi_<?php echo $key ?>" value="<?php echo $item['large']  ?>"/>
+      </li>
+    <?php endforeach; ?>
+  </ul>
+</div>
+<div id="cofa_product_list_popup"><h3></h3><img/></div>
+<script type="text/javascript">
+var cfpp_t, cfpp_object;
+jQuery(document).ready(function() {
+  jQuery('#product-option-images li').hover( function() {
+    cfpp_object = jQuery(this);
+    var label = cfpp_object.attr('title');
+    jQuery('#product-option-images label').html(label);
+    cfpp_t = setTimeout(cfpp_hover, 1000);
+  }, function() {
+    clearTimeout(cfpp_t);
+    jQuery('#cofa_product_list_popup').hide();
+  });
+  
+  jQuery('.cofa-product-image').mousemove(function(e) {
+    var offsetY = 30;
+    var offsetX = (jQuery(window).width() - 990) / 2;
+    var prop = 400 / 990;
+    offsetX = (e.pageX - offsetX) * prop;
+    jQuery('#cofa_product_list_popup').css('top', e.pageY + offsetY);
+    jQuery('#cofa_product_list_popup').css('left', e.pageX - offsetX);
+  });
+});
+function cfpp_hover()
+{
+  var label = cfpp_object.attr('title');
+  jQuery('#cofa_product_list_popup > h3').html(label);
+//       console.log(label);
+  
+  var offset = cfpp_object.offset();
+  
+  var id = cfpp_object.attr('id');
+  id = id.replace(/^cfpi\_/, '');
+  var src = jQuery('#cfi_'+id).attr('value');
+//       console.log(src);
+  jQuery('#cofa_product_list_popup > img').attr('src', src);
+  jQuery('#cofa_product_list_popup').show();
+}
+</script>

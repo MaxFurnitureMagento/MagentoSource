@@ -1,0 +1,81 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+?>
+<?php
+$_product = $this->getProduct();
+$_coreHelper = $this->helper('core');
+$date = $_product->getMaxBackInStock();
+$_product->load($_product->getId());
+$qty = false;
+$selectionCollection = $_product->getTypeInstance(true)->getSelectionsCollection($_product->getTypeInstance(true)->getOptionsIds($_product), $_product);
+$options = $_product->getTypeInstance(true)->getOptions($_product);
+$dates = $date ? array($date) : array();
+$required = array();
+foreach($options as $option)
+  {
+    if($option->getRequired())
+      $required[] = $option->getOptionId();
+  }
+$qty = $inventoriable = false;
+foreach($selectionCollection as $child)
+  {
+    if(in_array($child->getOptionId(), $required))
+      {
+        if($child->getStockItem()->getQty() > 0) $qty = true;
+        elseif($child->getMaxBackInStock()) $dates[] = $child->getMaxBackInStock();
+        if($child->getMaxInventoriable()) $inventoriable = true;
+      }
+  }
+if($dates) $date = max($dates);
+if($qty) $date = '';
+?>
+
+<?php if($_product->isSaleable()): ?>
+<script type="text/javascript">
+//<![CDATA[
+    Enterprise.Bundle.swapReloadPrice();
+    var bundle = new Product.Bundle(<?php echo $this->getJsonConfig() ?>);
+//]]>
+</script>
+<?php endif; ?>
+<?php if ($inventoriable): ?>
+  <?php if($qty): ?>
+    <p class="availability in-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('In stock') ?></span></p>
+  <?php else: ?>
+    <p class="availability out-of-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('Wait List') ?></span><?php if($date && ($date >= date('Y-m-d 00:00:00'))): ?><span> - Estimated Ship Date </span><span class="back-in-stock"><?php echo $this->formatDate($_product->getMaxBackInStock(), 'long', false); ?></span><?php endif; ?></p>
+  <?php endif; ?>
+<?php elseif ($date): ?>
+    <p class="availability out-of-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('Wait List') ?></span><?php if($date >= date('Y-m-d 00:00:00')): ?><span> - Estimated Ship Date </span><span class="back-in-stock"><?php echo $this->formatDate($_product->getMaxBackInStock(), 'long', false); ?></span><?php endif; ?></p>
+<?php else: ?>
+    <p class="availability in-stock drop-ship"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('Usually In Stock') ?></span></p>
+<?php endif; ?>
+<?php /*
+<div class="price-container">
+<div class="list-price"><?php echo $this->__('Regular: ') ?><s><?php echo $_coreHelper->currency($_product->getmax_suggested_retail_price(),true,true); ?></s></div>
+<?php echo $this->getPriceHtml($_product) ?>
+<a class="order-below-button" href="#order-form"></a>
+</div>
+*/?>

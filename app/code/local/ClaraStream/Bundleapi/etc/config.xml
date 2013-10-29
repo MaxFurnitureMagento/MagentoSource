@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <ClaraStream_Bundleapi>
+            <version>0.1.0</version>
+        </ClaraStream_Bundleapi>
+    </modules>
+    <global>
+        <models>
+            <bundleapi>
+                <class>ClaraStream_Bundleapi_Model</class>
+            </bundleapi>
+        </models>
+    </global>
+</config>

@@ -1,0 +1,104 @@
+<?php
+/**
+* @author Amasty Team
+* @copyright Copyright (c) 2008-2012 Amasty (http://www.amasty.com)
+* @package Amasty_Feed
+*/
+?>
+<?php $code = 'Condition'; ?>
+<script type="text/javascript">
+//<![CDATA[
+<?php echo $this->getDynamicJs($code) ?>
+//]]>
+</script>
+
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Base Filter') ?></h4>
+    </div>
+    <div class="fieldset" id="amfeed_cond_base">
+        <div class="hor-scroll">
+        <table class="form-list" cellspacing="0">
+        <tbody>
+        <tr>
+            <td class="label"><label for="cond_disabled"><?php echo $this->__('Exclude Disabled Products') ?></label></td>
+            <td class="value">
+                <select id="cond_disabled" name="cond_disabled" class="select">
+                    <option value="0"><?php echo $this->__('No')?></option>
+                    <option value="1" <?php echo $this->getSelectedHtml('cond_disabled',1)?> ><?php echo $this->__('Yes')?></option>
+                </select>            
+            </td>
+        </tr>
+        <tr>
+            <td class="label"><label for="cond_stock"><?php echo $this->__('Exclude Out of Stock Products') ?></label></td>
+            <td class="value">
+                <select id="cond_stock" name="cond_stock" class="select">
+                    <option value="0"><?php echo $this->__('No')?></option>
+                    <option value="1" <?php echo $this->getSelectedHtml('cond_stock',1)?> ><?php echo $this->__('Yes')?></option>
+                </select>            
+            </td>
+        </tr>
+        <tr>
+            <td class="label"><label for="cond_type"><?php echo $this->__('Product Types') ?> <span class="required">*</span></label></td>
+            <td class="value">
+                <select id="cond_type[]" name="cond_type[]" class="select multiselect required-entry" multiple="multiple">
+                <?php foreach ($this->getProductTypes() as $_value => $_label): ?>
+                    <option value="<?php echo $_value ?>" <?php echo $this->getSelectedHtmlMultiselect('cond_type', $_value)?> ><?php echo $this->htmlEscape($_label) ?></option>
+                <?php endforeach ?>
+                </select>            
+            </td>
+        </tr>        
+        </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+
+<div class="entry-edit">
+    <div class="entry-edit-head">
+    <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Advanced Filter') ?></h4>
+    </div>
+    <fieldset>
+        <legend><?php echo $this->__('Advanced Filter') ?></legend>
+                <div id="<?php echo $code?>_container">
+                    <?php foreach ($this->getDynamicValue('cond_advanced') as $i=>$row): ?>
+                        <span class="field-row">
+                            <select name="cond_advanced[attr][]">
+                            <?php foreach ($this->getAttributes() as $_value => $_label): ?>
+                                <option <?php echo $this->getSelectedHtml('cond_advanced/attr/' . $i, $_value)?> value="<?php echo $_value ?>"><?php echo $this->htmlEscape($_label) ?></option>
+                            <?php endforeach ?>
+                            </select>
+                            is
+                            <select name="cond_advanced[op][]" style="width: 150px">
+                            <?php foreach ($this->getOperations() as $_value => $_label): ?>
+                                <option <?php echo $this->getSelectedHtml('cond_advanced/op/' . $i, $_value)?> value="<?php echo $_value ?>"><?php echo $this->htmlEscape($_label) ?></option>
+                            <?php endforeach ?>
+                            </select>
+                            &nbsp;                        
+                            <input name="cond_advanced[val][]" class="input-text" value="<?php echo $this->htmlEscape($row['val']) ?>" />
+                            <?php echo $this->getRemoveDynamicButtonHtml($code) ?>
+                        </span>
+                    <?php endforeach ?>
+                </div>
+                <div id="<?php echo $code?>_template" style="display:none">
+                    <span class="field-row">
+                        <select name="cond_advanced[attr][]">
+                        <option value=""><?php echo $this->__('Please select') ?></option>
+                        <?php foreach ($this->getAttributes() as $_value => $_label): ?>
+                            <option value="<?php echo $_value ?>"><?php echo $this->htmlEscape($_label) ?></option>
+                        <?php endforeach ?>
+                        </select>
+                        is
+                        <select name="cond_advanced[op][]" style="width: 150px">
+                        <?php foreach ($this->getOperations() as $_value => $_label): ?>
+                            <option value="<?php echo $_value ?>"><?php echo $this->htmlEscape($_label) ?></option>
+                        <?php endforeach ?>
+                        </select>
+                        &nbsp;                        
+                        <input class="input-text" name="cond_advanced[val][]"/>
+                        <?php echo $this->getRemoveDynamicButtonHtml($code) ?>
+                    </span>
+                </div>                
+        <?php echo $this->getAddDynamicButtonHtml($code) ?>
+    </fieldset>
+</div>

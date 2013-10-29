@@ -1,0 +1,84 @@
+<?php $_filter = $this->getPriceQuestion(); ?>
+<?php if(isset($_filter)):?>
+	<?php if($this->isPriceSlider()):?>
+		<?php 
+		$maxPrice =  $this->getMaxPrice($_filter);
+		$answeredPriceRange = $this->getAnsweredPriceRange($_filter);
+		?>
+		<div class="cel_Price">
+			<p>
+				<input type="text" id="price-slider-range-display"
+					class="price-slider-range-display" /> <input
+					type="hidden" name="filter_PriceQuestion"
+					id="filter_PriceQuestion" />
+			</p>
+			<div id="price-slider-range"></div>
+            <img id="ajax_loading" class="ajax_loading" src="<?php echo $this->getSkinUrl
+                ('images/conversionpro/conversionpro_ajax_ind.gif')?>" style="display:none; position: fixed;
+                top: 45%;left: 50%; z-index: 1;">
+		</div>
+		<script>		
+			function supports_history_api() {
+			  return !!(window.history && history.pushState);
+			}
+			
+			jQuery.ajaxSetup({
+	            beforeSend:function(){
+	                // show gif here, eg:
+	                jQuery("#ajax_loading").show();
+	            },
+	            complete:function(){
+	                // hide gif here, eg:
+	                jQuery("#ajax_loading").hide();
+	            }
+	        });
+			jQuery(document).ready(function() {
+				
+				//Redirect in case of a single search result.
+				var singleSearchResultUrl = '<?php echo $this->getSingleSearchResultUrl(); ?>';
+				if (singleSearchResultUrl != '') {
+					window.location.href = singleSearchResultUrl;
+				}
+				
+				var currency_sign = '<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>';
+				jQuery( "#price-slider-range" ).slider({
+					range: true,
+					step: 5,
+					min: 0,
+					max: <?php echo $maxPrice;?> ,
+					values: [ <?php echo $answeredPriceRange[0];?>, <?php echo $answeredPriceRange[1];?> ],
+					slide: function( event, ui ) {
+						jQuery( "#price-slider-range-display" ).val( currency_sign + ui.values[ 0 ] + " - " + currency_sign + ui.values[ 1 ] );
+					},
+					stop: function(event, ui) {
+						var answerId = "_P" + ui.values[ 0 ] + "_" + ui.values[ 1 ];
+						jQuery( "#filter_PriceQuestion").val(answerId);
+						
+						var url = '<?php echo $this->answerQuestionUrl(""); ?>';
+						
+						//Only add the filter if the values are within the possible range.
+						if (ui.values[ 0 ] != 0 || ui.values[ 1 ] < <?php echo $maxPrice;?>) {
+							//Add the filter parameter with either & or ?, according to whether a qustion mark is already present. 
+							answerId = (/\?/g.test(url)) ? '&amp;price=' + answerId : '?price=' + answerId;
+						} else {
+							answerId = '';
+						}
+						
+						url += answerId;
+						url = url.replace(new RegExp("&amp;",'g'),"&");
+						jQuery("body").load(url, function() {
+							//The code in conversionpro/layers.js listens to this, and jquery's load()
+							// doesn't trigger a real page load.
+							document.fire('dom:loaded');
+						});
+						if (supports_history_api()) {
+							history.pushState(null, null, url);
+						}
+		 			}
+				});
+				jQuery( "#price-slider-range-display" ).val( currency_sign + jQuery( "#price-slider-range" ).slider( "values", 0 ) +
+					" - " + currency_sign + jQuery( "#price-slider-range" ).slider( "values", 1 ) );
+			});
+		</script>
+	<?php endif;?>
+<?php endif;?>

@@ -1,0 +1,295 @@
+.content-header h3 span.stadmin-csconfig_menu {
+    background-image:url("../images/CS-Logo-innerpage.png");
+    background-position: 0 0;
+    background-repeat:no-repeat;
+    color:#4799AE;
+    padding-left:51px;
+    padding-right:0;
+}
+.tabs.config-tabs span.stadmin-csconfig_menu,
+.tabs a:hover.active span.stadmin-csconfig_menu,
+.tabs.config-tabs span.stadmin-csconfig_menu a.stadmin-csconfig_menu:hover {
+    padding: 0;
+    background-image:url("../images/CS-Logo-innerpage.png");
+    background-position:0 2px;
+    background-repeat:no-repeat;
+    color:#4799AE;
+    padding-left:51px;
+    padding-right:0;
+}
+.cswrapper{
+    padding: 0 10px;
+    font-weight: bold;
+
+}
+
+
+.csexp2, .csexp3, .csexp4{
+    width: 500px;
+    margin: 20px 0 0;
+}
+.csexp2{
+    height: 20px;
+}
+.csexp3{
+    height: 75px;
+    margin-top: 3px;
+}
+.csexp4{
+
+}
+.csexp2_left, .csexp3_left, .csexp12_left, .csexp24_left{
+    float: left;
+    width: 200px;
+}
+.csexp2_right, .csexp3_right, .csexp12_right, .csexp24_right{
+    float: right;
+    width: 300px;
+}
+.csexp2_right input{
+    width: 300px;
+}
+.csexpt_right_select{
+    width: 307px;
+}
+.csexp2_right button.save{
+    margin-top: 10px;
+}
+.csexp11{
+    border: 1px solid #BFBFBF;
+    background-color: #FFFFFF;
+    padding: 10px;
+}
+.csexp11_2,.csexp11_3,.csexp11_4,.csexp11_6{
+    font-weight: normal;
+}
+.csexp11_5{
+    margin: 10px 0px 0px 10px;
+}
+.csexp11_6,.csexp11_7{
+    margin: 2px 0px 0px 10px;
+}
+.csexp12{
+    width: 500px;
+    margin: 40px 0 0 10px;
+}
+.csexp24{
+    display: none !important;
+    width: 500px;
+    height: 55px;
+    margin: 40px 0 0 0px;
+}
+.csexp12_right select, .csexp24_right select{
+    width: 250px;
+}
+.csexp12_right button, .csexp24_right button{
+    margin-top: 15px;
+}
+.csexp23{
+    margin-top: 10px;
+}
+.csexp25{
+    width: 500px;
+    margin-top: 50px;
+}
+.csexp25_left,.csexp25_left2{
+    float: left;
+}
+.csexp25_left2{
+    margin-left: 5px;
+    color: #000000;
+    font-weight: normal;
+}
+
+
+.cs_styles {
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+.cs_styles a:focus {
+    outline: thin dotted #333;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+    outline: thin dotted #333;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+.cs_styles a:hover,
+.cs_styles a:active {
+    outline: 0;
+}
+
+.cs_styles {
+    margin: 0;
+    height: 100%;
+    position: relative;
+    font-family: 'Pontano Sans', "Myriad Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 22px;
+    color: #000000;
+    background-color: #222222;
+}
+.cs_styles a {
+    color: #0088cc;
+    text-decoration: none;
+}
+.cs_styles a:hover {
+    color: #0064cd;
+    text-decoration: underline;
+}
+[class*="cs_span"] {
+    float: left;
+    margin-left: 20px;
+}
+.cs_row {
+    margin-left: -20px;
+    *zoom: 1;
+    *zoom: 1;
+}
+.cs_row h3 {
+	font-weight: normal;
+}
+.cs_row:before,
+.cs_row:after {
+    display: table;
+    content: "";
+}
+.cs_row:after {
+    clear: both;
+}
+.cs_container {
+    width: 940px;
+}
+.cs_span10 {
+    width: 780px;
+}
+.cs_span2 {
+    width: 140px;
+}
+.cs_container {
+    margin-right: auto;
+    margin-left: auto;
+    *zoom: 1;
+    *zoom: 1;
+}
+
+.cs_styles p {
+    margin: 0 0 11px;
+    font-family: 'Pontano Sans', "Myriad Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 22px;
+}
+
+.cs_styles h3 {
+    margin: 0;
+    font-family: inherit;
+    font-weight: normal;
+    color: inherit;
+    text-rendering: optimizelegibility;
+}
+.cs_styles h3 {
+    font-size: 18px;
+    line-height: 33px;
+}
+.cs_styles strong {
+    font-weight: 600;
+}
+
+.cs_styles {
+    padding-top: 60px;
+    background: #fdfcfb ;
+}
+.cs_sans-serif {
+    font-family: Arial, Helvetica, 'sans-serif';
+}
+.cs_sans-serif.cs_tm {
+    font-size: 75%;
+}
+
+.cs_key-text-block {
+    text-align: center;
+}
+.cs_ending-block {
+    text-align: center;
+}
+.cs_ending-block p {
+    font-weight: bold;
+    font-size: 17px;
+}
+.cs_key-text-block h3 {
+    font-size: 23px;
+    letter-spacing: -1px;
+    line-height: 24px;
+    position: relative;
+    display: inline-block;
+    text-align: center;
+}
+.cs_key-text-block .cs_container {
+    position: relative;
+}
+
+.cs_setup-takes-2-min {
+    background-image: url(../images/setup-takes-2-minutes.png);
+    width: 96px;
+    height:57px;
+    position: absolute;
+    top: 44px;
+    left: 0;
+}
+
+.cs_details-block {
+    padding: 20px 0 10px;
+}
+.cs_details-block .cs_feature-icon {
+    background-image: url(../images/icons-boxed.png);
+    background-repeat: no-repeat;
+    width: 140px;
+    height: 136px;
+}
+.cs_details-block .cs_feature-icon.cs_get-intuitive {
+    background-position: 0 0;
+}
+.cs_details-block .cs_feature-icon.cs_stand-out {
+    background-position: -145px 0;
+}
+.cs_details-block .cs_feature-icon.cs_grow-sales {
+    background-position: -290px 0;
+}
+.cs_details-block h3 {
+    font-size: 22px;
+    color: #0d2427;
+    text-shadow: 0 1px 0 white;
+}
+.cs_details-block .cs_highlight-details {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+.cs_details-block .cs_highlight-details-desc p {
+    margin: 2px 0 0px;
+    display: block;
+    margin-bottom: 10px;
+    font-size: 15px;
+    line-height: 19px;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #4D5657;
+    font-weight: normal;
+}
+
+.cs_bar-guide-block {
+    margin: 50px auto 30px;
+}
+
+.cs_bar-guide-img {
+    margin: 0 auto 0;
+    background: transparent url(../images/intro-img.png) no-repeat center center;
+    width: 696px;
+    height: 205px;
+}
+
+@font-face {
+    font-family: 'Pontano Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Pontano Sans'), local('PontanoSans-Regular'), url(http://themes.googleusercontent.com/static/fonts/pontanosans/v1/gTHiwyxi6S7iiHpqAoiE3HhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}

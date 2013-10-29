@@ -1,0 +1,14 @@
+<?php
+$filterQuery = array_unique((array)Mage::getSingleton('core/session')->getSolrFilterQuery());
+$facets_fields_labels = Mage::getSingleton('core/session')->getSolrFacetFieldsLabels();
+?>
+
+<?php if (count($filterQuery) > 0):?>
+	<?php foreach ($filterQuery as $value):?>
+	<?php 
+	$end = strpos($value, ':');
+	$key = substr($value, 0, $end);
+	?>
+	<div><b style="text-transform: uppercase;"><?php echo $facets_fields_labels[$key]; ?></b></div>
+	<?php endforeach;?>
+<?php endif;?>

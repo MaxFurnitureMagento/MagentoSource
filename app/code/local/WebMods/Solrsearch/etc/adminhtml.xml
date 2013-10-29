@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+	<translate>
+        <modules>
+            <WebMods_Solrsearch>
+                 <files>
+                      <default>WebMods_Solrsearch.csv</default>
+                 </files>
+            </WebMods_Solrsearch>
+        </modules>
+    </translate>
+</config>

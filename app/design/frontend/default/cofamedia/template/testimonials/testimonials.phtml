@@ -1,0 +1,60 @@
+<div class="page-title">
+	<h1><?php echo $this->__('Testimonials') ?></h1>
+</div>
+<div class="testimonials">
+	<div class="submit"><a  href="<?php echo $this->getUrl('testimonials/submit'); ?>"><?php echo $this->__('Write your own Testimonial here') ?></a></div>
+	<div class="content"><?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('testimonials-intro')->toHtml() ?></div>
+	<?php
+    $testimonials = $this->getTestimonials();
+    $cnt = count($testimonials);
+  ?>
+	<?php if($cnt > 0 ): ?>
+	<div class="pager">
+    <?php if($this->_pg): ?>
+      <a href="<?php echo "?pg=".$this->_previous ?>">Previous</a>
+    <?php endif; ?>
+    <?php foreach($this->_range as $pg): ?>
+      <?php if($pg == $this->_pg): ?>
+        <b><?php echo $pg + 1 ?></b>
+      <?php else: ?>
+        <a href="<?php echo "?pg=".$pg ?>"><?php echo $pg + 1 ?></a>
+      <?php endif; ?>
+    <?php endforeach; ?>
+    <?php if($this->_next): ?>
+      <a href="<?php echo "?pg=".$this->_next ?>">Next</a>
+    <?php endif; ?>
+	</div>
+	<?php foreach ($testimonials as $item): ?>                  
+	<div class="client" >
+		<h2><?php echo $item->getUrl(); ?></h2>
+		<div id="testimonial-rating">
+				<?php $rating = $item->getRating(); ?>
+				<span href="#" title="0.5" class="star active" id="star-0.5"><span title="1" id="star-1" class="star <?php if($rating >= 2) echo 'active' ?>"></span></span>
+				<span href="#" title="1.5" class="star <?php if($rating >= 3) echo 'active' ?>" id="star-1.5"><span title="2" id="star-2" class="star <?php if($rating >= 4) echo 'active' ?>"></span></span>
+				<span href="#" title="2.5" class="star <?php if($rating >= 5) echo 'active' ?>" id="star-2.5"><span title="3" id="star-3" class="star <?php if($rating >= 6) echo 'active' ?>"></span></span>
+				<span href="#" title="3.5" class="star <?php if($rating >= 7) echo 'active' ?>" id="star-3.5"><span title="4" id="star-4" class="star <?php if($rating >= 8) echo 'active' ?>"></span></span>
+				<span href="#" title="4.5" class="star <?php if($rating >= 9) echo 'active' ?>" id="star-4.5"><span title="5" id="star-5" class="star <?php if($rating == 10) echo 'active' ?>"></span></span>
+		</div>
+		<div><img class="quote-start" src="<?php echo Mage::getDesign()->getSkinUrl('images/ui/quote01.png') ?>" alt="quote"/><?php echo trim($item->getContent()); ?><img class="quote-end" src="<?php echo Mage::getDesign()->getSkinUrl('images/ui/quote02.png') ?>" alt="quote"/></div>
+		<div class="signature"><span class="date">Date: <?php echo Mage::app()->getLocale()->date($item->getCreatedTime())->toString(Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM)); ?></span><span class="signature"><?php echo $item->getName(); ?></span></div>
+	</div>  
+	<?php endforeach;  ?> 
+  <div class="pager">
+    <?php if($this->_pg): ?>
+      <a href="<?php echo "?pg=".$this->_previous ?>">Previous</a>
+    <?php endif; ?>
+    <?php foreach($this->_range as $pg): ?>
+      <?php if($pg == $this->_pg): ?>
+        <b><?php echo $pg + 1 ?></b>
+      <?php else: ?>
+        <a href="<?php echo "?pg=".$pg ?>"><?php echo $pg + 1 ?></a>
+      <?php endif; ?>
+    <?php endforeach; ?>
+    <?php if($this->_next): ?>
+      <a href="<?php echo "?pg=".$this->_next ?>">Next</a>
+    <?php endif; ?>
+  </div>
+	<?php else: ?>
+	<div>There is no testimonials here</div>
+	<?php endif; ?>
+</div>

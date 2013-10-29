@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <mage_developers module="facebooklogin">
+            <label>Mage Developers</label>
+            <sort_order>100</sort_order>
+        </mage_developers>
+    </tabs>
+    <sections>
+        <md_facebook>
+            <label>Facebook</label>
+            <tab>mage_developers</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <configuration>
+                    <label>Configuration</label>
+                    <frontend_type>text</frontend_type>
+	                  <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <appid>
+                            <label>App ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[<a href="http://developers.facebook.com/setup/" target="_blank">Register your website</a> with Facebook to get an <b>App ID</b>]]></comment>
+                        </appid>
+                        <app_secret>
+                            <label>App Secret</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </app_secret>
+                    </fields>
+                </configuration>
+                <login>
+                    <label>Login with Facebook</label>
+                    <frontend_type>text</frontend_type>
+	                  <sort_order>200</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enabled>
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </enabled>
+                        <login_top_position>
+                            <label>Login Position on Top Links</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </login_top_position>
+                    </fields>
+                </login>
+            </groups>
+        </md_facebook>
+    </sections>
+</config>

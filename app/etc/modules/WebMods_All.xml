@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <WebMods_Solrsearch>
+            <active>true</active>
+            <codePool>local</codePool>
+        </WebMods_Solrsearch>
+    </modules>
+</config> 

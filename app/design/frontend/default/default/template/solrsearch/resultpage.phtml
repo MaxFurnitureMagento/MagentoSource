@@ -1,0 +1,225 @@
+<?php 
+//echo 'xxx';
+$products = $this->getProducts();
+
+die(print_r($products));
+
+
+$q = "*";
+if($this->getRequest()->getParams('q') != ""){
+	$params = $this->getRequest()->getParams();
+	if(isset($params['q'])){
+		$q = $params['q'];
+	}
+}
+$fq = "";
+if($this->getRequest()->getParams('fq') != ""){
+	$params = $this->getRequest()->getParams();
+	if(isset($params['fq'])){
+		$fq = $params['fq'];
+	}
+}
+$n = "";
+if($this->getRequest()->getParams('n') != ""){
+	$params = $this->getRequest()->getParams();
+	if(isset($params['n'])){
+		$n = $params['n'];
+	}
+}
+
+$selectedCats = "";
+if(!empty($fq)){
+	$selectedCats = array();
+	$filterElements = explode(" OR ",$fq);
+	foreach($filterElements as $item){
+		$catArr = explode(":",$item);
+		if($catArr[0] == "category"){
+			$selectedCats[] = $catArr[1];
+		}
+	}
+}
+$json_selected_cats  = "";
+if(is_array($selectedCats)){
+$json_selected_cats = implode(",",$selectedCats);
+}
+
+$solr_server_url = Mage::getStoreConfig('webmods_solrsearch/settings/solr_server_url', $this->getStoreId());
+$solr_server_url = trim(Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB),'/');
+$currentUrl = Mage::helper('catalog/product_compare')->getCurrentUrl();
+$solr_index = Mage::getStoreConfig('webmods_solrsearch/settings/solr_index', $this->getStoreId());
+
+$queryFields = "";
+$solrsearchconfig = Mage::getStoreConfig('webmods_solrsearch_fields/settings/enabled_fields', $this->getStoreId());
+    	
+$fieldConfigArray = explode(",",$solrsearchconfig);
+
+$sortableFields = Mage::getStoreConfig('webmods_solrsearch_fields/settings/sorts_fields', $this->getStoreId());
+$sortableFieldsArray = explode(",",$sortableFields);
+    	
+$entityType = Mage::getModel('eav/config')->getEntityType('catalog_product');
+$catalogProductEntityTypeId = $entityType->getEntityTypeId();
+		
+    	
+$attributesInfo = Mage::getResourceModel('eav/entity_attribute_collection')
+->setEntityTypeFilter($catalogProductEntityTypeId)
+->setCodeFilter($fieldConfigArray)
+->addSetInfo()
+->getData();
+		    	
+foreach($attributesInfo as $att){
+   $queryFields .= $att['attribute_code']."_".$att['backend_type'];
+   if(isset($att['solr_search_field_weight']) && !empty($att['solr_search_field_weight']) && $att['solr_search_field_weight'] > 0){
+    	$queryFields .= "^".$att['solr_search_field_weight'];
+   }	
+  $queryFields .= " ";	
+}
+
+$sortFieldsInfo = Mage::getResourceModel('eav/entity_attribute_collection')
+->setEntityTypeFilter($catalogProductEntityTypeId)
+->setCodeFilter($sortableFieldsArray)
+->addSetInfo()
+->getData();
+
+?>
+<div class="page-title">
+        <h1>Search results for <span id="text_keyword"><?php echo $q;?></span></h1>
+</div>
+<div id="solr_search_result">
+	
+	<div class="category-products">
+		<div class="toolbar">
+			<div class="pager">
+				<p class="amount">Show result from <span id="solr_search_product_offset"></span> to <span id="solr_search_product_rows"></span> of total <span id="solr_search_product_total"></span></p>
+				<div class="limiter">
+					<label>Display</label>
+					<select onchange="ResultPageManager.widgets.resultPage.doChangePerPage(this.value)">
+						<option value="12">12</option>
+						<option selected="selected" value="24">24</option>
+						<option value="48">48</option>
+					</select> per page
+				</div>
+				<div class="pages" id="navigation"></div>
+			</div>
+  
+			<div class="sorter">
+                <p class="view-mode">
+					<label>View as:</label>
+                    <span><a class="grid current" title="Grid" id="solr_search_view_type_grid" href="javascript:void(0)">Grid</a></span>&nbsp;
+                    <span><a class="list" title="List" id="solr_search_view_type_list" href="javascript:void(0)">List</a></span>&nbsp;
+                </p>
+				<?php if(count($sortFieldsInfo) > 0): ?>
+				<div class="sort-by">
+		            <label><?php echo $this->__('Sort By') ?></label>
+		            <select id="solr_search_sorter" onchange="ResultPageManager.widgets.resultPage.doSort(this.value,'desc')">
+		            		            
+
+					<?php foreach($sortFieldsInfo as $key=>$att): ?>
+		                <option value="<?php echo $att['attribute_code']."_".$att['backend_type'] ?>">
+		                    <?php echo $att['frontend_label'] ?>
+		                </option>
+		            <?php endforeach; ?>
+		            </select>
+		            
+		            <a id="solr_search_sort_desc" href="javascript:ResultPageManager.widgets.resultPage.doChangeSortDirection('desc',$('solr_search_sorter').value)" rel="desc" onClick="" title="<?php echo $this->__('Set Descending Direction') ?>"><img src="<?php echo $this->getSkinUrl('images/i_desc_arrow.gif') ?>" alt="<?php echo $this->__('Set Descending Direction') ?>" class="v-middle" /></a>
+		            <a id="solr_search_sort_asc" style="display:none" href="javascript:ResultPageManager.widgets.resultPage.doChangeSortDirection('asc',$('solr_search_sorter').value)" rel="asc" onClick="" title="<?php echo $this->__('Set Descending Direction') ?>"><img src="<?php echo $this->getSkinUrl('images/i_asc_arrow.gif') ?>" alt="<?php echo $this->__('Set Descending Direction') ?>" class="v-middle" /></a>
+		        </div>
+				<?php endif; ?>
+			</div>
+    </div>
+				
+		<div id="docs">
+			<?php
+				//echo "This is result page";
+				//print_r($this->getRequest()->getParams());
+			?>
+		</div>				
+	</div>
+</div>
+<script type="text/javascript">
+	var Manager;
+	//var FacetedManager;
+	var ResultPageManager;
+	
+		/**
+		 * Initiate a main point to contact with Solr
+		 */
+		Manager = new AjaxSolr.Manager({
+		  solrUrl: '<?php echo trim($solr_server_url,'/');?>/index.php/search/ajax/query?r='
+		});
+		
+		Manager.addWidget(new AjaxSolr.AutocompleteWidget({
+		  id: 'autocomplete',
+		  target: '#search_mini_form',
+		  field: 'autosuggest',
+		  ajaxBaseUrl: '<?php echo trim(Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB),'/');?>',
+		  queryFields: '<?php echo trim($queryFields," ")?>'
+		}));
+		
+		Manager.init();
+		
+		ResultPageManager = new AjaxSolr.Manager({
+			solrUrl: '<?php echo trim($solr_server_url,'/');?>/index.php/search/ajax/query?r='
+	    });
+
+		FacetedManager = new AjaxSolr.Manager({
+			solrUrl: '<?php echo trim($solr_server_url,'/');?>/index.php/search/ajax/query?r='
+	    });
+
+			
+		
+		ResultPageManager.addWidget(new AjaxSolr.ResultWidget({		
+			mediaPath:'<?php echo $this->getData('mediaPath');?>',
+			jsPath:'<?php echo $this->getData('jsPath');?>',
+			basePath:'<?php echo $this->getData('basePath');?>',
+			currentUrl:'<?php echo $currentUrl?>',
+			nextLabelImage:'<img src="<?php echo $this->getSkinUrl('images/pager_arrow_right.gif') ?>" alt="<?php echo $this->__('Next') ?>" class="v-middle" />',
+			prevLabelImage:'<img src="<?php echo $this->getSkinUrl('images/pager_arrow_left.gif') ?>" alt="<?php echo $this->__('Previous') ?>" class="v-middle" />',
+			pageLabel: '<?php echo $this->__('Page :') ?>',
+			id: 'resultPage'
+		}));
+		
+		
+		ResultPageManager.init();
+
+		
+		
+		<?php if(isset($n) && !empty($n)): ?>
+		//ResultPageManager.store.addByValue('q', 'name_exact:"<?php echo $n;?>"');	
+		<?php else: ?>
+			<?php if(!empty($q)):?>
+				ResultPageManager.store.addByValue('q', '<?php echo $q;?>');
+			<?php else:?>
+			ResultPageManager.store.addByValue('q', '*:*');
+			<?php endif;?>
+		<?php endif;?>
+		ResultPageManager.store.addByValue('json.nl', 'map');
+		ResultPageManager.store.addByValue('rows', '24');
+		ResultPageManager.store.addByValue('fl', 'name_varchar,image_varchar,products_id,description_text');
+		
+		<?php if(!empty($q)):?>
+			<?php if(isset($queryFields) && !empty($queryFields)):?>
+			ResultPageManager.store.addByValue('qf', '<?php echo str_replace("_int","_text",$queryFields);?>');
+			<?php else:?>
+			ResultPageManager.store.addByValue('qf', 'name_varchar description_text');
+			<?php endif;?>
+		<?php endif;?>
+		
+		ResultPageManager.store.addByValue('spellcheck', 'true');
+		ResultPageManager.store.addByValue('currentUrl', '<?php echo $currentUrl?>');
+		ResultPageManager.store.addByValue('spellcheck.collate', 'true');
+		<?php if($fq != ""):?>
+		ResultPageManager.store.addByValue('fq', '<?php echo $fq;?>');
+		<?php endif;?>
+		ResultPageManager.store.addByValue('facet', 'true');
+		ResultPageManager.store.addByValue('facet.field', 'category');
+		//ResultPageManager.store.addByValue('facet.field', 'manufacturers_name');
+		<?php if(!empty($q)):?>
+		ResultPageManager.store.addByValue('defType', 'dismax');
+		<?php endif;?>
+
+		//ResultPageManager.store.addByValue('facet.limit', '10');
+		ResultPageManager.store.addByValue('timestamp', new Date().getTime());
+
+		ResultPageManager.doRequest();
+	
+</script>

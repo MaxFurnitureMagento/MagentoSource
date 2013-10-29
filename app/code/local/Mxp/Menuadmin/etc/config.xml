@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Mxp 
+ * Menuadmin
+ * 
+ * @category    Mxp
+ * @package     Mxp_Menuadmin
+ * @copyright   Copyright (c) 2011 Mxp (http://www.magentoxp.com)
+ * @author      Magentoxp (Mxp)Magentoxp Team <support@magentoxp.com>
+ */
+ -->
+<config>
+    <modules>
+        <Mxp_Menuadmin>
+            <version>0.1.0</version>
+        </Mxp_Menuadmin>
+    </modules>
+    <frontend>
+        <routers>
+            <menuadmin>
+                <use>standard</use>
+                <args>
+                    <module>Mxp_Menuadmin</module>
+                    <frontName>menuadmin</frontName>
+                </args>
+            </menuadmin>
+        </routers>
+        <layout>
+            <updates>
+                <menuadmin module="Mxp_Menuadmin">
+                    <file>menuadmin.xml</file>
+                </menuadmin>
+            </updates>
+         </layout>
+    </frontend>
+    <admin>
+        <routers>
+			<menuadmin>
+				<use>admin</use>
+				<args>
+					<module>Mxp_Menuadmin</module>
+					<frontName>menuadmin</frontName>
+				</args>
+			</menuadmin>
+        </routers>
+    </admin>
+    <adminhtml>
+		<menu>
+			 <cms>
+				<children>
+					<items module="menuadmin">
+						<title>Menu Admin</title>
+						<sort_order>71</sort_order>
+						<action>menuadmin/adminhtml_menuadmin</action>
+					</items>
+				</children>
+			</cms>
+		</menu>
+		<layout>
+			<updates>
+				<menuadmin>
+					<file>menuadmin.xml</file>
+				</menuadmin>
+			</updates>
+		</layout>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						 <cms>
+							<children>
+								<items module="menuadmin">
+									<title>Navigation Bar</title>
+									<sort_order>71</sort_order>
+								</items>
+							</children>
+						</cms>
+					</children>
+				</admin>
+				<admin>
+					<children>
+						<system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <menuadmin translate="title" module="menuadmin">
+                                            <title>Menu Admin</title>
+                                        </menuadmin>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+		<layout>
+			<updates>
+				<menuadmin>
+					<file>menuadmin.xml</file>
+				</menuadmin>
+			</updates>
+		</layout>
+    </adminhtml>
+    <global>
+        <models>
+            <menuadmin>
+                <class>Mxp_Menuadmin_Model</class>
+                <resourceModel>menuadmin_mysql4</resourceModel>
+            </menuadmin>
+            <menuadmin_mysql4>
+                <class>Mxp_Menuadmin_Model_Mysql4</class>
+                <entities>
+                    <menuadmin>
+                        <table>menuadmin</table>
+                    </menuadmin>
+                </entities>
+            </menuadmin_mysql4>
+        </models>
+        <resources>
+            <menuadmin_setup>
+                <setup>
+                    <module>Mxp_Menuadmin</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </menuadmin_setup>
+            <menuadmin_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </menuadmin_write>
+            <menuadmin_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </menuadmin_read>
+        </resources>
+        <blocks>
+            <menuadmin>
+                <class>Mxp_Menuadmin_Block</class>
+            </menuadmin>
+        </blocks>
+        <helpers>
+            <menuadmin>
+                <class>Mxp_Menuadmin_Helper</class>
+            </menuadmin>
+        </helpers>
+    </global>
+    <default>
+        <menuadmin>
+            <top>
+                <enabled>1</enabled>
+                <removemenu>0</removemenu>
+                <homemenu>0</homemenu>
+            </top>
+            <left>
+                <enabled>0</enabled>
+                <homemenu>0</homemenu>
+            </left>
+            <right>
+                <enabled>0</enabled>
+                <homemenu>0</homemenu>
+            </right>
+            <bottom>
+                <enabled>0</enabled>
+                <homemenu>0</homemenu>
+            </bottom>
+        </menuadmin>
+    </default>
+</config>

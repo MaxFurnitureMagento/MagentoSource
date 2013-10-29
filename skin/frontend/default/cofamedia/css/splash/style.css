@@ -1,0 +1,24 @@
+.cofamedia-splash-container { float:left; width: 680px; position:relative; overflow:hidden; height:314px; margin:0 0 15px 0; background:url("../../images/splash/background.png") repeat-x top; }
+.cofamedia-splash-container .items { height:314px; overflow:hidden; position:relative; }
+
+.cofamedia-splash-container .item { display:none; position:absolute; height:314px; padding:0; }
+.cofamedia-splash-container .item.active,
+.cofamedia-splash-container .item.first { display:block; }
+.cofamedia-splash-container .item h2 { font-size:24px; color:#555555; }
+.cofamedia-splash-container .item .content { color:#444444; }
+
+.cofamedia-splash-container .thumbnails { position:absolute; bottom:0; background:url("../../images/splash/thumb-background.jpg") #fff no-repeat; margin-bottom: 15px; padding: 12px 10px;}
+.cofamedia-splash-container .thumbnails .thumbnail { float:left; cursor:pointer; }
+.cofamedia-splash-container .thumbnails .thumbnail.active {}
+.cofamedia-splash-container .thumbnails .thumbnail .button { width:10px; height:10px; background-position:-16px; background-repeat:no-repeat; margin-right: 5px; }
+.cofamedia-splash-container .thumbnails .thumbnail .button:hover { background-position:0 0; }
+.cofamedia-splash-container .thumbnails .thumbnail.active .button { background-position:0 0; }
+
+.cofamedia-splash-container .controls { position:absolute; bottom:13px; right:10px; z-index:200; border:1px solid #696969; }
+.cofamedia-splash-container .controls .pause { position:absolute; right:1px; top:1px; cursor:pointer; width:16px; height:16px; background:url("../../images/splash/controls.png") no-repeat top left; }
+.cofamedia-splash-container .controls .pause:hover { background-position:top right; }
+.cofamedia-splash-container .controls .pause.paused { background-position:bottom left; }
+.cofamedia-splash-container .controls .pause.paused:hover { background-position:bottom right; }
+
+.cofamedia-splash-container .controls .progress { width:200px; }
+.cofamedia-splash-container .controls .progress .bar { height:18px; width:0px; background:#696969; }

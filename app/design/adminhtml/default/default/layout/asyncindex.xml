@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <adminhtml_process_list>
+        <reference name="head">
+            <action method="addJs"><script>mage/cookies.js</script></action>
+            <action method="addJs"><script>mirasvit/code/asyncindex/adminhtml/asyncindex.js</script></action>
+            <action method="addCss"><stylesheet>mirasvit/asyncindex.css</stylesheet></action>
+        </reference>
+
+        <reference name="content">
+            <block type="asyncindex/adminhtml_asyncControl" name="asyncindex" template="asyncindex/asyncindex.phtml" />
+        </reference>
+    </adminhtml_process_list>
+</layout>

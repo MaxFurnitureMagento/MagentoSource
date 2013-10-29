@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<layout>
+
+    <maxfurniture_import_index>
+        <reference name="content">
+          <block type="maxfurniture/import" name="max_import"/>
+          <block type="maxfurniture/form" name="max_form"/>
+          <block type="adminhtml/template" name="max_import_info" template="maxfurniture/import.phtml"/>
+        </reference>
+    </maxfurniture_import_index>
+
+</layout>

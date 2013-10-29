@@ -1,0 +1,114 @@
+<?php
+	$solrData = $this->getSolrData();
+	$stats = $solrData['stats'];
+	$facets = $solrData['facet_counts'];
+	$facets_fields = $facets['facet_fields'];
+	$facets_fields_labels = Mage::getSingleton('core/session')->getSolrFacetFieldsLabels();
+	
+	$q = $this->getData('querytext');
+	
+	$filterQuery = Mage::getSingleton('core/session')->getSolrFilterQuery();
+	//print_r($filterQuery);
+	//die();
+	$isFacetActived = false;
+	foreach($filterQuery as $key=>$value) {
+		if(is_array($value) && count($value) > 0) {
+		$isFacetActived = true;
+		}
+	}
+?>
+<div class="block block-layered-nav" id="solr_search_facets_temp" style="display:none">
+    <div class="block-title">
+        <strong><span><?php echo $this->__('Shop By') ?></span></strong>
+    </div>
+    <div class="block-content">
+            
+            <?php if($isFacetActived) : ?>
+			<div class="currently">
+				<p class="block-subtitle"><?php echo $this->__('Currently Shopping by') ?></p>
+				<ol>
+					<?php foreach($filterQuery as $key=>$values): ?>
+						<?php foreach($values as $v): ?>
+							<li>
+								<span class="label"><?php echo $this->getFacetLabel($key); ?>:</span> <span class="value"><?php echo $v ?></span>
+								<a title="<?php echo $this->__('Remove This Item') ?>" href="javascript:;" onclick="solrsearch_resultpage_ajax_request(this, '<?php echo $key ?>|<?php echo $v ?>');" class="btn-remove"><?php echo $this->__('Remove This Item') ?></a>
+							</li>
+						<?php endforeach; ?>
+					<?php endforeach; ?>
+				</ol>
+			</div>
+			<?php endif; ?>
+			<p class="block-subtitle"><?php echo $this->__('Shopping Options') ?></p>
+			<dl id="narrow-by-list">
+				<?php foreach ($facets_fields as $key=>$face): ?>
+                    <?php if (count($face) > 0):?>
+                    <dt id="solr_search_<?php echo $key ?>_expander" onclick="Effect.toggle('content_holder_<?php echo $key ?>', 'slide', { duration: 0.3 }); $('solr_search_<?php echo $key ?>_expander').toggleClassName('collapsed'); return false;"><?php echo $this->getFacetLabel($key); ?></dt>
+                    <dd id="content_holder_<?php echo $key ?>">
+                    	<ol>
+                    		<?php foreach ($face as $item=>$count): ?>
+                    		<?php if ($count > 0):?>
+		                   	<li>
+		                   	
+		                   	<?php
+							$activeClass = '';
+							$facetKey = $key;
+							if(isset($filterQuery[$facetKey]) && is_array($filterQuery[$facetKey]) && in_array($item,$filterQuery[$facetKey])){
+								$activeClass = 'active';
+							}
+							?>
+		                   								
+							<a href="javascript:;" onclick="solrsearch_resultpage_ajax_request(this, '<?php echo $key.'|'.$item ?>');" class="facet-item <?php echo $activeClass ?>"><?php echo $item?></a> (<?php echo $count?>)
+							</li>
+						<?php endif;?>
+	                	<?php endforeach; ?>
+                    	</ol>
+                		
+                    </dd>
+                    <?php endif;?>
+                <?php endforeach; ?>
+                
+				<dt id="solr_search_prize_expander" onclick="Effect.toggle('content_holder_prize', 'slide', { duration: 0.3 }); $('solr_search_prize_expander').toggleClassName('collapsed'); return false;">Prices</dt>
+			<dd id="content_holder_prize">
+				<div id="refine-results-price">
+				    <div class="ui-textured-darkgrey-block">
+				        <div class="refine-results-price-slider" id="solr_search_price_slider">
+				            <div id="refine-results-price-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+				            	<div class="ui-slider-range ui-widget-header"></div>
+				            		<span id="solr_search_price_slider_handle1" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></span>
+				            		<span id="solr_search_price_slider_handle2" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 100%;"></span>
+				            	</div>
+				        </div>
+				        <div id="refine-results-price-values">
+				            <?php $currencySign = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol() ?>
+				            <?php echo $currencySign?>
+				            <input type="text" id="solr_search_price_slider_start_value" value="<?php echo floor($stats['stats_fields']['price_decimal']['min']) ?>"/>TO<?php echo $currencySign?><input type="text" id="solr_search_price_slider_end_value" value="<?php echo ceil($stats['stats_fields']['price_decimal']['max']) ?>" />
+				        </div>
+				        <button title="Update Price Range" onclick="solrsearch_resultpage_ajax_request(this, 'price_decimal|'+'['+$('solr_search_price_slider_start_value').value+' TO '+$('solr_search_price_slider_end_value').value+']')" id="refine-results-price-apply" class="ui-button ui-button-grey" type="button"><?php echo $this->__('Update Price Range') ?></button>
+				    </div>
+				</div>
+				<script type="text/javascript">
+						var handles = ['solr_search_price_slider_handle1', 'solr_search_price_slider_handle2'];
+						// horizontal slider control
+						new Control.Slider(handles, 'solr_search_price_slider', {
+							range:$R(<?php echo floor($stats['stats_fields']['price_decimal']['min']) ?>, <?php echo ceil($stats['stats_fields']['price_decimal']['max']) ?>),
+							step:10,
+							restricted:true,
+							sliderValue:[<?php echo floor($stats['stats_fields']['price_decimal']['min']) ?>,<?php echo ceil($stats['stats_fields']['price_decimal']['max']) ?>],
+							onSlide: function(v) { 
+								$('solr_search_price_slider_start_value').value = Math.round(v[0]);
+								$('solr_search_price_slider_end_value').value = Math.round(v[1]);
+							},
+							onChange: function(v) {
+								$('solr_search_price_slider_start_value').value = Math.round(v[0]);
+								$('solr_search_price_slider_end_value').value = Math.round(v[1]);
+							}
+						});
+				</script>
+				</dd>
+            </dl>           
+    </div>
+	<?php if($isFacetActived): ?>
+	<p class="block-subtitle" style="text-align:right"><a href="javascript:;" onclick="solrsearch_resultpage_ajax_refine();" class="clear-all"><?php echo $this->__('Clear all.') ?></a></p>
+	<?php endif; ?>
+    </div>
+</div>

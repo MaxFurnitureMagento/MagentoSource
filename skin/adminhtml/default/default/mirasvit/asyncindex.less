@@ -1,0 +1,27 @@
+.asyncindex {
+    .log-container {
+        position: relative;
+
+        #detailed_log {
+            .state {
+                display: block;
+                width: 150px;
+
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                color: #fff;
+                font-weight: bold;
+                text-align: center;
+
+                &.processing {
+                    background: #ff9c00;
+                }
+
+                &.waiting {
+                    background: #3cb861;
+                }
+            }
+        }
+    }
+}

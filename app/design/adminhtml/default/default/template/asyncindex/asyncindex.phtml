@@ -1,0 +1,71 @@
+<?php
+$_collection = $this->getAsyncCollection();
+?>
+<div class="asyncindex">
+    <br/>
+    <div class="content-header">
+        <table cellspacing="0">
+            <tr>
+                <td>
+                    <h3 class="icon-head head-adminhtml-process">
+                        <?php echo Mage::helper('asyncindex')->__('Asynchronous Re-indexing Management') ?> (<?php echo $this->getQueueSize() ?>)
+                        <small style="color: #999; font-size: 0.8em;">Saved <?php echo $this->getSavedTime() ?> of your time</small>
+                    </h3>
+                </td>
+                <?php $_disabed = (Mage::helper('asyncindex')->isForceAllowed()) ? '' : 'disabled'; ?>
+                <td class="form-buttons">
+                    <button onclick="setLocation('<?php echo $this->getUrl('*/asyncIndex/process')?>')" type="button" class="scalable <?php echo $_disabed ?>" <?php echo $_disabed ?>>
+                        <span><?php echo Mage::helper('asyncindex')->__('Force process queue') ?></span>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <?php if (count($_collection) > 0): ?>
+        <div class="grid">
+            <table class="data" cellspacing="0">
+                <thead>
+                    <tr class="headings">
+                        <th class="no-link"><span class="nobr"><?php echo Mage::helper('asyncindex')->__('Event Type') ?></span></th>
+                        <th class="no-link"><span class="nobr"><?php echo Mage::helper('asyncindex')->__('Entity') ?></span></th>
+                        <th class="no-link last"><span class="nobr"><?php echo Mage::helper('asyncindex')->__('Entity ID') ?></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php $i = 0 ?>
+                <?php foreach ($_collection as $_async): ?>
+                    <tr <?php echo ($i++ % 2) ? '' : 'class="even"'; ?>>
+                        <td><?php echo $this->ucString($_async->getType()) ?></td>
+                        <td><?php echo $this->ucString($_async->getEntity()) ?></td>
+                        <td class="a-left"><?php echo $_async->getEntityPk() ?></td>
+                    </tr>
+                <?php endforeach ?>
+                <?php if (count($_collection) < $this->getQueueSize()): ?>
+                    <tr>
+                        <td>...</td>
+                        <td>...</td>
+                        <td class="a-left">...</td>
+                    </tr>
+                <?php endif ?>
+                </tbody>
+            </table>
+        </div>
+    <?php else: ?>
+        <div class="grid">
+        <?php echo Mage::helper('asyncindex')->__('No pending queue entries available.') ?>
+        </div>
+    <?php endif ?>
+
+    <div class="log-container">
+        <button onclick="$('detailed_log').toggle(); Mage.Cookies.set('async_detailed_log', $('detailed_log').style.display); return false;" type="button" class="scalable">
+            <span><?php echo Mage::helper('asyncindex')->__('Detailed Log') ?></span>
+        </button>
+        <div id="detailed_log" style="height: 400px; overflow:scroll; display: <?php echo $this->getLogDisplay() ?>"></div>
+    </div>
+    <br>
+
+    <script>
+    AsyncIndex.init('<?php echo $this->getUrl("*/asyncIndex/state") ?>');
+    </script>
+</div>

@@ -1,0 +1,6 @@
+<?php $catChildren = Mage::registry('current_category')->hasChildren(); ?>
+<?php if($catChildren != 1): ?>
+<div class="layerbread">
+  <?php echo $this->getChildHtml() ?>
+</div>
+<?php endif; ?>

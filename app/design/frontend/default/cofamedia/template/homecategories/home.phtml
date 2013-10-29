@@ -1,0 +1,23 @@
+<?php
+$categories = $this->getCategories();
+$i = 0;
+?>
+<ul class="categories">
+	<?php foreach($categories as $c): ?>
+		<li class="<?php if($i == 0) { echo 'first'; $i++; } ?>" onclick="location.href='<?php echo $c->getUrlPath() ?>'">
+			<?php
+				$style = $c->getHomeThumbnail()
+									? "background-image:url('".Mage::getBaseUrl('media').'catalog/category/'.$c->getHomeThumbnail()."')"
+									: '';
+			?>
+			<div class="image" style="<?php echo $style ?>">
+			</div>
+			<div class="description">
+				<?php echo $c->getDescription() ?>
+			</div>
+			<div class="link">
+				<a href="<?php echo $c->getUrlPath() ?>"><?php echo $c->getCategoryHomeName() ?></a>
+			</div>
+		</li>
+	<?php endforeach; ?>
+</ul>

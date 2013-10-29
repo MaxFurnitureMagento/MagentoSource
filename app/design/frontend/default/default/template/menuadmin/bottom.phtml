@@ -1,0 +1,24 @@
+<?php
+/**
+ * Mxp 
+ * Menuadmin
+ * 
+ * @category    Mxp
+ * @package     Mxp_Menuadmin
+ * @copyright   Copyright (c) 2011 Mxp (http://www.magentoxp.com)
+ * @author      Magentoxp (Mxp)Magentoxp Team <support@magentoxp.com>
+ */
+ ?>
+<div class="menuadmin-bottom-container">
+    <ul id="menuadmin-bottom" class="menuadmin-bottom">
+	    <?php if($this->hasHome()){ ?>
+		<li class="level0 nav-home-ico home">
+			<a href="<?php echo $this->getUrl();?>"><?php echo __('Home');?></a>
+		</li>
+	    <?php } ?>
+		<?php
+		$aux = Mage::app()->getStore(true)->getId();
+		echo $this->drawItem($aux,'bottom');
+		?>
+    </ul>
+</div>

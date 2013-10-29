@@ -1,0 +1,193 @@
+<?php 
+$solrdata = $this->getSolrData();
+$currentUrl = Mage::helper('catalog/product_compare')->getCurrentUrl();
+$totalpages = $this->getTotalPage();
+$currentpage = $this->getCurrentPage();
+if ($totalpages > 0){
+$start = $currentpage - 5;
+}
+if ($start < 1) $start = 1;	
+
+$end = $currentpage + 5;
+if ($end > $totalpages){ $end = $totalpages;}	
+
+$firstNum = (intval($this->getItemPerPage()) * ($currentpage - 1));
+if($firstNum < 1) {$firstNum = 1;}
+$lastNum = $firstNum+$this->getItemPerPage()-1;
+if ($lastNum > $solrdata['response']['numFound']){
+	$lastNum = $solrdata['response']['numFound'];
+}
+
+$toolbarData = $this->getData();
+
+$mode = "grid";
+if (!empty($toolbarData['mode'])){
+	$mode = $toolbarData['mode'];
+}
+
+$orderby = '';
+if (!empty($toolbarData['orderby'])){
+	$orderby = $toolbarData['orderby'];
+}
+
+$direction = "asc";
+if (!empty($toolbarData['direction'])){
+	$direction = $toolbarData['direction'];
+}
+		
+$params = $this->getRequest()->getParams();
+
+if (!empty($params['orderby'])){
+	$orderby = $params['orderby'];
+}
+
+if (!empty($params['direction'])){
+	$direction = $params['direction'];
+}
+
+?>
+<div class="toolbar">
+<div class="pager">
+    <p class="amount">
+        <?php if($solrdata['response']['numFound'] > 1): ?>
+            <?php echo $this->__('Items %s to %s of %s total', $firstNum, $lastNum, $solrdata['response']['numFound']) ?>
+        <?php else: ?>
+            <strong><?php echo $this->__('%s Item(s)', $solrdata['response']['numFound']) ?></strong>
+        <?php endif; ?>
+    </p>
+	<div class="pages">
+        <strong><?php echo $this->__('Page:') ?></strong>
+		<ol>
+			<?php $first = 1; ?>
+			<?php if ($first == $currentpage): ?>
+			        	
+			<?php else:?>
+			     <li><a style="padding:5px" href="<?php echo $this->getPagerUrl(array('p'=>$first));?>">First</a></li>
+			     <!--
+				 <li><a style="padding:5px" onclick="solrsearch_resultpage_ajax_refresh(<?php echo $first ?>,'<?php echo $mode ?>','<?php echo $orderby ?>','<?php echo $direction ?>')" href="javascript:;">First</a></li>
+				 -->
+			<?php endif;?>
+			
+			<?php $previous = $currentpage - 1; ?>
+			<?php 
+			if ($previous < 1) {$previous = 1;}
+			?>	
+			<?php if ($first == $currentpage): ?>   	
+			<?php else:?>
+			     <li>
+	                
+					<a class="previous i-previous" href="<?php echo $this->getPagerUrl(array('p'=>$previous));?>" title="<?php echo $this->__('Previous') ?>">
+	                   	<img src="<?php echo $this->getSkinUrl('images/pager_arrow_left.gif') ?>" alt="<?php echo $this->__('Previous') ?>" class="v-middle" />
+	                </a>
+					<!--
+					<a class="previous i-previous" onclick="solrsearch_resultpage_ajax_refresh(<?php echo $previous ?>,'<?php echo $mode ?>','<?php echo $orderby ?>','<?php echo $direction ?>')" href="javascript:;" title="<?php echo $this->__('Previous') ?>">
+	                   	<img src="<?php echo $this->getSkinUrl('images/pager_arrow_left.gif') ?>" alt="<?php echo $this->__('Previous') ?>" class="v-middle" />
+	                </a>
+	                -->
+	            </li>
+			<?php endif;?>
+			<?php for ($i=$start; $i<=$end; $i++):?>
+					<?php if ($i == $currentpage): ?>
+		        		<li  ><b><?php echo $i ?></b></li>
+		        	<?php else: ?>
+		        		<li ><a style="padding:5px" href="<?php echo $this->getPagerUrl(array('p'=>$i));?>"><?php echo $i ?></a></li>
+		        		<!-- 
+						<li ><a style="padding:5px" onclick="solrsearch_resultpage_ajax_refresh(<?php echo $i ?>,'<?php echo $mode ?>','<?php echo $orderby ?>','<?php echo $direction ?>')" href="javascript:;"><?php echo $i ?></a></li>
+						 -->
+		        	<?php endif;?>
+			<?php endfor;?>
+			
+			<?php $next = $currentpage + 1; ?>
+			<?php if ($next > $totalpages){ $next = $totalpages;} ?>
+		    <?php if ($totalpages == $currentpage): ?>
+		    <?php else: ?>
+		        <li>
+	                
+					<a class="next i-next" href="<?php echo $this->getPagerUrl(array('p'=>$next));?>" title="<?php echo $this->__('Next') ?>">
+	                   	<img src="<?php echo $this->getSkinUrl('images/pager_arrow_right.gif') ?>" alt="<?php echo $this->__('Next') ?>" class="v-middle" />
+	                </a>
+					<!--
+					<a class="next i-next" onclick="solrsearch_resultpage_ajax_refresh(<?php echo $next ?>,'<?php echo $mode ?>','<?php echo $orderby ?>','<?php echo $direction ?>')" href="javascript:;" title="<?php echo $this->__('Next') ?>">
+	                   	<img src="<?php echo $this->getSkinUrl('images/pager_arrow_right.gif') ?>" alt="<?php echo $this->__('Next') ?>" class="v-middle" />
+	                </a>
+	                -->
+	            </li>
+		    <?php endif;?>
+		    
+		    <?php $last = $totalpages; ?>
+		    <?php if ($last == $currentpage): ?>
+		        	
+		    <?php else: ?>
+		    	
+				<li ><a style="padding:5px" href="<?php echo $this->getPagerUrl(array('p'=>$last));?>">Last</a></li>
+				
+				<!--
+				<li ><a style="padding:5px" onclick="solrsearch_resultpage_ajax_refresh(<?php echo $last ?>,'<?php echo $mode ?>','<?php echo $orderby ?>','<?php echo $direction ?>')" href="javascript:;">Last</a></li>
+				-->
+		    <?php endif;?>
+		</ol>
+	</div>
+</div>
+
+	<div class="sorter">
+			<p class="view-mode">
+				<?php $_currentViewMode = $mode; ?>
+				<?php $_modes = $this->getModes(); ?>
+				<?php if($_modes && count($_modes)>1): ?>
+				<label><?php echo $this->__('View as') ?>:</label>
+				<?php foreach ($this->getModes() as $_code=>$_label): ?>
+					<?php if($this->isModeActive($_code)): ?>
+						<?php $_currentViewMode = $_code ?>
+						<strong title="<?php echo $_label ?>" class="<?php echo strtolower($_code); ?>"><?php echo $_label ?></strong>&nbsp;
+					<?php else: ?>
+						<a href="<?php echo $this->getModeUrl($_code) ?>" title="<?php echo $_label ?>" class="<?php echo strtolower($_code); ?>"><?php echo $_label ?></a>&nbsp;
+						<!--
+						<a href="javascript:;" onclick="solrsearch_resultpage_ajax_refresh(<?php echo $currentpage ?>, '<?php echo $_code ?>')" title="<?php echo $_label ?>" class="<?php echo strtolower($_code); ?>"><?php echo $_label ?></a>&nbsp;
+						-->
+					<?php endif; ?>
+				<?php endforeach; ?>
+				<?php endif; ?>
+			</p>
+			<?php if(count($this->getAvailableOrders())>1): ?>
+			<div class="sort-by">
+				<?php 
+				$_currentOrderBy = '' 
+				
+				?>
+				<label><?php echo $this->__('Sort By') ?></label>
+				<select onchange="setLocation(this.value)">
+					<option value=""><?php echo $this->__('Relevant') ?></option>
+				<?php foreach($this->getAvailableOrders() as $_key=>$att): ?>
+					<?php $value = $att['attribute_code']?>					
+					<?php
+					if($this->isOrderCurrent($value)) {
+						$_currentOrderBy = $value;
+					}
+					?>
+					
+					<option value="<?php echo $this->getOrderUrl($value, 'asc') ?>"<?php if($this->isOrderCurrent($value)): ?> selected="selected"<?php endif; ?>>
+						<?php echo $this->__($att['frontend_label']) ?>
+					</option>
+					
+					<!--
+					<option value="<?php echo $value ?>"<?php if($this->isOrderCurrent($value)): ?> selected="selected"<?php endif; ?>>
+						<?php echo $this->__($att['frontend_label']) ?>
+					</option>
+					-->
+				<?php endforeach; ?>
+				</select>
+				<?php if($this->getCurrentDirection() == 'desc'): ?>
+					<a href="<?php echo $this->getOrderUrl(null, 'asc') ?>" title="<?php echo $this->__('Set Ascending Direction') ?>"><img src="<?php echo $this->getSkinUrl('images/i_desc_arrow.gif') ?>" alt="<?php echo $this->__('Set Ascending Direction') ?>" class="v-middle" /></a>
+					<!--
+					<a href="javascript:;" onclick="solrsearch_resultpage_ajax_refresh(<?php echo $currentpage ?>,'<?php echo $_currentViewMode ?>','<?php echo $_currentOrderBy ?>', 'asc')" title="<?php echo $this->__('Set Ascending Direction') ?>"><img src="<?php echo $this->getSkinUrl('images/i_desc_arrow.gif') ?>" alt="<?php echo $this->__('Set Ascending Direction') ?>" class="v-middle" /></a>
+					-->
+				<?php else: ?>
+					<a href="<?php echo $this->getOrderUrl(null, 'desc') ?>" title="<?php echo $this->__('Set Descending Direction') ?>"><img src="<?php echo $this->getSkinUrl('images/i_asc_arrow.gif') ?>" alt="<?php echo $this->__('Set Descending Direction') ?>" class="v-middle" /></a>
+					<!--
+					<a href="javascript:;" onclick="solrsearch_resultpage_ajax_refresh(<?php echo $currentpage ?>,'<?php echo $_currentViewMode ?>','<?php echo $_currentOrderBy ?>', 'desc')" title="<?php echo $this->__('Set Descending Direction') ?>"><img src="<?php echo $this->getSkinUrl('images/i_asc_arrow.gif') ?>" alt="<?php echo $this->__('Set Descending Direction') ?>" class="v-middle" /></a>
+					-->
+				<?php endif; ?>
+			</div>
+			<?php endif; ?>
+	</div>
+</div>
