@@ -36,6 +36,14 @@ if(!PageCache::doYourThing()){
 	include_once('index.php');
 }
 
+if (strpos($_SERVER['HTTP_USER_AGENT'], 'MJ12bot')
+    || strpos($_SERVER['HTTP_USER_AGENT'], 'bingbot')
+    || strpos($_SERVER['HTTP_USER_AGENT'], 'AhrefsBot')
+) {
+    header('Location: http://www.maxfurniture.com/');
+    exit;
+}
+
 if( isset($_SERVER['HTTP_X_FORWARDED_PROTO']) ) {
 	$_SERVER['HTTPS'] = 'on';
 	$_SERVER['SERVER_PORT'] = 443;
