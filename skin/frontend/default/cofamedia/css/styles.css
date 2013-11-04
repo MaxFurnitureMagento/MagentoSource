@@ -915,6 +915,7 @@ ul#upsell-product-list .msrp { float:left; margin-left: 6px; }
 .free-shipping2 { background:transparent url(../images/freeshipping.png) no-repeat 98% 10px; }
 .free-shipping-top {	position: absolute; top: 5px; }
 
+#lowestprice_popup, #financial_popup{padding: 10px;font-size:1.1em;}
 /* Add to Links + Add to Cart */
 .add-to-box {}
 .add-to-box .add-to-cart { float:left; }
