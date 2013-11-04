@@ -1,0 +1,87 @@
+/**
+* Plugin: jQuery AJAX-ZOOM, jquery.axZm.mouseOverZoom.css
+* Copyright: Copyright (c) 2010-2013 Vadim Jacobi
+* License Agreement: http://www.ajax-zoom.com/index.php?cid=download
+* Version: 4.0.1
+* Date: 2013-02-18
+* URL: http://www.ajax-zoom.com
+* Documentation: http://www.ajax-zoom.com/index.php?cid=docs
+*/
+
+
+/* This is the moving lens square underneath the mouse pointer. */
+.mouseOverLens {
+	border: 1px solid transparent;
+	background-color: #000000;	
+	cursor: pointer;
+	background-image: url(../icons/mousetrapFullscreen.png);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.mouseOverTrap {
+	background-image: url(../icons/empty.gif);
+	cursor: pointer;
+}
+ 
+/* This is for the title text. */
+.mouseOverTitle {
+	font-family: Arial, Helvetica, sans-serif;
+	position: absolute !important;
+	background-color:#000;
+	color:#fff;
+	padding:3px;
+	width:100%;
+	text-align:center;	
+	font-weight:bold;
+	font-size:10px;
+}
+
+/* Flyout zoom window */
+.mouseOverFlyOut {
+	border-color: #888888;
+	border-style: solid;
+	box-shadow: 5px 5px 7px #818181;
+	-webkit-box-shadow: 5px 5px 7px #818181;
+	-moz-box-shadow: 5px 5px 7px #818181;
+}
+
+/* This is the loading message. */
+.mouseOverLoading {
+	/*background-color: #444444;*/
+	background-image: url(../icons/tr_black_50.png);
+	padding: 5px;
+	text-align: right;
+	/*border: #000000 1px solid;*/
+	/*text-shadow: 1px 1px 2px #000;*/
+	font: Arial;
+	font-size: 12px;
+	line-height: 20px;
+	color: #FDFDFD;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+/* Thumbnails in jcarousel */
+.mouseOverThumbImage{
+	background-position: center center;
+	width: 62px;
+	height: 62px;
+	margin: 1px 0px 0px 1px;
+	background-repeat: no-repeat;
+}
+
+.mouseOverThumbA{
+	display: block;
+	float: left;
+	cursor: pointer; 
+	width: 64px;
+	height: 64px; 
+	margin: 0px 3px 3px 0px;
+	background-color: #E3E3E3;
+	outline: none;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}

@@ -1,0 +1,93 @@
+
+.jspHorizontalBar,
+.jspVerticalBar,
+.jspTrack
+{
+	background: #eeeef4;
+}
+
+.jspDrag
+{
+ background: url("../image/pane_holder.gif") no-repeat scroll center center #AAAAAA;
+ 	/*
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	*/
+}
+
+.jspTrack .jspActive,
+.jspTrack .jspHover
+{
+	/*background: #8B8B9F;*/
+}
+
+
+.jspArrow
+{
+	background: url(../image/ui-icons_222222_256x240.png) no-repeat;
+}
+
+.jspVerticalBar>.jspActive,
+.jspArrow:hover
+{
+	background-image: url('../image/ui-icons_cd0a0a_256x240.png');
+}
+
+.jspVerticalBar>.jspDisabled,
+.jspVerticalBar>.jspDisabled:hover,
+.jspHorizontalBar>.jspDisabled,
+.jspHorizontalBar>.jspDisabled:hover
+{
+	background-color: #AAAAAA;
+	background-image: url('../image/ui-icons_888888_256x240.png');
+	background-position: -3px -3px; !important; 
+}
+
+.jspVerticalBar .jspArrow
+{
+	height: 10px;
+}
+
+.jspHorizontalBar .jspArrow
+{
+	width: 10px;
+}
+
+.jspArrowUp
+{
+	background-position: -3px -3px; !important; 
+	background-color: #AAAAAA;
+}
+
+.jspArrowDown
+{
+	background-position: -67px -3px !important; 
+	background-color: #AAAAAA;
+}
+
+.jspArrowLeft
+{
+	background-position: -96px 0 !important;
+}
+
+.jspArrowRight
+{
+	background-position: -32px 0 !important;
+}
+
+/* */
+.jspVerticalBar
+{
+	width: 10px;
+}
+.jspHorizontalBar
+{
+	height: 10px;
+}
+.jspTrack
+{
+	background: url("../image/pane_track.png") repeat scroll 0 0 #1F1F1C;
+	position: relative;
+}
+

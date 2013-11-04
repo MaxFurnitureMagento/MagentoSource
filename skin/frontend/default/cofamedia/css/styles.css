@@ -569,7 +569,8 @@ tr.summary-details-excluded { font-style:italic; }
 #nav li.level-top.last.over > a > span { background:url('../images/ui/navigation-button.png') no-repeat right top; }
 #nav li a.level-top { background: url('../images/ui/navigation-separator.png') no-repeat top left; }
 
-.information{float: right}
+.information{float: right;position: relative;}
+.information .stellaservice{position: absolute;left:-115px;top: -35px;}
 .call-help{background: url("../images/header.png") repeat scroll  -444px 0px transparent; height: 40px; width: 152px; float: left; margin-top: -6px;}
 .phone{/*background: url("../images/header.png") repeat scroll  -40px -96px transparent;*/ height: 40px; width: 220px; float: left; margin: -4px 7px 0; padding-right: 13px;border-left: 1px solid #C7C7C7;border-right: 1px solid #C7C7C7;}
 .emailUs {float: right;font-size: 14px;font-weight: bold;margin-top: 3px;text-transform: uppercase;}
@@ -912,8 +913,9 @@ ul#upsell-product-list .msrp { float:left; margin-left: 6px; }
 
 .free-shipping { background:transparent url(../images/free-shipping-image.png) no-repeat 100% 10px; }
 .free-shipping2 { background:transparent url(../images/freeshipping.png) no-repeat 98% 10px; }
-.free-shipping-top {	position: absolute;	left: 180px;top: 5px; }
+.free-shipping-top {	position: absolute; top: 5px; }
 
+#lowestprice_popup, #financial_popup{padding: 10px;font-size:1.1em;}
 /* Add to Links + Add to Cart */
 .add-to-box {}
 .add-to-box .add-to-cart { float:left; }
@@ -1032,6 +1034,8 @@ ul#upsell-product-list .msrp { float:left; margin-left: 6px; }
 .product-tabs-container .product-tabs li.active a { background:transparent url(../images/background/tab-button.png) repeat-x 0 0; }
 .product-tabs-container .product-tabs-content {height: 244px; overflow:auto; padding:20px; font-family:"Trebuchet MS", Helvetica, Arial, sans-serif; border: 1px solid #D8D8D8; }
 .product-tabs-container .product-tabs-content h2 { font-weight:normal; color:#2e2e2e; }
+
+.product-lowestprice{margin:0 !important;float:right;}
 
 /* Customer Service Links */
 .customer-service { text-align:center; padding-top:30px; }

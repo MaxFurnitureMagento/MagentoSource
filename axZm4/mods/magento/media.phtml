@@ -1,0 +1,921 @@
+<?php
+/**
+* Plugin: jQuery AJAX-ZOOM, Magento PHP template file: media.php
+* Copyright: Copyright (c) 2010-2013 Vadim Jacobi
+* License Agreement: http://www.ajax-zoom.com/index.php?cid=download
+* Version: 4.0.1
+* Date: 2013-02-18
+* URL: http://www.ajax-zoom.com
+* Documentation: http://www.ajax-zoom.com/index.php?cid=docs
+*/
+
+
+/***********************************************************************************************
+*************************** 360 DEGREE SPINS ***************************************************
+HOW TO: to add 360 degree view simply upload your high resolution images of a spin over FTP 
+into '/axZm/pic/zoom3D/[product id]' e.g. '/axZm/pic/zoom3D/123'. 
+An other words create folder with product ID under '/axZm/pic/zoom3D/' 
+and put all your images (frames of 360 spin) in it. 
+AJAX-ZOOM will look into this directory and trigger everything else instantly! 
+ 
+THINGS TO TAKE ACCOUNT OF: 
+1. 	Every image must have an unique filename!!! 
+	You could prefix each image of a spin with the product id to ensure the uniqueness, e.g.
+	/axZm/pic/zoom3D/123/123_spin001.jpg
+	/axZm/pic/zoom3D/123/123_spin002.jpg
+	/axZm/pic/zoom3D/123/123_spin003.jpg
+	[...]
+	/axZm/pic/zoom3D/123/123_spin036.jpg
+	(number of images is not restricted)
+
+2. 	When you upload 16, 24, 36, 48, 72 or even more high resolution images - this takes time. 
+	To avoid incomplete generation of the animated preview gif and / or image tiles 
+	you can upload the spin set into some other folder and move it 
+	to '/axZm/pic/zoom3D/[product id]' after all images have been successfully uploaded. 
+	Alternatively place an empty file named "upload.txt" into this folder and remove it after 
+	the upload is complete. 
+**********************************************************************************************/
+
+$_product = $this->getProduct();
+$_helper = $this->helper('catalog/output');
+$axZm_BaseUrl = str_replace('\\','/',dirname($_SERVER["SCRIPT_NAME"]));
+if ($axZm_BaseUrl == '/' || $axZm_BaseUrl == '\\'){$axZm_BaseUrl='';}
+
+/**********************************************************************************************
+*************************** TEMPLATE SETTINGS *************************************************
+PLEASE READ:
+
+Many other settings for AJAX-ZOOM player can be found in /axZm/zoomConfig.inc.php
+
+However: some of the settings set in /axZm/zoomConfig.inc.php 
+are overwritten in file /axZm/zoomConfigCustom.inc.php after 
+elseif ($_GET['example'] == 'magento'){
+
+e.g. if you want to change the size of the player look for 
+$zoom['config']['picDim'] in /axZm/zoomConfigCustom.inc.php 
+after elseif ($_GET['example'] == 'magento'){
+**********************************************************************************************/
+?>
+<!-- Some overrides of the css, /axZm/axZm.css -->
+<style type="text/css" media="screen"> 	
+	#zoomContainer{
+		background-color: #FFFFFF;
+	}
+
+	.zFsO{
+		background-color: #FFFFFF;
+	}
+	
+	#zoomMapSel{
+		border-color: blue;
+	}
+
+	#zoomMapSelArea{
+		background-color: blue;
+	}
+	
+	#zoomMapLoading{
+		background-color: #FFFFFF;
+		background-image: url('<?php echo $axZm_BaseUrl;?>/axZm/icons/ajax-loader-map-white.gif');
+	}
+	
+	#zoomMapHolder{
+		background-color: #FFFFFF;
+		background-image: url('<?php echo $axZm_BaseUrl;?>/axZm/icons/ajax-loader-map-white.gif');
+	}
+	#axZmStopPlay{
+		 border-right: #CCCCCC 1px solid;
+		 border-bottom: #CCCCCC 1px solid;
+	}
+	
+	.axZmStopPlayGif{
+	}
+	.axZmStopPlayGif1{
+	}	
+</style>
+<?php
+
+// Display mode switch, possible values: lightbox, flyout, left, embedded
+$axZm['displayModus'] = 'lightbox';
+
+// Styleset with minimum buttons and other controls
+// If set to yes some options in /axZm/zoomConfigCustom.inc.php are overriden after if (isset($_GET['zoomTouchStyle']) && $_GET['zoomTouchStyle'] == 'yes'){
+// Also some css is verridden from /axZm/axZm.css in this file around line 230
+$axZm['zoomTouchStyle'] = 'yes'; // yes or no
+
+// Even if $axZm['zoomTouchStyle'] is no we can enable it only for some major touch devices
+if (preg_match('/(android|blackberry|iphone|ipad|ipaq|ipod|smartphone|symbian)/i', $_SERVER['HTTP_USER_AGENT'])){
+	$axZm['zoomTouchStyle'] = 'yes';
+}
+
+// Width / Height of the preview image, also if $axZm['displayModus'] is "left"
+$axZm['smallImageSize']['w'] = 300; // int
+$axZm['smallImageSize']['h'] = 300; // int
+
+// Width / Height of the container where AJAX-ZOOM is loaded into when $axZm['displayModus'] is "embedded"
+$axZm['embedContainerWidth'] = 688;
+$axZm['embedContainerHeight'] = 450;
+
+// Width / Height of the AJAX-ZOOM image area when $axZm['displayModus'] is "embedded"
+$axZm['embedWidth'] = 686; // -2 px for border left/right ($zoom['config']['innerMargin'])
+$axZm['embedHeight'] = 400; // -48px navigation ($zoom['config']['displayNavi']), -2px border top/bottom ($zoom['config']['innerMargin'])
+
+// When zoomTouchStyle is set to yes, the embedContainerWidth/embedContainerHeight can be equal to embedWidth/embedHeight because there are no borders and toolbar
+if ($axZm['zoomTouchStyle'] == 'yes' || isset($_SESSION['zoomTouchStyle'])){
+	$axZm['embedWidth'] = $axZm['embedContainerWidth'];
+	$axZm['embedHeight'] = $axZm['embedContainerHeight'];
+}
+
+// Flyout mode - width if the flyout container
+$axZm['zoomedAreaWidth'] = 392;
+
+// Flyout mode - height if the flyout container
+$axZm['zoomedAreaHeight'] = 500;
+
+// Flyout mode - horizontal offset of the flyout container
+$axZm['zoomedAreaOffsetRight'] = 9;
+
+// Flyout mode - vertical offset of the flyout container
+$axZm['zoomedAreaOffsetTop'] = -17;
+
+// Lightbox Mode - open AJAX-ZOOM player as fullscreen
+$axZm['openAsFullScreen'] = false;
+
+// Change the position of container where AJAX-ZOOM is loaded into to be before or after product description
+// The position is changes with Javascript
+// Possible values: 'before', 'after' or false
+$axZm['displacePosition'] = 'before';
+
+// Background color of the preview images
+$axZm['smallImageSize']['backgroundColor'] = array(255,255,255);
+
+// Preload all preview images with javascript
+$axZm['smallImagePreload'] = true; // bool
+
+// Width / Height / background color of the thumbs
+$axZm['thumbSize']['w'] = 66; 
+$axZm['thumbSize']['h'] = 66;
+$axZm['thumbSize']['backgroundColor'] = array(255,255,255);
+
+// Zoom icon on top of the preview image
+$axZm['zoomIcon'] = true; // bool
+
+// 'mouseover' or 'click' for thumbs. 
+// if 'mouseover' $axZm['smallImagePreload'] should be set to true
+// if 'mouseover' click on the thumb will open AJAX-ZOOM too
+$axZm['thumbSwitch'] = 'mouseover'; // string
+
+// Transition speed between images in ms, 0 -> no transition
+$axZm['transitionSpeed'] = 150; // int
+
+// Text under the image or false to disable
+$axZm['zoomText'] = 'Click on above image to zoom'; // string or false
+
+// Return more views text above the thumbs
+$axZm['moreViewsText'] = true; // bool
+
+// 360 spin thumb position in the gallery along with other images - 'first' or 'last'
+$axZm['360Pos'] = 'last'; // string
+
+// start 360 preview image with jpg and not 360 gif
+$axZm['Jpg360First'] = false; //bool
+
+// 360 spin rotation time
+$axZm['sTurn'] = 2.5; // float > 2
+
+// 360 spin add pause / play for gif animation
+$axZm['stopPlay'] = true;
+
+
+/************************** End Template settings ****************************/
+
+/*****************************************************************************/
+
+// Temp
+/*
+$array_displayModus = array('lightbox', 'flyout', 'left', 'embedded');
+if (isset($_GET['displayModus'])){
+	if (in_array($_GET['displayModus'], $array_displayModus)){
+		$_SESSION['displayModus'] = $_GET['displayModus'];
+	}
+}
+if (isset($_SESSION['displayModus'])){
+	$axZm['displayModus'] = $_SESSION['displayModus'];
+}
+
+if (isset($_GET['openAsFullScreen'])){
+	$axZm['openAsFullScreen'] = true;
+}
+
+
+if (isset($_GET['zoomTouchStyle'])){
+	if ($_GET['zoomTouchStyle'] == 'yes'){
+		$_SESSION['zoomTouchStyle'] = true;
+	}else{
+		unset($_SESSION['zoomTouchStyle']);
+	}
+}
+
+if (isset($_SESSION['zoomTouchStyle']) || ($axZm['zoomTouchStyle'] == 'yes' && !isset($_GET['zoomTouchStyle']))){
+	$axZm['zoomTouchStyle'] = 'yes';
+} else{
+	$axZm['zoomTouchStyle'] = 'no';
+}
+*/
+
+
+if ($axZm['zoomTouchStyle'] == 'yes'){
+?>
+<!-- Some overrides of the css, /axZm/axZm.css -->
+<style type="text/css" media="screen"> 	
+#zoomBorder{background-color: #FFFFFF;}
+#zoomGalleryVerticalContainer{background-color: #FFFFFF;}
+.zoomGalleryBox, .zoomGalleryBoxOver, .zoomGalleryBoxSelected{
+	border-color: #CCCCCC; /*anim*/
+	background-color: #FFFFFF; /*anim*/
+	-moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px 4px 4px 4px;
+	-khtml-border-radius: 4px;
+}
+.zoomGalleryBoxOver{
+	border-color: #CCCCCC; /*anim*/
+	background-color: #FFFFFF; /*anim*/
+}
+.zoomGalleryImg{
+	background-image: none;
+}
+.jspTrack{
+	background: none;
+}
+</style>
+<?php
+}
+
+
+
+// Automatic settings
+if ($axZm['displayModus'] == 'flyout' &&  ( $_product->getImage() == 'no_selection' || !$_product->getImage()) ){
+	$axZm['displayModus'] = 'left';
+}
+
+if ($axZm['displayModus'] == 'left'){
+	if ($axZm['zoomTouchStyle'] != 'yes'){
+		$axZm['embedContainerWidth'] = $axZm['smallImageSize']['w']+2;
+		$axZm['embedContainerHeight'] = $axZm['smallImageSize']['h']+48+2;
+	}else{
+		$axZm['embedContainerWidth'] = $axZm['smallImageSize']['w'];
+		$axZm['embedContainerHeight'] = $axZm['smallImageSize']['h'];	
+	}
+	$axZm['embedWidth'] = $axZm['smallImageSize']['w'];
+	$axZm['embedHeight'] = $axZm['smallImageSize']['h'];
+}
+
+if ($axZm['displayModus'] == 'flyout'){
+	$axZm['embedWidth'] = $axZm['zoomedAreaWidth'];
+	$axZm['embedHeight'] = $axZm['zoomedAreaHeight'];
+}
+
+
+// Javascript string
+$axZm['javascript'] = '';
+
+if ($axZm['stopPlay']){
+	$axZm['javascript'] .= '
+	jQuery.axZmStopPlay = true;
+	';
+}
+
+if ($axZm['Jpg360First']){
+	$axZm['javascript'] .= '
+	jQuery.axZmState360 = "jpg";
+	jQuery.Jpg360First = true;
+	';
+}
+
+$axZm['javascript'] .= '
+	jQuery.zoomTouchStyle = "'.$axZm['zoomTouchStyle'].'";
+';
+
+
+// Empty array for preloading images with javascript
+$axZm['imgUrlS'] = array();
+
+// 360 Spinner urls
+$axZm['URL_TYPE_WEB'] = parse_url(Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB));
+
+// Paths to 360 folder
+if ( str_replace('//', '/', str_replace('\\', '/', Mage::getBaseDir('base').'/axZm/pic/zoom3D')) ){
+	$axZm['absPathTo360'] = str_replace('//', '/', str_replace('\\', '/', $axZm['URL_TYPE_WEB']['path'].'/axZm/pic/zoom3D/'.$_product->getEntityId()));
+	$axZm['basePathTo360'] = str_replace('//', '/', str_replace('\\', '/', Mage::getBaseDir('base').'/axZm/pic/zoom3D/'.$_product->getEntityId()));
+}else{
+	$axZm['absPathTo360'] = str_replace('//', '/', str_replace('\\', '/', $axZm['URL_TYPE_WEB']['path'].'/axZm/pic/zoom3d/'.$_product->getEntityId()));
+	$axZm['basePathTo360'] = str_replace('//', '/', str_replace('\\', '/', Mage::getBaseDir('base').'/axZm/pic/zoom3d/'.$_product->getEntityId()));
+}
+
+$axZm['thumb360imagePath'] = '';
+$axZm['preview360imagePath'] = '';
+$axZm['thumb360gallThumb'] = '';
+
+// Check the existence of the folder with spin images
+// Do not proceed if a text file named upload.txt exists in the same folder
+// This means images are uploading
+if (is_dir($axZm['basePathTo360']) AND !file_exists($axZm['basePathTo360'].'/upload.txt')){ 
+ 	
+	// Check if 360 spin gif image has been made
+	if (!file_exists(str_replace('//', '/', str_replace('\\', '/', Mage::getBaseDir('base').'/axZm/pic/zoom3Dgif/'.$_product->getEntityId().'/'.$axZm['smallImageSize']['w'].'x'.$axZm['smallImageSize']['h'].'/axZmGifAnimation.gif')))){
+
+		// Before the 360 spin gif image is generated show an temp png image
+		if (!file_exists(str_replace('//', '/', str_replace('\\', '/', Mage::getBaseDir('base').'/axZm/pic/zoom3Dgif/temp360Spin_'.$axZm['smallImageSize']['w'].'x'.$axZm['smallImageSize']['h'].'.png')))){
+			
+			/*
+			$filesArray = scandir($axZm['basePathTo360']);
+			*/
+			// Small function to make temp images for 360 spin
+			// The gif animations are made by ajax request after the page is loaded in /axZm/axZmSpinGif.php
+			function makeTemp360SpinImage($w, $h, $x, $y, $fontSize, $base, $target, $text){
+				$im = imagecreatetruecolor($w, $h);
+				$white = imagecolorallocate($im, 246, 246, 246); // RGB background color (255,255,255 is white)
+				$black = ImageColorAllocate ($im, 0, 0, 0); // RGB font color
+				imagefill($im, 0, 0, $white);
+				$pathTTF = str_replace('//', '/', str_replace('\\', '/', $base.'/axZm/fonts/COLLEGE.TTF')); // Text font
+				imagettftext ($im, $fontSize, 0, $x, $y, $black, $pathTTF,  $text);
+				imagepng($im, $target);
+				imagedestroy($im);
+			}
+			makeTemp360SpinImage($axZm['smallImageSize']['w'], $axZm['smallImageSize']['h'], 10, 20, 12, Mage::getBaseDir('base'), str_replace('//', '/', str_replace('\\', '/', Mage::getBaseDir('base').'/axZm/pic/zoom3Dgif/temp360Spin_'.$axZm['smallImageSize']['w'].'x'.$axZm['smallImageSize']['h'].'.png')), "Creating 360 spin preview\nplease wait ...");
+			makeTemp360SpinImage($axZm['thumbSize']['w'], $axZm['thumbSize']['h'], 5, 15, 8, Mage::getBaseDir('base'), str_replace('//', '/', str_replace('\\', '/', Mage::getBaseDir('base').'/axZm/pic/zoom3Dgif/temp360Spin_'.$axZm['thumbSize']['w'].'x'.$axZm['thumbSize']['h'].'.png')), "Creating\n360 spin\npreview");
+		}
+		
+		$axZm['preview360imagePath'] = str_replace('//', '/', str_replace('\\', '/', $axZm['URL_TYPE_WEB']['path'].'/axZm/pic/zoom3Dgif/temp360Spin_'.$axZm['smallImageSize']['w'].'x'.$axZm['smallImageSize']['h'].'.png'));
+		$axZm['thumb360imagePath'] = str_replace('//', '/', str_replace('\\', '/', $axZm['URL_TYPE_WEB']['path'].'/axZm/pic/zoom3Dgif/temp360Spin_'.$axZm['thumbSize']['w'].'x'.$axZm['thumbSize']['h'].'.png'));
+		$axZm['preview360FirstFramePath'] = $axZm['preview360imagePath'];
+		
+		// Tigger the generation of the 360 spin as gif image (after the page is loaded)
+		$axZm['javascript'] .= '
+			jQuery.fn.make360gif('.$_product->getEntityId().', '.$axZm['smallImageSize']['w'].', '.$axZm['smallImageSize']['h'].', '.$axZm['thumbSize']['w'].', '.$axZm['thumbSize']['h'].', '.$axZm['sTurn'].'); 
+		'; 
+	}else{
+		// Preview and thumb gif images have been made already
+		$axZm['preview360imagePath'] = str_replace('//', '/', str_replace('\\', '/', $axZm['URL_TYPE_WEB']['path'].'/axZm/pic/zoom3Dgif/'.$_product->getEntityId().'/'.$axZm['smallImageSize']['w'].'x'.$axZm['smallImageSize']['h'].'/axZmGifAnimation.gif'));
+		$axZm['thumb360imagePath'] = str_replace('//', '/', str_replace('\\', '/', $axZm['URL_TYPE_WEB']['path'].'/axZm/pic/zoom3Dgif/'.$_product->getEntityId().'/'.$axZm['thumbSize']['w'].'x'.$axZm['thumbSize']['h'].'/axZmGifAnimation.gif'));		
+		
+		// Preview jpg image (first frame of 360) - $axZm['Jpg360First'] = true;
+		$axZm['preview360FirstFramePath'] = str_replace('//', '/', str_replace('\\', '/', $axZm['URL_TYPE_WEB']['path'].'/axZm/pic/zoom3Dgif/'.$_product->getEntityId().'/'.$axZm['smallImageSize']['w'].'x'.$axZm['smallImageSize']['h'].'/axZmFirstFrame.jpg'));
+	}
+	
+	// Make the paths of 360 spin gif images abailable to javascript
+	$axZm['javascript'] .= '
+		jQuery.preview360imagePath = "'.$axZm['preview360imagePath'].'";
+		jQuery.thumb360imagePath = "'.$axZm['thumb360imagePath'].'";
+		jQuery.preview360FirstFramePath = "'.$axZm['preview360FirstFramePath'].'";
+	'; 
+}
+
+// Array with all images for zoom
+$zoomData = array();
+$n = 1; // start counter
+
+
+// Add first image to $zoomData
+if ($_product->getImage() != 'no_selection' && $_product->getImage()){
+	$zoomData[$n]['f'] = basename($_product->getImage());
+	$zoomData[$n]['p'] = dirname($_product->getImage());	
+}
+
+// Add gallery images to $zoomData
+foreach ($this->getGalleryImages() as $_image){
+	// Add images to $zoomData array
+	if ($_image->getFile() != $_product->getImage()){
+		$n++;
+		$zoomData[$n]['f'] = basename($_image->getFile());
+		$zoomData[$n]['p'] = dirname($_image->getFile());
+	}
+}
+
+
+// Container for preview images to open in a lightbox
+if ($axZm['displayModus'] == 'lightbox'){
+	echo '<p class="product-image" id="axZm-product-image" style="height: '.$axZm['smallImageSize']['h'].'px; overflow: hidden; display: block;">';
+
+	// 360 spin image if it has been selected to be shown first
+	if (($axZm['360Pos'] == 'first' && $axZm['preview360imagePath']) || ($axZm['preview360imagePath'] && ($_product->getImage() == 'no_selection' || !$_product->getImage()))){
+
+		echo '<a href="javascript: void(0)" id="axZm-product-link" style="position: absolute; margin: 0px; padding: 0px; display: block;"><img id="axZm-img" src="'.($axZm['Jpg360First'] ? $axZm['preview360FirstFramePath'] : $axZm['preview360imagePath']).'" alt="'.$this->htmlEscape($this->getImageLabel()).'" title="'.$this->htmlEscape($this->getImageLabel()).'" style="cursor: pointer; margin: 0px; padding: 0px;" /></a>';
+
+		$axZm['javascript'] .= '
+			jQuery.fn.addStopPlay("'.$axZm['preview360imagePath'].'");
+		'; 
+		
+	}
+
+	// Return first image
+	elseif ($_product->getImage() != 'no_selection' && $_product->getImage()){ 
+		$imgUrl = $this->helper('catalog/image')->init($_product, 'image')->resize($axZm['smallImageSize']['w'],$axZm['smallImageSize']['h']);
+		
+		echo '<a href="javascript: void(0)" id="axZm-product-link" style="position: absolute; margin: 0px; padding: 0px; display: block;"><img id="axZm-img" src="'.$imgUrl.'" alt="'.$this->htmlEscape($this->getImageLabel()).'" title="'.$this->htmlEscape($this->getImageLabel()).'" style="cursor: pointer; margin: 0px; padding: 0px;" /></a>';
+	}
+	else{ 
+		$_img = '<img id="axZm-img" src="'.$this->helper('catalog/image')->init($_product, 'image')->backgroundColor($axZm['smallImageSize']['backgroundColor'])->resize($axZm['smallImageSize']['w'],$axZm['smallImageSize']['h']).'" alt="'.$this->htmlEscape($this->getImageLabel()).'" title="'.$this->htmlEscape($this->getImageLabel()).'" />';
+		echo $_helper->productAttribute($_product, $_img, 'image');	
+	}
+
+	echo '</p>';
+
+	// Text under the preview image
+	if ($axZm['zoomText'] && $_product->getImage() != 'no_selection' && $_product->getImage()){ 
+		echo '<div style="text-align: right; position: relative; top: -10px;"><a onClick="javascript: void(0)" id="zoom_to_click_text">'.$axZm['zoomText'].'</a></div>';
+		
+		// Copy click event from the preview image to the text
+		$axZm['javascript'] .= '
+			jQuery(\'#zoom_to_click_text\').css(\'cursor\',\'pointer\').click(function(){
+				jQuery(\'#axZm-product-link\').click();
+			});
+		';
+	}
+} 
+
+// Container for embedded AJAX-ZOOM
+elseif ($axZm['displayModus'] == 'embedded' || $axZm['displayModus'] == 'left'){
+	if (($_product->getImage() != 'no_selection' && $_product->getImage()) || $axZm['preview360imagePath']){ 
+		echo '
+		<DIV id="axZm-load-container" style="margin-bottom: 5px; min-width: '.$axZm['embedContainerWidth'].'px; min-height: '.$axZm['embedContainerHeight'].'px; float: left; background-color: #EEEEEE">
+		Loading, please wait...
+		</DIV>
+		';
+	}elseif ($axZm['displayModus'] != 'embedded'){
+		$_img = '<img id="axZm-img" src="'.$this->helper('catalog/image')->init($_product, 'image')->backgroundColor($axZm['smallImageSize']['backgroundColor'])->resize($axZm['smallImageSize']['w'],$axZm['smallImageSize']['h']).'" alt="'.$this->htmlEscape($this->getImageLabel()).'" title="'.$this->htmlEscape($this->getImageLabel()).'" />';
+		echo $_helper->productAttribute($_product, $_img, 'image');	
+	}
+} 
+
+elseif ($axZm['displayModus'] == 'flyout'){
+	echo '
+	<!-- Wrapper for media data, prototype can be found here: http://www.ajax-zoom.com/examples/example20.php -->
+	<DIV style="float: left; width: '.$axZm['smallImageSize']['w'].'px; min-height: '.($axZm['smallImageSize']['h']+30).'px; margin-right: 20px">
+
+		<!-- Container for preview image (AJAX-ZOOM "image map") -->
+		<DIV id="mapContainer" style="position: absolute; width: '.$axZm['smallImageSize']['w'].'px; height: '.$axZm['smallImageSize']['h'].'px;"></DIV>
+
+		<!-- Container for zoomed image (will be displayed to the right from preview image) -->
+		<DIV id="zoomedAreaDiv" style="background-color: #CCCCCC; display: none; padding: 1px; float: left; min-width: '.($axZm['embedWidth']).'px; min-height: '.($axZm['embedHeight']).'px; position: absolute; z-index: 20;"></DIV>
+		
+		<!-- Touch devices additional control -->
+		<DIV id="touchDevicesZoomButtons" style="clear: both; width: '.$axZm['smallImageSize']['w'].'px; padding: 0; margin: 0; height: 20px; position: absolute; display: none;">
+			<a href="javascript:void(0)" onClick="jQuery.touchDevicesZoomOn()">ENABLE ZOOM</a> | 
+			<a href="javascript:void(0)" onClick="jQuery.touchDevicesZoomOff()">DISABLE ZOOM</a>
+		</DIV>
+
+		<!-- Navi replacement (plus and minus buttons for zooming) -->
+		<DIV id="naviReplacement" style="text-align: left; position: absolute; display: none;">
+			<a href="javascript: void(0)" onclick="jQuery.fn.axZm.zoomIn({speed: 750, ajxTo: 1000, pZoom: 25})" style="outline-style: none;"><img src="'.$axZm_BaseUrl.'/axZm/icons/zi_32x32.png" border="0" ></a>
+			<a href="javascript: void(0)" onclick="jQuery.fn.axZm.zoomOut({speed: 750, ajxTo: 1000, pZoom: 25})" style="outline-style: none;"><img src="'.$axZm_BaseUrl.'/axZm/icons/zo_32x32.png" border="0"></a>
+		</DIV>	
+		
+	</DIV>
+	';
+}
+
+
+
+// More images (thumbs)
+if (count($this->getGalleryImages()) > 0 || $axZm['thumb360imagePath']){
+			
+	echo '<div class="more-views" style="'.(($axZm['displayModus'] == 'embedded' || $axZm['displayModus'] == 'left') ? 'width: '.$axZm['embedContainerWidth'].'px;' : '').'">';
+		
+		// More views text
+		if (($_product->getImage() != 'no_selection' && $_product->getImage())){
+			if ($axZm['moreViewsText']){
+				echo '<h2>'.$this->__('More Views').'</h2>';
+			}
+		}
+		
+		echo '<ul>';
+		
+		// 360 spin thumb
+		if ($axZm['thumb360imagePath']){
+			if ($_product->getImage() != 'no_selection' && $_product->getImage()){
+				if ($axZm['displayModus'] == 'embedded' || $axZm['displayModus'] == 'left'){
+					$axZm['thumb360gallThumb'] = '<li><a href="javascript: void(0)" onClick="jQuery.fn.axZmSwitchImage(\'image360\', false, \''.$axZm['absPathTo360'].'\')"; return false;" title=""><img id="thumb360spin" src="'.$axZm['thumb360imagePath'].'" width="'.$axZm['thumbSize']['w'].'" height="'.$axZm['thumbSize']['h'].'" alt="" /></a></li>';
+				}
+				elseif ($axZm['displayModus'] == 'flyout'){
+					$axZm['thumb360gallThumb'] = '<li><a href="javascript: void(0)" onClick="jQuery.fn.axZmFull360(\''.$axZm['absPathTo360'].'\'); return false;" title=""><img id="thumb360spin" src="'.$axZm['thumb360imagePath'].'" width="'.$axZm['thumbSize']['w'].'" height="'.$axZm['thumbSize']['h'].'" alt="" /></a></li>';
+				}
+				else{
+					$axZm['thumb360gallThumb'] = '<li><a href="javascript: void(0)" on'.strtolower($axZm['thumbSwitch']).'="jQuery.fn.rollImage(jQuery.preview360imagePath, \''.$axZm['absPathTo360'].'\', '.$axZm['transitionSpeed'].', '.(strtolower($axZm['thumbSwitch']) == 'mouseover' ? 'this' : 'null').', true); return false;" title=""><img id="thumb360spin" src="'.$axZm['thumb360imagePath'].'" width="'.$axZm['thumbSize']['w'].'" height="'.$axZm['thumbSize']['h'].'" alt="" /></a></li>';
+				}
+			}
+		}
+		
+		// Return 360 spin thumb if on first place (before the images)
+		if ($axZm['360Pos'] == 'first' && $axZm['thumb360imagePath']){
+			echo $axZm['thumb360gallThumb'];
+		}
+		
+		// Make / Return gallery image thumbs
+		foreach ($this->getGalleryImages() as $_image){
+			$imgUrl = $this->helper('catalog/image')->init($this->getProduct(), 'image', $_image->getFile())->backgroundColor($axZm['smallImageSize']['backgroundColor'])->resize($axZm['smallImageSize']['w'],$axZm['smallImageSize']['h']);
+
+			// Add preview image to preloading array
+			$axZm['imgUrlS'][] = (string)$imgUrl;
+			
+			// Return image thumbs
+			echo '<li>';
+				if ($axZm['displayModus'] == 'embedded' || $axZm['displayModus'] == 'left' || $axZm['displayModus'] == 'flyout'){
+					echo '
+					<a href="javascript: void(0)" onClick="jQuery.fn.axZmSwitchImage(\'imageZoom\', \''.basename($_image->getFile()).'\', \''.strtr(base64_encode(addslashes(gzcompress(serialize($_image->getFile()),9))), '+/=', '-_,').'\'); return false;" title="'.$this->htmlEscape($_image->getLabel()).'"><img src="'.$this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->backgroundColor($axZm['thumbSize']['backgroundColor'])->resize($axZm['thumbSize']['w'],$axZm['thumbSize']['h']).'" width="'.$axZm['thumbSize']['w'].'" height="'.$axZm['thumbSize']['h'].'" alt="'.$this->htmlEscape($_image->getLabel()).'" /></a>
+					';
+				}else{
+					echo '
+					<a href="javascript: void(0)" on'.strtolower($axZm['thumbSwitch']).'="jQuery.fn.rollImage(\''.$imgUrl.'\', \''.strtr(base64_encode(addslashes(gzcompress(serialize($_image->getFile()),9))), '+/=', '-_,').'\', '.$axZm['transitionSpeed'].', '.(strtolower($axZm['thumbSwitch']) == 'mouseover' ? 'this' : 'null').', false); return false;" title="'.$this->htmlEscape($_image->getLabel()).'"><img src="'.$this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->backgroundColor($axZm['thumbSize']['backgroundColor'])->resize($axZm['thumbSize']['w'],$axZm['thumbSize']['h']).'" width="'.$axZm['thumbSize']['w'].'" height="'.$axZm['thumbSize']['h'].'" alt="'.$this->htmlEscape($_image->getLabel()).'" /></a>
+					';
+				}
+			echo '</li>';
+		}
+		
+		// Return 360 spin thumb if on last place (after the images)
+		if ($axZm['360Pos'] == 'last' && $axZm['thumb360imagePath']){
+			echo $axZm['thumb360gallThumb'];
+			$axZm['imgUrlS'][] = $axZm['thumb360imagePath'];
+		}
+		
+		echo '</ul>';
+
+	echo '</div>';
+}
+
+if ($axZm['displayModus'] == 'embedded' && $axZm['displacePosition']){
+	
+	echo '
+	<script type="text/javascript">
+	jQuery(".product-shop").css({width: "100%"});
+	';
+	if ($axZm['displacePosition'] == 'before'){
+		echo '
+		jQuery(".product-img-box").insertBefore(".product-shop");
+		';
+	}
+	echo '</script>';
+}
+
+// Init JavaScript
+if ( (($_product->getImage() != 'no_selection' && $_product->getImage()) || !empty($zoomData)) || 
+	(($axZm['thumb360imagePath'] && ($_product->getImage() == 'no_selection' || !$_product->getImage()))) 
+){  
+	
+	// Encode and compress PHP data array to a string
+	if (!empty($zoomData)){
+		$zoomData = strtr(base64_encode(addslashes(gzcompress(serialize($zoomData),9))), '+/=', '-_,');
+		// Pass data to /axZm/mods/magento/magento_axZm.js
+		$axZm['javascript'] .= '
+			jQuery.zoomData = \''.$zoomData.'\';
+		';
+	}
+
+	
+	
+	if ($axZm['displayModus'] == 'lightbox'){
+		$axZm['javascript'] .= '
+			jQuery.axZmOpenAsFullScreen = "'.$axZm['openAsFullScreen'].'";
+		';
+		
+		
+		
+		// Init lightbox click event on preview image (360 spin or image zoom)
+		if (($axZm['thumb360imagePath'] && ($_product->getImage() == 'no_selection' || !$_product->getImage())) || ($axZm['360Pos'] == 'first' && $axZm['thumb360imagePath']) ){
+			$axZm['javascript'] .= '
+				jQuery.fn.zoomImage(\''.$axZm['absPathTo360'].'\', false, true);
+			';		
+		}elseif(($_product->getImage() != 'no_selection' && $_product->getImage()) || !empty($zoomData)){
+			$axZm['javascript'] .= '
+				jQuery.fn.zoomImage(\''.strtr(base64_encode(addslashes(gzcompress(serialize($_product->getImage()),9))), '+/=', '-_,').'\');
+			';
+		}
+	
+		// Add enlarge icon over the small preview image with javascript
+		if ($axZm['zoomIcon']){
+			$axZm['javascript'] .= '
+				var iconLink = axZm_BaseUrl+\'/axZm/mods/magento/zoom_icon.png\';
+				var iconImage = new Image();
+				jQuery(iconImage).load(function(){
+					jQuery(this).attr(\'id\',\'zoom_to_click_icon\')
+					.css({
+						position: \'relative\', 
+						zIndex: 3, 
+						width: iconImage.width, 
+						height: iconImage.height, 
+						left: ('.($axZm['smallImageSize']['w']-5).'-iconImage.width), 
+						top: ('.($axZm['smallImageSize']['h']-5).'-iconImage.height), 
+						cursor: \'pointer\'
+					})
+					.click(function(){
+						jQuery(\'#axZm-product-link\').click();
+					}).appendTo(\'#axZm-product-image\');
+				}).attr(\'src\', iconLink);
+			';
+		}
+		
+		// Preload preview images
+		if (!empty($axZm['imgUrlS']) && $axZm['smallImagePreload']){
+			foreach ($axZm['imgUrlS'] as $k=>$v){
+				$axZm['javascript'] .= '
+
+				jQuery(new Image()).attr(\'src\',\''.$v.'\');';
+			}		
+		}		
+	}
+	
+	elseif ($axZm['displayModus'] == 'embedded' || $axZm['displayModus'] == 'left'){
+		$axZm['javascript'] .= '
+			jQuery.axZmCurrenZoomMod = "'.((($axZm['360Pos'] == 'first' && $axZm['thumb360imagePath']) || ($_product->getImage() == 'no_selection' || !$_product->getImage())) ? 'image360' : 'imageZoom').'";
+		';
+		
+		echo '
+		<script type="text/javascript">
+		jQuery("#axZm-load-container").css("background", "url("+axZm_BaseUrl+"/axZm/icons/ajax-loader-bar.gif) center center no-repeat");
+		var ajaxZoom = {}; // New object
+		';
+		
+		echo '
+		jQuery.axZmEmbedWidth = '.(int)$axZm['embedWidth'].';
+		jQuery.axZmEmbedHeight = '.(int)$axZm['embedHeight'].';
+		jQuery.axZmDisplayModus = "'.$axZm['displayModus'].'";
+		
+		ajaxZoom.path = axZm_BaseUrl+"/axZm/"; // Path to the axZm folder
+		ajaxZoom.divID = "axZm-load-container"; // The id of the element where ajax-zoom has to be inserted into
+		ajaxZoom.opt = {}; // No options, see api jQuery.fn.axZm (options)		
+		';
+		
+		if ((($axZm['360Pos'] == 'first' && $axZm['thumb360imagePath']) || ($_product->getImage() == 'no_selection' || !$_product->getImage()) )) {
+		echo '
+		ajaxZoom.parameter = "embedWidth='.(int)$axZm['embedWidth'].'&embedHeight='.(int)$axZm['embedHeight'].'&3dDir='.$axZm['absPathTo360'].'&example=magento&displayModus='.$axZm['displayModus'].'&zoomTouchStyle='.$axZm['zoomTouchStyle'].'"; // Your custom parameter
+		';	
+		
+			if ($axZm['zoomTouchStyle'] == 'yes'){
+			echo '
+			ajaxZoom.opt = {
+				onLoad: function(){
+									
+				},
+				onSpinPreloadEnd: function(){
+
+				},
+				onCropEnd: function(){
+
+				}
+			};
+			';
+			}
+		
+		}else{
+		echo '
+		ajaxZoom.parameter = "embedWidth='.(int)$axZm['embedWidth'].'&embedHeight='.(int)$axZm['embedHeight'].'&zoomData='.$zoomData.'&example=magento&displayModus='.$axZm['displayModus'].'&zoomTouchStyle='.$axZm['zoomTouchStyle'].'"; // Your custom parameter
+		';	
+		
+			if ($axZm['zoomTouchStyle'] == 'yes'){
+			echo '
+			ajaxZoom.opt = {
+
+			};
+			';	
+			}	
+		
+			
+		}
+		
+		echo '
+		</script>
+		<script type="text/javascript" src="'.$axZm_BaseUrl.'/axZm/jquery.axZm.loader.js"></script>
+		';	
+	}
+	elseif ($axZm['displayModus'] == 'flyout'){
+		$axZm['javascript'] .= '
+			jQuery.axZmCurrenZoomMod = "imageZoom";
+		';
+		
+		echo '
+		<script type="text/javascript">
+		';
+		
+		echo '
+		// Horizontal offset
+		var zoomedAreaOffsetRight = '.$axZm['zoomedAreaOffsetRight'].';
+		
+		// Vertical offset
+		var zoomedAreaOffsetTop = '.$axZm['zoomedAreaOffsetTop'].';
+		
+		// ID of zoomed area
+		var zoomedAreaDiv = "zoomedAreaDiv";
+		
+		// Additional control functions for touch devices
+		jQuery.touchDevicesZoomOn = function(){
+			jQuery("#mapContainer, #"+zoomedAreaDiv).unbind();
+			jQuery("#zoomMapSel").css("display", "block");
+			jQuery("#naviReplacement").stop(true, false).css({display: "block", "opacity": 1});
+			var relID = "mapContainer"; //  zoomMapHolder
+			var rOffset = jQuery("#"+relID).offset();
+			jQuery("#"+zoomedAreaDiv).stop(true, false).css({
+				opacity: 1, 
+				display: "block",
+				left: Math.round(rOffset.left + jQuery("#"+relID).width() + zoomedAreaOffsetRight),
+				top: Math.round(rOffset.top + zoomedAreaOffsetTop)
+			});
+		};
+		
+		jQuery.touchDevicesZoomOff = function(){
+			jQuery("#mapContainer, #"+zoomedAreaDiv).unbind();
+			jQuery("#zoomMapSel").css("display", "none");
+			jQuery("#naviReplacement").stop(true, false).css("opacity", 0.0);
+			jQuery("#"+zoomedAreaDiv).stop(true, false).css({
+				opacity: 0, 
+				display: "none"
+			});	
+		};
+
+		var ajaxZoom = {};
+
+
+		// AJAX-ZOOM callbacks
+		ajaxZoom.opt = {
+		
+			// AJAX-ZOOM callback triggered after AJAX-ZOOM is loaded
+			onLoad: function(){
+				//  zoomMapHolder
+				var relID = "mapContainer"; 
+				
+				// Icons for zoomIn and zoomOut, not necessary
+				jQuery("#naviReplacement").appendTo("#mapContainer").css({
+					left: 10,
+					top: 10,
+					zIndex: 9999,
+					opacity: (jQuery.browser.msie ? "" : 0)
+				});
+				
+				// Background for zoom level, not necessary
+				jQuery("<div />").attr("id", "zoomLevelWrap").css({
+					position: "absolute",
+					left: 0,
+					bottom: 0,
+					backgroundColor: "#000000",
+					opacity: 0.3,
+					width: 40,
+					height: 20,
+					zIndex: 9998
+				}).appendTo("#zoomLayer");
+				
+				// Zoom level, not necessary
+				jQuery("#zoomLevel").appendTo("#zoomLayer").css({
+					position: "absolute",
+					color: "#FFFFFF",
+					width: 40,
+					padding: 3,
+					margin: 0,
+					fontSize: "10pt",
+					display: "block",
+					left: 0,
+					bottom: 0,
+					zIndex: 9999
+				});
+				
+				// Some helper functions
+				function getl(sep, str){
+					return str.substring(str.lastIndexOf(sep)+1);
+				}
+				
+				function getf(sep, str){
+					var extLen = getl(sep, str).length;
+					return str.substring(0, (str.length - extLen - 1));
+				}
+				
+				function cfn(file){
+					var full = "_"+jQuery.axZm.galFullPicX+"x"+jQuery.axZm.galFullPicY;
+					return getf(".", file)+full+".jpg";
+				}
+				
+				// Detect touch devices
+				function touchDevicesZoomTest() {
+					if ("ontouchstart" in window) {
+						return true;
+					}else{
+						return false;
+					}
+				}
+				
+				// Hide zoom selector if mouse is not over
+				jQuery("#zoomMapSel").css("display", "none");
+
+				// Get the position of the preview image (AJAX-ZOOM "image map")
+				var rPosition = jQuery("#"+relID).position();
+				
+				// Dedect touch devices and add switch interface for them
+				if (touchDevicesZoomTest()){
+					// Add switch interface, can and should be styled as you want
+					jQuery("#touchDevicesZoomButtons").css({
+						display: "block",
+						top: rPosition.top+jQuery("#"+relID).height()+10,
+						zIndex: 99999
+					});
+				}
+				
+				
+				// Mouseenter on preview image (AJAX-ZOOM "image map") function
+				jQuery("#mapContainer").bind("mouseenter", function(){
+					if (jQuery.removeHoverTimeout){clearTimeout(jQuery.removeHoverTimeout);}
+
+					// Position AJAX-ZOOM area to the right of zoom map
+					var rOffset = jQuery("#"+relID).offset();
+					jQuery("#"+zoomedAreaDiv).stop(true, false).css({
+						display: "block",
+						opacity: 1,
+						left: Math.round(rOffset.left + jQuery("#"+relID).width() + zoomedAreaOffsetRight),
+						top: Math.round(rOffset.top + zoomedAreaOffsetTop)
+					});
+					
+					// Show zoom selector
+					jQuery("#zoomMapSel").css("display", "block");
+					
+					if (!jQuery.browser.msie){
+						jQuery("#naviReplacement").stop(true, false).css({
+							opacity: 1,
+							display: "block"
+						});
+					}
+				});
+ 
+				// Mouseleave on preview image (AJAX-ZOOM "image map") and the actual zoom area function
+				jQuery("#mapContainer, #"+zoomedAreaDiv).bind("mouseleave", function(){
+					jQuery.removeHoverTimeout = setTimeout(function(){
+						jQuery("#"+zoomedAreaDiv).stop(true, false).fadeTo(500, 0, function(){
+							jQuery(this).css("display", "none");
+							jQuery("#zoomMapSel").css("display", "none");
+						}); 
+						if (!jQuery.browser.msie){
+							jQuery("#naviReplacement").stop(true, false).fadeTo(500, 0.0);
+						}else{
+							jQuery("#naviReplacement").stop(true, false).css("display", "none");
+						}
+					}, 300);
+				});
+				
+				// Prevent closing zoom area when mouse is over it. 
+				jQuery("#"+zoomedAreaDiv).bind("mouseenter", function(){
+					if (jQuery.removeHoverTimeout){clearTimeout(jQuery.removeHoverTimeout);}
+				});
+			},
+			onFullScreenStart: function(){
+				var zoomC = jQuery("#zoomContainer");
+				zoomC.data("back", zoomC.css("backgroundColor"));
+				//zoomC.css("backgroundColor", "#000000");
+			},
+			
+			onFullScreenResizeEnd: function(){
+
+			},
+			
+			onFullScreenClose: function(){
+				var zoomC = jQuery("#zoomContainer");
+				zoomC.css("backgroundColor", zoomC.data("back"));
+				jQuery("#mapContainer").trigger("mouseleave");
+			},
+			onImageChange: function(){
+				jQuery("#mapContainer, #"+zoomedAreaDiv).trigger("mouseleave");
+			},
+			onMapMouseOverClick: function(){ // onMapMouseOverDbClick
+				jQuery.fn.axZm.initFullScreen();
+			}
+		};
+		
+		// Path to the axZm folder (relative or absolute)
+		ajaxZoom.path = "'.$axZm_BaseUrl.'/axZm/"; 
+		
+		// Needed parameter query string
+		ajaxZoom.parameter = "flyoutWidth='.(int)$axZm['embedWidth'].'&flyoutHeight='.(int)$axZm['embedHeight'].'&mapWidth='.(int)$axZm['smallImageSize']['w'].'&mapHeight='.(int)$axZm['smallImageSize']['h'].'&zoomData='.$zoomData.'&example=magento&displayModus='.$axZm['displayModus'].'"; // Your custom parameter
+
+		
+		// The id of the Div where ajax-zoom has to be inserted into
+		ajaxZoom.divID = zoomedAreaDiv; 
+
+		';
+
+
+		echo '
+		</script>
+		<script type="text/javascript" src="'.$axZm_BaseUrl.'/axZm/jquery.axZm.loader.js"></script>
+		';		
+	}
+}
+
+
+
+
+// Output javascript
+if ($axZm['javascript']){
+	echo '
+	<script type="text/javascript">
+	jQuery(window).load(function(){
+	'.$axZm['javascript'].'
+	});</script>
+	';
+}
+
+?>

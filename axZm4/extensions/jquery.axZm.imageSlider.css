@@ -1,0 +1,302 @@
+/**
+* Plugin: jQuery AJAX-ZOOM, axZm.imageSlider.css
+* Copyright: Copyright (c) 2010-2013 Vadim Jacobi
+* License Agreement: http://www.ajax-zoom.com/index.php?cid=download
+* Version: 4.0.1
+* Date: 2013-02-18
+* URL: http://www.ajax-zoom.com
+* Documentation: http://www.ajax-zoom.com/index.php?cid=docs
+*/
+
+pre {
+	font-family: “Consolas”,monospace;
+	overflow-x: auto;  
+	white-space: pre-wrap; 
+	white-space: -moz-pre-wrap !important; 
+}
+
+/* AJAX-ZOOM zoomMap selector colors,
+overwrite from /axZm/jquery.axZm.js
+ */
+#zoomMapSel{
+	border-color: #0071BF;
+}
+
+/* AJAX-ZOOM zoomMap selector colors,
+overwrite from /axZm/jquery.axZm.js
+ */	
+#zoomMapSelArea{
+	background-color: #0071BF;
+}
+
+#zoomMapHolder{
+	border-color: #333333;
+}
+
+.zoomFullGalleryBox{
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;		
+}
+
+/* Style the jQuery UI slider */
+#zoomSliderZoomContainer{
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;	
+	background-image: url(../icons/tr_black_60.png);
+	
+}
+
+#zoomSliderZoom{
+	border: none;
+	background-image: -moz-linear-gradient(0% 100% 90deg, #FFFFFF, #D3D3D3);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#D3D3D3), to(#FFFFFF));
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#D3D3D3', endColorstr='#FFFFFF');
+	/*
+	border-radius: 5px; 
+	-moz-border-radius:5px; 
+	-webkit-border-radius:5px;
+
+	*/
+}
+
+/* Style the jQuery UI slider handle */
+#zoomSliderZoom a{
+ 	border: none;
+	border-radius: 8px; 
+	-moz-border-radius: 8px; 
+	-webkit-border-radius: 8px;
+ /*
+	
+	background-image: -moz-linear-gradient(0% 100% 90deg, #2A2A2A, #9A9A9A);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#9A9A9A), to(#2A2A2A));
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9A9A9A', endColorstr='#2A2A2A');	
+	/*
+	background-color: #212121;
+	*/
+}
+
+.zoomFullGalleryBoxSelected{
+	border-color: #2379B5;
+}
+
+.axZmPlayerCont{
+	/*
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+	-webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+	-moz-box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+	*/
+}
+
+/* Bullet navigation container */
+.axZmPlayerSubNavi{
+	height: 30px;
+	clear: both;
+	backgroundColor: transparent;
+}
+
+/* Bullet navigation inner container */
+.axZmPlayerSubNaviInner{
+	height: 30px;
+	backgroundColor: transparent;
+}
+
+/* Bullets */
+.axZmPlayerSubControl{
+	width: 20px;
+	height: 17px;
+	cursor: pointer;
+	background-color: #333333;
+	text-align: center;
+	font-family: "Courier New";
+	
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: none;
+	
+	padding: 3px 0px 0px 0px;
+	margin: 4px; /* space beween the the bullets */
+	color: #FFFFFF;
+	font-size: 11px;
+	
+	/* radius 10px makes 20x20px element a cirle */
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px 10px 10px 10px;
+	
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	
+	/*
+	-webkit-box-shadow: 0px 1px 3px 1px #000000;
+	box-shadow: 0px 1px 3px 1px #000000; 
+	-moz-box-shadow: 0px 1px 3px 1px #000000; 
+	*/
+}
+
+.axZmPlayerSubControl_IE{
+	width: 20px;
+	height: 15px;
+	padding: 5px 0px 0px 0px;
+}
+
+/* Bullet navigation mouseover */
+.axZmPlayerSubControlOver{
+	background-color: #666666;
+}
+
+/* Bullet navigation selected */
+.axZmPlayerSubControlSelected{
+	background-color: #2379B5;
+	
+	/*
+	-webkit-box-shadow: 0px 1px 3px 1px #FFFFFF;
+	box-shadow: 0px 1px 3px 1px #FFFFFF; 
+	-moz-box-shadow: 0px 1px 3px 1px #FFFFFF;
+	*/ 
+}
+
+.axZmPlayerInlineGalContainer{
+	background-image: url(../icons/tr_black_60.png);
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;	
+}
+
+.axZmPlayerInlineGalHover{
+	/*background-color: #666666;*/
+}
+
+.axZmPlayerInlineGal{
+	width: 24px;
+	height: 24px;
+	background-image: url(../icons/gallery24.png);
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.axZmPlayerPlayPauseContainer{
+	background-image: url(../icons/tr_black_60.png);
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;	
+}
+
+.axZmPlayerPlayPause{
+	width: 24px;
+	height: 24px;
+	background-position: center;
+	background-repeat: no-repeat;
+	/*
+	background-color: #333333;
+	-moz-border-radius: 14px;
+	-webkit-border-radius: 14px;
+	border-radius: 14px;
+	*/
+	
+	/*
+	-webkit-box-shadow: 0px 1px 3px 1px #000000;
+	box-shadow: 0px 1px 3px 1px #000000; 
+	-moz-box-shadow: 0px 1px 3px 1px #000000; 
+	*/
+}
+
+.axZmPlayerPlayPauseHover{
+	/*background-color: #666666;*/
+}
+
+.axZmPlayerPlayPausePlay{
+	background-image: url(../icons/playPause24_play.png);
+}
+
+.axZmPlayerPlayPausePause{
+	background-image: url(../icons/playPause24_pause.png);
+}
+
+
+/* Rounded corners for image inside bullet navigation popup */
+.axZmPlayerSubControlPicPopup{
+	border-radius: 3px; 
+	-moz-border-radius:3px; 
+	-webkit-border-radius:3px;
+}
+
+.axZmPlayerDescrBox{
+	min-width: 100px;
+	position: absolute;
+	z-index: 5;
+	/*background-image: url(../icons/tr_black_60.png);*/
+	font-size: 16px;
+	color: #FFFFFF;
+	font-family: "Courier New";
+	text-shadow: 1px 1px 1px #000000; 
+	
+	/*
+	border-radius: 0px 6px 0px 0px; 
+	-moz-border-radius: 0px 6px 0px 0px; 
+	-webkit-border-radius: 0px 6px 0px 0px; 
+	*/
+}
+
+.axZmPlayerDescrBoxCustom{
+	background-image: url(../icons/tr_black_60.png);
+	border-radius: 6px; 
+	-moz-border-radius: 6px; 
+	-webkit-border-radius: 6px; 
+}
+
+.axZmPlayerDescrBox:hover{
+	color: #FF8C00;
+}
+
+
+.axZmPlayerZoomLevel{
+	font-family: "Courier New";
+	text-shadow: 1px 1px 1px #000000;
+	font-size: 16px;
+	color: #FFFFFF;
+	margin: 0;
+	width: 50px;
+}
+
+.axZmPlayerDynOptionsButton{
+	background-color: #CCCCCC;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;	
+	position: relative; 
+	border: #555555 1px solid;
+	top: 5px;
+	cursor: pointer;
+	padding: 5px;
+}
+
+.axZmQuickSHcooment{
+	color:#999999; 
+	font-style: italic;
+}
+
+
+/* Tipsy (bullet popup) css */
+.aZtipsy { padding: 5px; font-size: 10px; position: absolute; z-index: 999999999; }
+.aZtipsy-inner { padding: 2px 2px 0px 2px; background-color: #FFFFFF; color: black; min-width: 50px; text-align: center; }
+.aZtipsy-inner { border-radius: 5px; -moz-border-radius:5px; -webkit-border-radius:5px; }
+.aZtipsy-inner {
+	-webkit-box-shadow:  0px 2px 4px 1px #000000;
+	box-shadow:  0px 2px 4px 1px #000000;
+	-moz-box-shadow: 0px 2px 4px 1px #000000;
+}
+.aZtipsy-arrow { position: absolute; background: url('../icons/tipsy_white.gif') no-repeat top left; width: 9px; height: 5px; }
+.aZtipsy-n .aZtipsy-arrow { top: 0; left: 50%; margin-left: -4px; }
+.aZtipsy-nw .aZtipsy-arrow { top: 0; left: 10px; }
+.aZtipsy-ne .aZtipsy-arrow { top: 0; right: 10px; }
+.aZtipsy-s .aZtipsy-arrow { bottom: 0; left: 50%; margin-left: -4px; background-position: bottom left; }
+.aZtipsy-sw .aZtipsy-arrow { bottom: 0; left: 10px; background-position: bottom left; }
+.aZtipsy-se .aZtipsy-arrow { bottom: 0; right: 10px; background-position: bottom left; }
+.aZtipsy-e .aZtipsy-arrow { top: 50%; margin-top: -4px; right: 0; width: 5px; height: 9px; background-position: top right; }
+.aZtipsy-w .aZtipsy-arrow { top: 50%; margin-top: -4px; left: 0; width: 5px; height: 9px; }
