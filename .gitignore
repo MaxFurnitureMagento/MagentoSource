@@ -1,2 +1,21 @@
 /var/*
 /media/*
+
+#temporary disable axZm
+axZm/*
+axZm4/*
+
+blogadmin/*
+custom*/
+ecc/*
+feeds/*
+files/*
+ftp/*
+memcache/*
+modsinfo/*
+munin
+news.zip
+phpmyadmin/*
+sitemap.xml
+sitemap/*
+sohi-test.php
