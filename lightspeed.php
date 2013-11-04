@@ -284,9 +284,6 @@ class PageCache
  						   	$_SERVER['HTTPS'] = 'on';
 							$_SERVER['SERVER_PORT'] = 443;
 						}
-						@$logFile = fopen(__DIR__ . '/var/log/request-no-cache.log', 'a+');
-					    @fwrite($logFile, $_SERVER['REQUEST_URI'] . PHP_EOL);
-						@fclose($logFile);
 
 						Mage::run();
 						//Multi-site test settings
