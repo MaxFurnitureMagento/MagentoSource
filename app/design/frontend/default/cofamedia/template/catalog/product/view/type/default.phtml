@@ -42,30 +42,72 @@
 						}
 				}
 ?>
-
-<?php if ($_product->getMaxInventoriable()): ?>
-	<?php if($qty): ?>
-    <p class="availability in-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('In stock') ?></span></p>
-  <?php else: ?>
-    <p class="availability out-of-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('Wait List') ?></span><?php if($date && ($date >= date('Y-m-d 00:00:00'))): ?><span> - Estimated Ship Date </span><span class="back-in-stock"><?php echo $this->formatDate($_product->getMaxBackInStock(), 'long', false); ?></span><?php endif; ?></p>
-  <?php endif; ?>
-<?php elseif ($date): ?>
-    <p class="availability out-of-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('Wait List') ?></span><?php if($date >= date('Y-m-d 00:00:00')): ?><span> - Estimated Ship Date </span><span class="back-in-stock"><?php echo $this->formatDate($_product->getMaxBackInStock(), 'long', false); ?></span><?php endif; ?></p>
-<?php else: ?>
-    <p class="availability in-stock drop-ship"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('Usually In Stock') ?></span></p>
-<?php endif; ?>
-<?php echo $this->getChildHtml('product_type_data_extra') ?>
+<div style="float:left">
+	<?php if ($_product->getMaxInventoriable()): ?>
+		<?php if($qty): ?>
+		<p class="availability in-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('In stock') ?></span></p>
+	  <?php else: ?>
+		<p class="availability out-of-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('Wait List') ?></span><?php if($date && ($date >= date('Y-m-d 00:00:00'))): ?><span> - Estimated Ship Date </span><span class="back-in-stock"><?php echo $this->formatDate($_product->getMaxBackInStock(), 'long', false); ?></span><?php endif; ?></p>
+	  <?php endif; ?>
+	<?php elseif ($date): ?>
+		<p class="availability out-of-stock"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('Wait List') ?></span><?php if($date >= date('Y-m-d 00:00:00')): ?><span> - Estimated Ship Date </span><span class="back-in-stock"><?php echo $this->formatDate($_product->getMaxBackInStock(), 'long', false); ?></span><?php endif; ?></p>
+	<?php else: ?>
+		<p class="availability in-stock drop-ship"><?php echo $this->__('Availability:') ?> <span><?php echo $this->__('Usually In Stock') ?></span></p>
+	<?php endif; ?>
+	<?php echo $this->getChildHtml('product_type_data_extra') ?>
+</div>
+<div class="product-financing" style="float:right; margin-top: -40px;">
+	<a id="show_financial" href="#financial_popup"><img src="<?php echo $this->getSkinUrl('images/financing-available.jpg'); ?> " alt="financing available" /></a>
+</div>
 
 <div class="customer-service">
 	<a id="email_to_us" href="#email_us_popup" ><img src="<?php echo $this->getSkinUrl('images/email-us.jpg'); ?> " /></a>
     <img src="<?php echo $this->getSkinUrl('images/no-taxes.jpg'); ?> " alt="No Sales Tax *Except TX" />
+	<a id="show_lowestprice" href="#lowestprice_popup"><img src="<?php echo $this->getSkinUrl('images/lowest-price-guarantee_small.jpg'); ?>" class="product-lowestprice" alt="lowest price guarantee"/></a>
+	<?php /*
     <a href="javascript:void(0)"><img src="<?php echo $this->getSkinUrl('images/best-price.jpg'); ?> " alt="Best price" height="70px" /></a>
     <a href="http://www.stellaservice.com/profile/472" target="_blank" class="last"><img border="0" title="MaxFurniture.com is top rated for customer service" src="http://seal.stellaservice.com/seals/stellaservice_excellent.png?c=472" alt="StellaService" /></a>
-    <script type="text/javascript">
+    */?>
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			jQuery("#show_financial, #show_lowestprice").colorbox({inline:true, innerWidth:640});
+		});
         function cm_activate_email_tab() {
             $$('#product_tabs_email_us a').each(function(el) {
                 el.click();
             });
         }
 	</script>
+</div>
+
+<div style='display:none'>
+	<div id="financial_popup" style='padding:10px; background:#fff;'>
+		<div class="reviews-popup">
+			<div>
+				<p>Instant approval, find out if you qualify in minutes!</p>
+
+				<p style="margin:30px 0">
+					Financing is offered through First Look Approval WAC. If you are interested in financing your furniture purchase, please call one of our Sales Representatives at 800-477-3703. First Look Approval Company can provide installment loans to qualified applicants even if you have less than perfect credit. Your information can be provided over the phone or it can be entered directly via secured website. The interest rate and terms will vary based on your credit rating but our Sales Associates will be able to provide you a range of payment options before you apply. Credit decisions are instant. All credit decisions are made by First Look Approval and they are not affiliated with Max Furniture in any way.
+				</p>
+				<p>
+					Once approved, we can complete the loan documents with you and arrange shipping.
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div style='display:none'>
+	<div id="lowestprice_popup" style='padding:10px; background:#fff;'>
+		<div class="reviews-popup">
+			<div>
+				<p>
+					Max Furniture will make every effort to price match any major competitor pricing. Please provide us with a valid copy of the same item and its current price. Max Furniture reserve the right to decline a price match offer if items and/or services are deemed to be different. Price match must include the total cost of the merchandise/services rendered, including same level of delivery/shipping, warranty, condition.
+				</p>
+				<p style="margin:30px 0 0 0">
+					The Guarantee is limited to one price match per identical item. Excludes special orders, bid pricing, volume discounts, open-box merchandise, refurbished or used, vendors known for selling “dealer seconds”, mail-in rebates, out of stock items, sales tax, rebate and free offers, typographical errors.
+				</p>
+			</div>
+		</div>
+	</div>
 </div>

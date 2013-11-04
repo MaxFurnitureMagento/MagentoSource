@@ -1,9 +1,8 @@
 /var/*
 /media/*
 
-#temporary disable axZm
-axZm/*
-axZm4/*
+axZm/pic/*
+axZm4/pic/*
 
 blogadmin/*
 custom*/
