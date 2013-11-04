@@ -1,5 +1,7 @@
 /var/*
 /media/*
+/app/etc/local.xml
+/app/etc/lightspeed.xml
 
 axZm/pic/*
 axZm4/pic/*
