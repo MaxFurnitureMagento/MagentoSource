@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <layout version="0.1.0">
     <cms_index_index>
-        <reference name="content">
-            <block type="homecategories/list" name="home_categories" before="banners" template="homecategories/home.phtml"/>
-        </reference>
+        <!--<reference name="content">-->
+            <!--<block type="homecategories/list" name="home_categories" before="banners" template="homecategories/home.phtml"/>-->
+        <!--</reference>-->
 <!--        <reference name="head">
           <action method="addItem"><type>skin_css</type><name>css/homecategories/style.css</name><params/></action>
 				</reference>-->

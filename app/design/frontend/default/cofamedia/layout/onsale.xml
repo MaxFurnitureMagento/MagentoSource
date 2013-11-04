@@ -2,7 +2,7 @@
 <layout version="0.1.0">
     <cms_index_index>
         <reference name="content">
-            <block type="onsale/onsale" name="onsale" after="home_categories" template="onsale/onsale.phtml"/>
+            <block type="onsale/onsale" name="onsale" before="testimonials" template="onsale/onsale.phtml"/>
         </reference>
         <reference name="head">
           <action method="addItem"><type>skin_css</type><name>css/onsale/style.css</name><params/></action>
