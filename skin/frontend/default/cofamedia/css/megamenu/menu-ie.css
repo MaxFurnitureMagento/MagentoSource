@@ -195,7 +195,7 @@ background:url('/skin/frontend/default/cofamedia/images/ui/navigation-button.png
 	box-shadow: 10px 0px 13px gray; 
 	/* Bottom */
 	box-shadow: 0px 5px 8px gray; 
-	behavior: url(PIE.php); 
+	behavior: url(/skin/frontend/default/cofamedia/css/megamenu/PIE.php);
 	
 }
 
