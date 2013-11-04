@@ -1,7 +1,7 @@
 <config>
     <modules>
         <Commercesciences_Base>
-            <active>true</active>
+            <active>false</active>
             <codePool>local</codePool>
         </Commercesciences_Base>
     </modules>
