@@ -1,24 +1,8 @@
-## robots.txt for Magento Community and Enterprise
-
-## GENERAL SETTINGS
-
-## Enable robots.txt rules for all crawlers
 User-agent: *
-
-## Crawl-delay parameter: number of seconds to wait between successive requests to the same server.
-## Set a custom crawl rate if you're experiencing traffic problems with your server.
 Crawl-delay: 10
-
-## Magento sitemap: uncomment and replace the URL to your Magento sitemap file
 Sitemap: http://maxfurniture.com/sitemap/sitemap.xml
-
-## GENERAL MAGENTO SETTINGS
-
-## Do not crawl Magento admin page
 Disallow: /management/
 Disallow: /admin/
-
-## Do not crawl common Magento technical folders
 Disallow: /app/
 Disallow: /downloader/
 Disallow: /errors/
@@ -27,8 +11,6 @@ Disallow: /lib/
 Disallow: /pkginfo/
 Disallow: /shell/
 Disallow: /var/
-
-## Do not crawl common Magento files
 Disallow: /api.php
 Disallow: /cron.php
 Disallow: /cron.sh
@@ -40,40 +22,18 @@ Disallow: /LICENSE.txt
 Disallow: /LICENSE_AFL.txt
 Disallow: /README.txt
 Disallow: /RELEASE_NOTES.txt
-
-## MAGENTO SEO IMPROVEMENTS
-
-## Do not crawl sub category pages that are sorted or filtered.
 Disallow: /*?dir*
 Disallow: /*?dir=desc
 Disallow: /*?dir=asc
 Disallow: /*?limit=all
 Disallow: /*?mode*
-
-## Do not crawl 2-nd home page copy (example.com/index.php/). Uncomment it only if you activated Magento SEO URLs.
 Disallow: /index.php
-
-## Do not crawl links with session IDs
 Disallow: /*?SID=
-
-## Do not crawl checkout and user account pages
 Disallow: /checkout/
 Disallow: /firecheckout/
 Disallow: /customer/
 Disallow: /customer/account/
 Disallow: /customer/account/login/
-
-## SERVER SETTINGS
-
-## Do not crawl common server technical folders and files
 Disallow: /apc.php
 Disallow: /memcache.php
 Disallow: /phpinfo.php
-
-## IMAGE CRAWLERS SETTINGS
-
-## Extra: Uncomment if you do not wish Google and Bing to index your images
-# User-agent: Googlebot-Image
-# Disallow: /
-# User-agent: msnbot-media
-# Disallow: /
