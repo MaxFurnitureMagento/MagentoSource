@@ -2,6 +2,7 @@
 /media/*
 /app/etc/local.xml
 /app/etc/lightspeed.xml
+.htaccess
 
 axZm/pic/*
 axZm4/pic/*
