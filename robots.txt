@@ -22,13 +22,6 @@ Disallow: /LICENSE.txt
 Disallow: /LICENSE_AFL.txt
 Disallow: /README.txt
 Disallow: /RELEASE_NOTES.txt
-Disallow: /*?dir*
-Disallow: /*?dir=desc
-Disallow: /*?dir=asc
-Disallow: /*?limit=all
-Disallow: /*?mode*
-Disallow: /index.php
-Disallow: /*?SID=
 Disallow: /checkout/
 Disallow: /firecheckout/
 Disallow: /customer/
