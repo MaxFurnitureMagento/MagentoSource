@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Speroteck_Indexer>
+            <version>0.1.0</version>
+        </Speroteck_Indexer>
+    </modules>
+    <global>
+        <models>
+            <speroteck_indexer>
+                <class>Speroteck_Indexer_Model</class>
+            </speroteck_indexer>
+        </models>
+    </global>
+    <crontab>
+        <jobs>
+            <speroteck_indexer_reindex_all>
+                <schedule>
+                    <cron_expr>0 3 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>speroteck_indexer/executor::reindexEverything</model>
+                </run>
+            </speroteck_indexer_reindex_all>
+        </jobs>
+    </crontab>
+</config>
