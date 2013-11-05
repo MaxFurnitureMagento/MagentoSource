@@ -103,17 +103,21 @@ Category default layout
                 <block type="catalog/product_list" name="product_list" template="catalog/product/list.phtml">
                     <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
                         <block type="page/html_pager" name="product_list_toolbar_pager"/>
+							<action method="setDefaultMode"><mode>grid</mode></action>
                             <action method="setDefaultDirection"><dir>desc</dir></action>
                         <!-- The following code shows how to set your own pager increments -->
-                        <!--
-                            <action method="setDefaultListPerPage"><limit>4</limit></action>
-                            <action method="setDefaultGridPerPage"><limit>9</limit></action>
-                            <action method="addPagerLimit"><mode>list</mode><limit>2</limit></action>
-                            <action method="addPagerLimit"><mode>list</mode><limit>4</limit></action>
-                            <action method="addPagerLimit"><mode>list</mode><limit>6</limit></action>
-                            <action method="addPagerLimit"><mode>list</mode><limit>8</limit></action>
+                       
+                            <action method="setDefaultListPerPage"><limit>30</limit></action>
+                            <action method="setDefaultGridPerPage"><limit>36</limit></action>
+                            <action method="addPagerLimit"><mode>list</mode><limit>30</limit></action>
+                            <action method="addPagerLimit"><mode>list</mode><limit>45</limit></action>
+                            <action method="addPagerLimit"><mode>list</mode><limit>60</limit></action>
                             <action method="addPagerLimit" translate="label"><mode>list</mode><limit>all</limit><label>All</label></action>
-                        -->
+							<action method="addPagerLimit"><mode>grid</mode><limit>27</limit></action>
+                            <action method="addPagerLimit"><mode>grid</mode><limit>36</limit></action>
+                            <action method="addPagerLimit"><mode>grid</mode><limit>72</limit></action>
+                            <action method="addPagerLimit" translate="label"><mode>grid</mode><limit>all</limit><label>All</label></action>
+                        
                     </block>
                     <action method="setImageSize"><size>235</size></action>
                     <action method="setColumnCount"><columns>3</columns></action>
