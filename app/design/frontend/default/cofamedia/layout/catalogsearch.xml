@@ -54,8 +54,6 @@
                     </block>
                     <block type="core/text_list" name="additional" translate="label">
                         <label>Additional Info</label>
-                        <block type='enterprise_search/suggestions' name='search_suggestions' template="search/suggestions.phtml"></block>
-                        <block type='enterprise_search/recommendations' name='search_recommendations' template="search/recommendations.phtml"></block>
                     </block>
                     <action method="addColumnCountLayoutDepend"><layout>empty</layout><count>6</count></action>
                     <action method="addColumnCountLayoutDepend"><layout>one_column</layout><count>4</count></action>

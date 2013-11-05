@@ -158,7 +158,6 @@ Category layered navigation layout
               <block type="page/html_breadcrumbs" name="breadcrumbs" as="breadcrumbs"/>
               <block type="catalog/navigation" name="lay.nav" after="breadcrumbs" template="catalog/navigation/left.phtml"/>
 <!--               <block type="catalog/layer_view" name="lay.shopby" template="catalog/layer/view.phtml"/> -->
-              <block type="enterprise_search/catalog_layer_view" name="lay.shopby" before="-" template="catalog/layer/view.phtml"/>
             </block>
             
             <block type="catalog/category_view" name="category.products" template="catalog/category/view.phtml">
