@@ -16,7 +16,10 @@ class Speroteck_Indexer_Model_Executor
 
         $collection = $indexer->getProcessesCollection();
         foreach ($collection as $process) {
-            $processes[] = $process;
+            /** @var Mage_Index_Model_Process $process */
+            if ($process->getStatus() != Mage_Index_Model_Process::STATUS_PENDING) {
+                $processes[] = $process;
+            }
         }
 
         foreach ($processes as $process) {
