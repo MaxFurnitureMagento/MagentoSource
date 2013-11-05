@@ -52,7 +52,7 @@ We assume that document root /var/www/html is configured with host `localhost`
 3. Add configurations
 
     cp .htaccess.producton .htaccess
-    # copy local.xml and lightspeed.xml from production
+    copy local.xml and lightspeed.xml from production
 
 4. Sync folders:
     
