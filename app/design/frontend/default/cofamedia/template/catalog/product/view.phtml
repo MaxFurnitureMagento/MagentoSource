@@ -30,26 +30,29 @@
  * @see Mage_Catalog_Block_Product_View
  * @see Mage_Review_Block_Product_View
  */
-	
+
 	$_product = $this->getProduct();
 	$_id = $_product->getId();
   // Get the Special Price
-    $specialprice = Mage::getModel('catalog/product')->load($_id)->getSpecialPrice();
+    $specialprice = $_product->getSpecialPrice();
     // Get the Special Price FROM date
-    $specialPriceFromDate = Mage::getModel('catalog/product')->load($_id)->getSpecialFromDate();
+    $specialPriceFromDate = strtotime($_product->getSpecialFromDate());
     // Get the Special Price TO date
-    $specialPriceToDate = Mage::getModel('catalog/product')->load($_id)->getSpecialToDate();
+    $specialPriceToDate = strtotime($_product->getSpecialToDate());
     // Get Current date
-    $today =  time();
-	
+    $today = time();
+
+    $isSaleable = $_product->isSaleable();
+    $hasOptions = $this->hasOptions();
+
 	$is_special = false;
     if ($specialprice)
-        if($today >= strtotime( $specialPriceFromDate) && $today <= strtotime($specialPriceToDate) || $today >= strtotime( $specialPriceFromDate) && is_null($specialPriceToDate))
+        if($today >= $specialPriceFromDate && $today <= $specialPriceToDate || $today >= $specialPriceFromDate && is_null($specialPriceToDate))
 			$is_special = true;
- 
+
 ?>
 <?php $_helper = $this->helper('catalog/output'); $_coreHelper = $this->helper('core');?>
- <script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'js/colorbox/jquery.colorbox.js'?>"></script> 
+ <script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'js/colorbox/jquery.colorbox.js'?>"></script>
 <script type="text/javascript">
     var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
 </script>
@@ -61,28 +64,26 @@
 			<div class="price-container" style="display:none" <?php echo $_product->getmax_free_shipping()?'':'style="margin-right: 10px;"'; ?>>
 				<div class="list-price"><?php echo $this->__('Regular: ') ?><s><?php echo $_coreHelper->currency($_product->getmax_suggested_retail_price(),true,true); ?></s></div>
 				<?php if($is_special):?>
-					<div class="price-sale" style="text-align:right;"> 
+					<div class="price-sale" style="text-align:right;">
 						<?php echo $this->__('Our price: ') ?><?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol().number_format($_product->getPrice(),2) ?>
 					</div>
-				<?php endif; ?>
-				<?php if($is_special):?>
 				<div class="our-price" style="font-size: 20px;color:red">
 					 <?php echo $this->__('Sale: ') ?>
 				</div>
 				<?php else: ?>
 				<div class="our-price" style="font-size: 20px;">
-					 <?php echo $this->__('Our price: ') ?> 
+					 <?php echo $this->__('Our price: ') ?>
 				</div>
 				<?php endif;?>
 				<?php echo $this->getPriceHtml($_product) ?>
 
-				<?php if($_product->getmax_free_shipping()): ?>
+				<?php if($_product->getMaxFreeShipping()): ?>
 					<img class="free-shipping-top" src="<?php echo $this->getSkinUrl('images/free-shipping-image.png'); ?>" />
 				<?php endif; ?>
 			</div>
 <?php /*
             <h1 class="<?php echo $_product->getmax_free_shipping()?'free-shipping':''; ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
-*/ ?>       
+*/ ?>
 	   </div>
 <!--        <div class="clickToZoom">-->
 <!--            <p>Click Here Or On Image Below To Zoom</p>-->
@@ -96,18 +97,18 @@
 //                    });
 				$j(".price-container").appendTo(".breadcrumbs");
 				$j('.price-container').show();
-				
+
 				<?php if($is_special):?>
 					$j(".breadcrumbs").css('padding','20px 10px');
 				<?php endif; ?>
                 });
-				
+
 			//]]>
             </script>
 <!--        </div>-->
         <div class="product-shop">
 
-            <p><span class="label"><?php echo $this->__('Items(s) Included:') ?></span> <?php echo $_product->getmax_item_included() ?></p>
+            <p><span class="label"><?php echo $this->__('Items(s) Included:') ?></span> <?php echo $_product->getMaxItemIncluded() ?></p>
             <a href="#order-form"><?php echo $this->__('Additional Items Below') ?></a>
 <?php print_r ($this->getFormatedTierPrice()) ?>
             <p><span class="label"><?php echo $this->__('Model:') ?></span> <?php echo $_product->getSku(); ?></p>
@@ -117,17 +118,17 @@
             <?php echo $this->getChildHtml('extrahint') ?>
 
 			<?php echo $this->getReviewsSummaryHtml($_product, false, true)?>
-			
-			
-			
+
+
+
             <?php /*$detail_info_gorup = $this->getChildGroup('detailed_info', 'getChildHtml'); */?>
             <?php /*echo $detail_info_gorup['additional'];*/ ?>
 			<?php echo $this->getChildHtml('info_tabs'); ?>
 
- 
+
             <?php echo $this->getChildHtml('other');?>
 
-            <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+            <?php if ($isSaleable && $hasOptions):?>
                 <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
             <?php endif;?>
 
@@ -137,8 +138,8 @@
             <?php echo $this->getChildHtml('media') ?>
         </div>
 
-		
-		
+
+
 		<?php /* rewiews */ ?>
 		<div style='display:none'>
 			<div id="show_reviews_popup" style='padding:10px; background:#fff;'>
@@ -147,7 +148,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div style='display:none'>
 			<div id="add_review_popup" style='padding:10px; background:#fff;'>
 				<div class="reviews-popup" style="height:500px;margin:0 0 0 -10px;padding: 5px 10px;">
@@ -155,7 +156,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div style='display:none'>
 			<div id="email_us_popup" style='padding:10px; background:#fff;'>
 				<div class="reviews-popup">
@@ -163,16 +164,16 @@
 				</div>
 			</div>
 		</div>
-		
-	
+
+
 		<?php /* rewiews */ ?>
-		
+
         <?php echo $this->getChildHtml('option_images') ?>
 
         <div class="clearer"></div>
 
 
-        
+
         <form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
             <script type="text/javascript">
                 //<![CDATA[
@@ -224,7 +225,7 @@
             </div>
             <div class="order-form-container">
                 <a name="order-form"></a>
-<?php /*				
+<?php /*
                 <h3 class="<?php echo $_product->getmax_free_shipping()?'free-shipping2':''; ?>">Customize Order -- Select from the options below and click "Add to Cart".</h3>
 */ ?>
                 <div class="order-form">
@@ -237,21 +238,21 @@
 
                     <div class="product-details">
                         <p class="product-name"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></p>
-                        <p><span class="label"><?php echo $this->__('Items(s) Included:') ?></span> <?php echo $_product->getmax_item_included() ?></p>
+                        <p><span class="label"><?php echo $this->__('Items(s) Included:') ?></span> <?php echo $_product->getMaxItemIncluded() ?></p>
                         <p><span class="label"><?php echo $this->__('Model:') ?></span> <?php echo $_product->getSku(); ?></p>
-                        <div class="list-price"><?php echo $this->__('Retail: ') ?><s><?php echo $_coreHelper->currency($_product->getmax_suggested_retail_price(),true,true); ?></s></div>
+                        <div class="list-price"><?php echo $this->__('Retail: ') ?><s><?php echo $_coreHelper->currency($_product->getMaxSuggestedRetailPrice(),true,true); ?></s></div>
                         <?php //echo $this->getPriceHtml($_product, false, 'details') ?>
                         <?php echo $this->getPriceHtml($_product, false, $_product->getId() ) ?>
                     </div>
 
                     <div class="form-elements">
-                        <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+                    <?php if ($isSaleable && $hasOptions):?>
                             <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
                         <?php endif;?>
 
-                        <?php if (!$this->hasOptions()):?>
+                    <?php if (!$hasOptions):?>
                             <div class="add-to-box">
-                                <?php if($_product->isSaleable()): ?>
+                            <?php if($isSaleable): ?>
                                     <?php echo $this->getChildHtml('addtocart') ?>
                                 <?php endif; ?>
                             </div>
@@ -298,5 +299,5 @@
         // Use sku instead of product id
         product_id: "<?php echo $_product->getSku()?>"
     };
-	
+
 //]]></script>

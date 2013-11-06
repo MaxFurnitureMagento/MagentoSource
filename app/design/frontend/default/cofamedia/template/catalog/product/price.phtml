@@ -48,17 +48,17 @@
     $_minimalPrice = $_taxHelper->getPrice($_product, $_minimalPriceValue, $_simplePricesTax);
 	
 	 // Get the Special Price
-    $specialprice = Mage::getModel('catalog/product')->load($_id)->getSpecialPrice();
+    $specialprice = $_product->getSpecialPrice();
     // Get the Special Price FROM date
-    $specialPriceFromDate = Mage::getModel('catalog/product')->load($_id)->getSpecialFromDate();
+    $specialPriceFromDate = strtotime($_product->getSpecialFromDate());
     // Get the Special Price TO date
-    $specialPriceToDate = Mage::getModel('catalog/product')->load($_id)->getSpecialToDate();
+    $specialPriceToDate = strtotime($_product->getSpecialToDate());
     // Get Current date
     $today =  time();
-	
+
 	$is_special = false;
     if ($specialprice)
-        if($today >= strtotime( $specialPriceFromDate) && $today <= strtotime($specialPriceToDate) || $today >= strtotime( $specialPriceFromDate) && is_null($specialPriceToDate))
+        if($today >= $specialPriceFromDate && $today <= $specialPriceToDate || $today >= $specialPriceFromDate && is_null($specialPriceToDate))
 			$is_special = true;
 ?>
 
@@ -358,9 +358,9 @@
                 <?php /*<span class="price-label"><?php echo $this->__('Sale:') ?></span> */?>
                 <span class="price" id="product-price-<?php //echo $_id ?><?php echo $this->getIdSuffix() ?>">
 					<?php if(Mage::registry('current_product')): ?>
-                    <?php if($is_special) echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol().number_format($_product->getFinalPrice(),2); else echo $_coreHelper->currency($_finalPrice,true,false); ?> 
+                    <?php if($is_special) echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol().number_format($_product->getFinalPrice(),2); else echo $_coreHelper->currency($_finalPrice,true,false); ?>
                     <?php else:?>
-					<?php if($is_special) echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol().number_format($_product->getPrice(),2); else echo $_coreHelper->currency($_finalPrice,true,false); ?> 
+					<?php if($is_special) echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol().number_format($_product->getPrice(),2); else echo $_coreHelper->currency($_finalPrice,true,false); ?>
 					<?php endif; ?>
 				</span>
             </p>

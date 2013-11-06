@@ -31,9 +31,11 @@
     </div>
     <ul class="products-grid" id="upsell-product-list">
     <?php // $this->setColumnCount(5); // uncomment this line if you want to have another number of columns. also can be changed in layout ?>
-    <?php $this->resetItemsIterator() ?>
-    <?php for($_i=0;$_i<$this->getRowCount();$_i++): ?>
-        <?php for($_j=0;$_j<$this->getColumnCount();$_j++): ?>
+    <?php $this->resetItemsIterator();
+        $rows = $this->getRowCount();
+        $cols = $this->getColumnCount();
+        for($_i=0;$_i<$rows;$_i++): ?>
+        <?php for($_j=0;$_j<$cols;$_j++): ?>
             <?php if($_link=$this->getIterableItem()): ?>
             <li class="item">
                 <a href="<?php echo $_link->getProductUrl() ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_link, 'small_image')->resize(235) ?>" width="235" height="235" alt="<?php echo $this->htmlEscape($_link->getName()) ?>" title="<?php echo $this->htmlEscape($_link->getName()) ?>" /></a>
