@@ -220,7 +220,6 @@ $_product = $this->getProduct();
 </div>
 <script type="text/javascript">
         <?php if ($this->isStartCustomization()): ?>
-//            Enterprise.Bundle.start();
         <?php endif;?>
         var productAddToCartForm = new VarienForm('product_addtocart_form');
         productAddToCartForm.submit = function(button, url) {
@@ -263,7 +262,6 @@ $_product = $this->getProduct();
             }
         }.bind(productAddToCartForm);
 
-        Enterprise.Bundle.initialize();
 </script>
 
 <script type="text/javascript">//<![CDATA[

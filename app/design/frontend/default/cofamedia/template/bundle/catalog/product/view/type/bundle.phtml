@@ -56,7 +56,6 @@ if($qty) $date = '';
 <?php if($_product->isSaleable()): ?>
 <script type="text/javascript">
 //<![CDATA[
-    Enterprise.Bundle.swapReloadPrice();
     var bundle = new Product.Bundle(<?php echo $this->getJsonConfig() ?>);
 //]]>
 </script>
