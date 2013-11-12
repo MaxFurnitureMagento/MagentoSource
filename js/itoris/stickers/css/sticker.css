@@ -1,0 +1,83 @@
+.itoris_sticker {
+	cursor: pointer;
+	z-index: 10001;
+}
+.itoris-sticker-orientation-top.itoris_sticker_notactive, .itoris-sticker-orientation-bottom.itoris_sticker_notactive {
+	height: 24px !important;
+}
+.itoris-sticker-orientation-bottom.itoris_sticker_notactive {
+	margin-top: 5px !important;
+}
+.itoris-sticker-orientation-left.itoris_sticker_notactive, .itoris-sticker-orientation-right.itoris_sticker_notactive {
+	width: 24px !important;
+}
+.itoris-sticker-orientation-right.itoris_sticker_notactive {
+	margin-left: 5px !important;
+}
+.itoris-stickers-box {
+	z-index: 10000;
+}
+.itoris-stickers-content-box, .itoris-stickers-title-box {
+	position: relative;
+	z-index: 10001;
+}
+.itoris-stickers-title-box, .itoris-stickers-title-box * {
+	z-index: 10000;
+}
+.itoris-stickers-title-box img {
+	-webkit-transform: scale(1);
+	-webkit-transition: -webkit-transform 1s linear;
+}
+.itoris_sticker_content {
+	z-index: 10000;
+}
+.itoris_sticker_content .content{
+	margin: 10px;
+}
+.itoris_sticker_content.red{
+	color: #ffffff;
+	background-color: #e20202;
+	border: 2px solid #cd0000;
+}
+
+.itoris_sticker_content.black {
+	color: #ffb400;
+	background-color: #565656;
+	border: 2px solid #ffb400;
+}
+
+.itoris_sticker_content.orange {
+	color: #ffb400;
+	background-color: #565656;
+	border: 2px solid #ffb400;
+}
+
+.itoris_sticker_content.white {
+	color: #000000;
+	background-color: #e5e5e5;
+	border: 2px solid #ff0000;
+}
+
+.itoris_sticker_content.gold {
+	color: #000000;
+	background-color: #fac757;
+	border: 2px solid #feae02;
+}
+
+.itoris_sticker_content.red_white {
+	color: #000000;
+	background-color: #ffffff;
+	border: 2px solid #cd0000;
+}
+
+.itoris_sticker_content.green {
+	color: #000000;
+	background-color: #61a30e;
+	border: 2px solid #72b61e;
+}
+
+.itoris_sticker_content.blue {
+	color: #000000;
+	background-color: #ffffff;
+	border: 2px solid #ffffff;
+}

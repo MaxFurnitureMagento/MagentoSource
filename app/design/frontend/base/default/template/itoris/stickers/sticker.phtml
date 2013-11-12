@@ -1,0 +1,50 @@
+<?php
+/**
+ * ITORIS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the ITORIS's Magento Extensions License Agreement
+ * which is available through the world-wide-web at this URL:
+ * http://www.itoris.com/magento-extensions-license.html
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to sales@itoris.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the extensions to newer
+ * versions in the future. If you wish to customize the extension for your
+ * needs please refer to the license agreement or contact sales@itoris.com for more information.
+ *
+ * @category   ITORIS
+ * @package    ITORIS_STICKERS
+ * @copyright  Copyright (c) 2012 ITORIS INC. (http://www.itoris.com)
+ * @license    http://www.itoris.com/magento-extensions-license.html  Commercial License
+ */
+
+/** @var $this Itoris_Stickers_Block_Sticker */
+?>
+
+<?php foreach ($this->getStickers() as $sticker): ?>
+	<div id="itoris_sticker_content_<?php echo $sticker->getId() ?>" class="itoris_sticker_content <?php $this->getStickerOrientation($sticker) ?>" style="display: none;"><div class="content"><?php echo $this->getStickerContent($sticker) ?></div></div>
+	<img id="itoris_sticker_<?php echo $sticker->getId() ?>" onload="this.isLoaded = true;" class="itoris_sticker" src="<?php echo $this->getUrl('stickers/index/stickerImage', array('sticker_id' => $sticker->getId())) ?>" title="<?php echo $sticker->getTitle() ?>" style="display: none;"/>
+<?php endforeach; ?>
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		<?php foreach ($this->getStickers() as $sticker): ?>
+			<?php
+				$theme = Itoris_Stickers_Model_Sticker::getThemeById($sticker->getColorScheme());
+				$config = array(
+					'expand' => (bool)$sticker->getExpand(),
+					'color_scheme' => $this->getStickerColorScheme($sticker),
+				);
+			?>
+			var Sticker<?php echo $sticker->getId() ?> = new Itoris.Sticker(<?php echo $sticker->getId() ?>, '<?php echo $theme['theme'] ?>','<?php echo $this->getStickerOrientation($sticker) ?>', '<?php echo $sticker->getHtmlElementId() ?>', <?php echo Zend_Json::encode($config) ?>);
+		<?php endforeach ?>
+		Itoris.Sticker.prototype.prepareStickers();
+	});
+	document.observe('click', function(e) {
+		Itoris.Sticker.prototype.closeStickers(e);
+	});
+</script>

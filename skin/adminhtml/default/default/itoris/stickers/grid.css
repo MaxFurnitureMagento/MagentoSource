@@ -1,0 +1,11 @@
+.itoris-arrow-up, .itoris-arrow-down {
+	float: left;
+	cursor: pointer;
+	width: 15px;
+	height: 15px;
+	margin-right: 5px;
+	background-image: url(images/sort-arrow-up.png);
+}
+.itoris-arrow-down {
+	background-image: url(images/sort-arrow-down.png);
+}

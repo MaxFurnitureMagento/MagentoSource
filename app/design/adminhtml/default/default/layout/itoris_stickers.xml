@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+
+	<itoris_stickers_admin_sticker_index>
+		<reference name="head">
+			<action method="setTitle">
+				<params>Stickers/Memos / Itoris Extensions / Magento Admin</params>
+			</action>
+			<action method="addItem">
+				<type>js_css</type>
+				<path>itoris/stickers/admin/css/color.css</path>
+			</action>
+			<action method="addCss"><file>itoris/stickers/grid.css</file></action>
+		</reference>
+		<reference name="content">
+			<block type="itoris_stickers/admin_sticker" name="sticker_grid" />
+		</reference>
+		<reference name="menu">
+			<action method="setActive">
+				<params>system/itoris_extensions/itoris_stickers</params>
+			</action>
+		</reference>
+	</itoris_stickers_admin_sticker_index>
+
+	<itoris_stickers_admin_sticker_edit>
+		<update handle="editor"/>
+		<reference name="head">
+			<action method="setTitle">
+				<params>Edit / Stickers/Memos / Itoris Extensions / Magento Admin</params>
+			</action>
+			<action method="addItem">
+				<type>js_css</type>
+				<path>itoris/stickers/admin/css/settings.css</path>
+			</action>
+		</reference>
+		<reference name="content">
+			<block type="itoris_stickers/admin_sticker_edit" name="sticker_edit_container" />
+		</reference>
+		<reference name="menu">
+			<action method="setActive">
+				<params>system/itoris_extensions/itoris_stickers</params>
+			</action>
+		</reference>
+	</itoris_stickers_admin_sticker_edit>
+</layout>

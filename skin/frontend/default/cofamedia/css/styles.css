@@ -570,7 +570,7 @@ tr.summary-details-excluded { font-style:italic; }
 #nav li a.level-top { background: url('../images/ui/navigation-separator.png') no-repeat top left; }
 
 .information{float: right;position: relative;}
-.information .stellaservice{position: absolute;left:-115px;top: -35px;}
+.information .stellaservice{position: absolute;left:-115px;top: -10px;}
 .call-help{background: url("../images/header.png") repeat scroll  -444px 0px transparent; height: 40px; width: 152px; float: left; margin-top: -6px;}
 .phone{/*background: url("../images/header.png") repeat scroll  -40px -96px transparent;*/ height: 40px; width: 220px; float: left; margin: -4px 7px 0; padding-right: 13px;border-left: 1px solid #C7C7C7;border-right: 1px solid #C7C7C7;}
 .emailUs {float: right;font-size: 14px;font-weight: bold;margin-top: 3px;text-transform: uppercase;}
