@@ -40,13 +40,13 @@
 
 	<frontend>
 		<routers>
-			<stickers>
+			<isticker>
 				<use>standard</use>
 				<args>
 					<module>Itoris_Stickers</module>
-					<frontName>stickers</frontName>
+					<frontName>isticker</frontName>
 				</args>
-			</stickers>
+			</isticker>
 		</routers>
 		<layout>
 			<updates>
