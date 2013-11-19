@@ -39,6 +39,11 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MJ12bot')
     exit;
 }
 
+if (isset($_GET['viewall'])) {
+	unset($_GET['viewall']);
+}
+
+
 if(!PageCache::doYourThing()){
 	include_once('index.php');
 }
