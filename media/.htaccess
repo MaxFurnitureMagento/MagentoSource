@@ -16,10 +16,10 @@ Options -ExecCGI
 
 ############################################
 ## never rewrite for existing files
-    RewriteCond %{REQUEST_FILENAME} !-f
+#    RewriteCond %{REQUEST_FILENAME} !-f
 
 ############################################
 ## rewrite everything else to index.php
 
-    RewriteRule .* ../get.php [L]
+#    RewriteRule .* ../get.php [L]
 </IfModule>
