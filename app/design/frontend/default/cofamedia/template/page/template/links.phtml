@@ -61,6 +61,6 @@ $total = $this->helper('core')->currency(Mage::getSingleton('checkout/session')-
 		    <?php endforeach; ?>
 		</ul>
 	</div>	
-	<p><a class="checkout-button" href="<?php echo $this->getUrl('firecheckout', array('_secure'=>true)); ?>">&nbsp;</a></p>
+	<p><a class="checkout-button" href="<?php echo Mage::helper('checkout/url')->getCheckoutUrl(); ?>">&nbsp;</a></p>
 </div>	
 <?php endif; ?>
