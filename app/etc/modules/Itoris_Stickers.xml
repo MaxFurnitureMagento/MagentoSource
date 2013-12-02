@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<Itoris_Stickers>
-			<active>true</active>
+			<active>false</active>
 			<codePool>local</codePool>
 			<depends>
 				<Mage_Catalog/>

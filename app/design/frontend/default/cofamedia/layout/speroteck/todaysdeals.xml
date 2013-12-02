@@ -6,7 +6,7 @@
         <reference name="before_body_end">
             <block type="core/template"
                    name="speroteck_todaysdeals_page_sticker"
-                   template="speroteck/todays_deals/page_sticker.phtml" />
+                   template="speroteck/todaysdeals/page_sticker.phtml" />
         </reference>
     </default>
 </layout>

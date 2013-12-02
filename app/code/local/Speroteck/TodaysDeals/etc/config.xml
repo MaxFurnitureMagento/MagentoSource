@@ -9,7 +9,7 @@
         <layout>
             <updates>
                 <Speroteck_TodaysDeals module="Speroteck_TodaysDeals">
-                    <file>layout.xml</file>
+                    <file>speroteck/todaysdeals.xml</file>
                 </Speroteck_TodaysDeals>
             </updates>
         </layout>
