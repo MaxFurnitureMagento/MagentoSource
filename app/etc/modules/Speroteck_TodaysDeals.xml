@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Speroteck_TodaysDeals>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Speroteck_TodaysDeals>
+    </modules>
+</config>

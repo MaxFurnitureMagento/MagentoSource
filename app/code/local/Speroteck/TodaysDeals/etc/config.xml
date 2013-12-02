@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Speroteck_TodaysDeals>
+            <version>0.1.0</version>
+        </Speroteck_TodaysDeals>
+    </modules>
+    <frontend>
+        <layout>
+            <updates>
+                <Speroteck_TodaysDeals module="Speroteck_TodaysDeals">
+                    <file>speroteck/todaysdeals.xml</file>
+                </Speroteck_TodaysDeals>
+            </updates>
+        </layout>
+    </frontend>
+</config>

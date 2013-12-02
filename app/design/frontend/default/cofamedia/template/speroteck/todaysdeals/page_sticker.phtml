@@ -1,0 +1,28 @@
+<?php
+$block = Mage::getModel('cms/block')
+              ->setStoreId(Mage::app()->getStore()->getId())
+              ->load('sticker');
+
+$content = Mage::getModel('cms/template_filter')->filter($block->getContent());
+
+?>
+
+<div class="stickers-box">
+    <div class="stickers-container">
+        <div id="stickers-content" style="display: none;">
+            <?php echo $content; ?>
+        </div>
+    </div>
+    <div id="stickers-box-button">
+        <img src="<?php echo $this->getSkinUrl('images/todays-deals.png') ?>" title="Today's Deals">
+    </div>
+</div>
+<script type="text/javascript">
+    Event.observe($('stickers-box-button'), 'click', function () {
+        if ($('stickers-content').visible() == true) {
+            Effect.BlindUp($('stickers-content'), {duration: 0.5});
+        } else {
+            Effect.BlindDown($('stickers-content'), {duration: 0.5});
+        }
+    });
+</script>
