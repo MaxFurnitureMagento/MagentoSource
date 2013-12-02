@@ -1,0 +1,12 @@
+<layout>
+    <default>
+        <reference name="head">
+            <action method="addCss"><stylesheet>css/speroteck/page_sticker.css</stylesheet></action>
+        </reference>
+        <reference name="before_body_end">
+            <block type="core/template"
+                   name="speroteck_todaysdeals_page_sticker"
+                   template="speroteck/todays_deals/page_sticker.phtml" />
+        </reference>
+    </default>
+</layout>
