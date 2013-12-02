@@ -3,8 +3,11 @@ $block = Mage::getModel('cms/block')
               ->setStoreId(Mage::app()->getStore()->getId())
               ->load('sticker');
 
-$content = Mage::getModel('cms/template_filter')->filter($block->getContent());
+if ($block->getContent() == false) {
+    return;
+}
 
+$content = Mage::getModel('cms/template_filter')->filter($block->getContent());
 ?>
 
 <div class="stickers-box">
