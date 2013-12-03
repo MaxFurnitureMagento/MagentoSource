@@ -1,19 +1,8 @@
-<?php
-$block = Mage::getModel('cms/block')
-              ->setStoreId(Mage::app()->getStore()->getId())
-              ->load('sticker');
-
-if ($block->getContent() == false) {
-    return;
-}
-
-$content = Mage::getModel('cms/template_filter')->filter($block->getContent());
-?>
-
+<?php if ($this->isStickerEnabled()): ?>
 <div class="stickers-box">
     <div class="stickers-container">
         <div id="stickers-content" style="display: none;">
-            <?php echo $content; ?>
+            <?php echo $this->getStickerContent(); ?>
         </div>
     </div>
     <div id="stickers-box-button">
@@ -29,3 +18,4 @@ $content = Mage::getModel('cms/template_filter')->filter($block->getContent());
         }
     });
 </script>
+<?php endif;?>

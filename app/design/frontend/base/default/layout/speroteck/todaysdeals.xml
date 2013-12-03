@@ -4,7 +4,7 @@
             <action method="addCss"><stylesheet>css/speroteck/page_sticker.css</stylesheet></action>
         </reference>
         <reference name="before_body_end">
-            <block type="core/template"
+            <block type="speroteck_todaysdeals/sticker"
                    name="speroteck_todaysdeals_page_sticker"
                    template="speroteck/todaysdeals/page_sticker.phtml" />
         </reference>

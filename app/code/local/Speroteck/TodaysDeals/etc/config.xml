@@ -5,6 +5,13 @@
             <version>0.1.0</version>
         </Speroteck_TodaysDeals>
     </modules>
+    <global>
+        <blocks>
+            <speroteck_todaysdeals>
+                <class>Speroteck_TodaysDeals_Block</class>
+            </speroteck_todaysdeals>
+        </blocks>
+    </global>
     <frontend>
         <layout>
             <updates>
